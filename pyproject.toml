@@ -1,0 +1,11 @@
+[project]
+name = "chart-prm"
+version = "0.1.0"
+description = "Process Reward Modeling in LLMs project"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
