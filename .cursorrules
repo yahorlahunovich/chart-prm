@@ -1,0 +1,6 @@
+# Cursor Rules
+
+- Maintain clean code with no redundancy.
+- Use `uv add <package>` for dependency management. Do not touch `pyproject.toml` or `uv.lock` manually.
+- Document every implementation step in `implementation_log.md` explaining what was done and why.
+- Stage, commit, and push your changes to GitHub immediately after making modifications.

@@ -1,0 +1,6 @@
+# Antigravity Workspace Rules
+
+- **Clean Code**: Always write clean, maintainable code without redundancy.
+- **Dependencies**: Use `uv add <dependency>` to add packages. Never manually edit `pyproject.toml` or `uv.lock`.
+- **Logging**: Document all actions, decisions, and modifications in `implementation_log.md` (what and why).
+- **Git Workflow**: You must `git commit` and `git push` all modifications directly to GitHub, as we work in a 2-person team.

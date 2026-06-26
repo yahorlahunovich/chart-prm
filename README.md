@@ -44,3 +44,12 @@ Analyze failure cases
 4. **Score** — A PRM-style judge evaluates each step
 5. **Compare** — Process-level scores are compared against final-answer correctness
 6. **Analyze** — Failure cases are examined
+
+---
+
+## Development Workflow & Environment
+
+- **Environment Management**: We use `uv` for managing dependencies. **Do not** edit `pyproject.toml` or `uv.lock` directly. Always use `uv add <package>` or `uv remove <package>`.
+- **Agents Setup**: We use multiple AI agents (Cursor, Gemini, Claude, Antigravity). Please see `agents/instructions.md` and `.cursorrules` for agent-specific rules.
+- **Logging**: Every step, implementation detail, and its reasoning must be documented in `implementation_log.md`.
+- **Version Control**: We work in a team of 2. After making any meaningful modifications, agents/developers should commit the changes with a clear message and push to GitHub.
