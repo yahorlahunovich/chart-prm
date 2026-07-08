@@ -32,4 +32,4 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - Verified that `BitsAndBytesConfig` is now correctly set up in the notebook to avoid `load_in_4bit` TypeError from older implementations.
 - Modified `02_model_inference.ipynb` to be fully resumable. It now saves results using append mode (`"a"`) row-by-row and skips already processed indices on restart, preventing data loss.
 - Updated the notebook to automatically load the `GITHUB` and `HF_TOKEN` Colab secrets using `google.colab.userdata` and embed the GitHub token directly into the `git clone` URL.
-- Fixed the `git clone` command in the notebook by prepending `oauth2:` to the embedded token, preventing interactive password prompts in headless environments like Colab.
+- Fixed the `git clone` command in the notebook by prepending `yahorlahunovich:` to the embedded token, as fine-grained PATs require the actual username rather than `oauth2`.
