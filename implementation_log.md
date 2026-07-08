@@ -30,3 +30,4 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - Fixed the dataset split in `02_model_inference.ipynb` from `descriptive_val` to `validation`.
 - Updated dataset column names from `question` and `answer` to `reasoning_q` and `reasoning_a` respectively to match the CharXiv schema.
 - Verified that `BitsAndBytesConfig` is now correctly set up in the notebook to avoid `load_in_4bit` TypeError from older implementations.
+- Modified `02_model_inference.ipynb` to be fully resumable. It now saves results using append mode (`"a"`) row-by-row and skips already processed indices on restart, preventing data loss.
