@@ -49,3 +49,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Dataset Pivot & Stratified Sampling
 - **What**: Shifted focus entirely to reasoning questions (ignoring descriptive ones). Wrote `scripts/00_sample_questions.py` to stratify sample 500 questions for the main pipeline and 100 questions for holdout evaluation, balanced across the 62 `chart_types`. Updated the `02_model_inference.ipynb` notebook to load these explicit IDs. Updated all documentation (`README.md`, `agents/instructions.md`, `.cursorrules`, `.agents/AGENTS.md`) to reflect this limitation.
 - **Why**: Descriptive questions are purely retrieval and offer no reasoning paths for a PRM to evaluate. Scaling down to 500 well-distributed reasoning questions saves VRAM/Compute on Kaggle while maintaining diversity across different chart types.
+
+## Verification Run Setup
+- **What**: Updated `notebooks/02_model_inference.ipynb` to temporarily truncate the 500 selected dataset down to just 20 samples. Confirmed that the notebook correctly implements the `apply_chat_template` wrapping required by Qwen2.5-VL.
+- **Why**: To verify the completeness and formatting of the generation before executing the full 500-sample run on Kaggle GPUs.
