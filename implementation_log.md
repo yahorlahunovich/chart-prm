@@ -51,5 +51,5 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **Why**: Descriptive questions are purely retrieval and offer no reasoning paths for a PRM to evaluate. Scaling down to 500 well-distributed reasoning questions saves VRAM/Compute on Kaggle while maintaining diversity across different chart types.
 
 ## Verification Run Setup
-- **What**: Updated `notebooks/02_model_inference.ipynb` to temporarily truncate the 500 selected dataset down to just 20 samples. Confirmed that the notebook correctly implements the `apply_chat_template` wrapping required by Qwen2.5-VL.
+- **What**: Updated `notebooks/02_model_inference.ipynb` to temporarily truncate the 500 selected dataset down to just 20 samples. Confirmed that the notebook correctly implements the `apply_chat_template` wrapping required by Qwen2.5-VL. Fixed a bug in the Hugging Face dataset filtering where `question_id` was missing from the HF dataset schema, by manually mapping the HF indices to the `reasoning_val.json` keys.
 - **Why**: To verify the completeness and formatting of the generation before executing the full 500-sample run on Kaggle GPUs.
