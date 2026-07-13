@@ -5,3 +5,4 @@
 - Document every implementation step in `implementation_log.md` explaining what was done and why.
 - Stage, commit, and push your changes to GitHub immediately after making modifications.
 - Optimize code for our strict compute constraints: a single T4 GPU on Colab, and 2xT4 GPUs on Kaggle.
+- Dataset constraints: We only use a subset of 500 reasoning questions from CharXiv (no descriptive questions).

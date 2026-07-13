@@ -12,7 +12,7 @@ Our goal is not to train a large multimodal PRM from scratch (because we are not
 
 | | |
 |---|---|
-| **Dataset** | [CharXiv](https://charxiv.github.io/) · [Hugging Face](https://huggingface.co/datasets/princeton-nlp/CharXiv) |
+| **Dataset** | [CharXiv](https://charxiv.github.io/) · [Hugging Face](https://huggingface.co/datasets/princeton-nlp/CharXiv) <br> *(Note: We use a balanced subset of 500 **reasoning questions** for the main pipeline, and a holdout of 100 for evaluation. Descriptive questions are excluded.)* |
 | **Model** | [Qwen2.5-VL-3B](https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct) |
 
 ---
