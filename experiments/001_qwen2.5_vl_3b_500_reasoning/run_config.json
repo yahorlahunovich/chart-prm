@@ -1,0 +1,16 @@
+{
+  "experiment_name": "001_qwen2.5_vl_3b_500_reasoning",
+  "model_id": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "quantization": "4-bit",
+  "dataset": "princeton-nlp/CharXiv",
+  "split": "validation",
+  "subset_size": 500,
+  "subset_type": "reasoning_questions",
+  "num_rollouts_per_sample": 5,
+  "total_target_rollouts": 2500,
+  "generation_params": {
+    "max_new_tokens": 512,
+    "do_sample": true,
+    "temperature": 0.7
+  }
+}
