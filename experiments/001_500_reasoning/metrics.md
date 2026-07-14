@@ -1,4 +1,4 @@
-# Experiment Metrics: 001_qwen2.5_vl_3b_500_reasoning
+# Experiment Metrics: 001_500_reasoning
 
 ## Generation Stats
 - **Target Samples:** 500 unique reasoning questions
