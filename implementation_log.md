@@ -78,6 +78,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 
 ## Cost Optimization: Rollout-Level Batching
 - **What**: Created `scripts/evaluate_rollouts_meta.py` which passes an entire rollout (all steps) to the Meta API in a single prompt instead of iterating step-by-step. Also added image resizing via `Pillow` (max 512px) before base64 encoding. Included updated tests in `tests/test_evaluate_rollouts_meta.py`.
-- **Why**: The step-by-step script consumed ~1,600 tokens per step (mostly from the model re-generating internal "reasoning tokens" about the image for every step). By sending the image and all steps simultaneously, we reduce the API calls from 7,600 down to 1,287, saving ~70-80% on API costs and bringing the entire run comfortably below the user's remaining $19.20 budget.
+- **Why**: The step-by-step script consumed ~1,600 tokens per step (mostly from the model re-generating internal "reasoning tokens" about the image for every step). By sending the image and all steps simultaneously, we reduce the API calls from 7,600 down to 1,287, saving ~70-80% on API costs and bringing the entire run comfortably below the user's remaining budget.
+- **Result**: Successfully evaluated the entire dataset of 1,287 rollouts (representing ~4,947 steps). The final pass rate was ~41.0% (Score 1) and fail rate was ~59.0% (Score 0). The data was saved to `experiments/001_500_reasoning/data/evaluated_rollouts.jsonl` and pushed to GitHub.
 
 
