@@ -67,3 +67,8 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Dataset Image Downloading
 - **What**: Created `scripts/download_images.py` to download the CharXiv `images.zip` from Hugging Face and extract only the 500 images corresponding to our selected reasoning questions into `data/CharXiv/images/`.
 - **Why**: The user requested a local copy of the dataset images for the cleaned 500-question reasoning subset. By fetching only the required images, we save disk space and bandwidth compared to extracting the full dataset.
+
+## JSONL ID Alignment Fix
+- **What**: Wrote and executed `scripts/fix_jsonl_ids.py` to map the `question_id`s in `experiments/001_500_reasoning/data/*.jsonl` from enumeration indices (0-499) back to their true `figure_id` keys from `main_reasoning_ids.json`.
+- **Why**: The HuggingFace `load_dataset` `.filter()` step drops dataset keys, causing the generation script to fall back to the loop index (`sample_index`). Consequently, the generated `.jsonl` files had mismatching IDs with the downloaded images. The mapping restores alignment so that downstream training code can properly look up `images/{question_id}.jpg`.
+
