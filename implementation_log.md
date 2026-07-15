@@ -76,4 +76,8 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Built an async pipeline (`scripts/evaluate_steps_meta.py`) to grade every individual reasoning step in the dataset against the ground truth using the `muse-spark-1.1` vision-language model. Included unit tests (`tests/test_evaluate_steps_meta.py`) to verify prompt construction, JSON parsing, API mocking, and interrupt-resume capability.
 - **Why**: The user wanted to evaluate thousands of model rollouts step-by-step for the PRM dataset. Using `aiohttp` allows for optimal concurrency within the 3,000 requests/minute limit, and intermediate `aiofiles` saving guarantees that progress is kept if the execution crashes.
 
+## Cost Optimization: Rollout-Level Batching
+- **What**: Created `scripts/evaluate_rollouts_meta.py` which passes an entire rollout (all steps) to the Meta API in a single prompt instead of iterating step-by-step. Also added image resizing via `Pillow` (max 512px) before base64 encoding. Included updated tests in `tests/test_evaluate_rollouts_meta.py`.
+- **Why**: The step-by-step script consumed ~1,600 tokens per step (mostly from the model re-generating internal "reasoning tokens" about the image for every step). By sending the image and all steps simultaneously, we reduce the API calls from 7,600 down to 1,287, saving ~70-80% on API costs and bringing the entire run comfortably below the user's remaining $19.20 budget.
+
 
