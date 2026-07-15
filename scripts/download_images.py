@@ -1,0 +1,42 @@
+import json
+import os
+import urllib.request
+import zipfile
+import tempfile
+
+def main():
+    ids_path = "data/splits/main_reasoning_ids.json"
+    with open(ids_path, "r") as f:
+        target_ids = set(json.load(f))
+    
+    print(f"Loaded {len(target_ids)} target IDs.")
+    
+    url = "https://huggingface.co/datasets/princeton-nlp/CharXiv/resolve/main/images.zip"
+    output_dir = "data/CharXiv/images"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    with tempfile.TemporaryDirectory() as tmpdir:
+        zip_path = os.path.join(tmpdir, "images.zip")
+        print(f"Downloading images.zip from {url}...")
+        urllib.request.urlretrieve(url, zip_path)
+        print("Download complete. Extracting required images...")
+        
+        extracted_count = 0
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            # List all files in the zip
+            for file_info in zip_ref.infolist():
+                filename = file_info.filename
+                # Filename is typically like "images/123.png" or "123.jpg"
+                basename = os.path.basename(filename)
+                name, ext = os.path.splitext(basename)
+                
+                if name in target_ids:
+                    # Extract this file to output_dir
+                    file_info.filename = basename # remove folder structure
+                    zip_ref.extract(file_info, output_dir)
+                    extracted_count += 1
+                    
+        print(f"Extracted {extracted_count} images to {output_dir}")
+
+if __name__ == "__main__":
+    main()
