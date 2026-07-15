@@ -1,3 +1,9 @@
+"""
+sample_questions.py
+
+This script samples the 500 reasoning questions from the CharXiv dataset required for our project. 
+It ensures a balanced distribution of questions across different chart types and reasoning complexities.
+"""
 import json
 import random
 from collections import defaultdict

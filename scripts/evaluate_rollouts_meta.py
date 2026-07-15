@@ -1,3 +1,11 @@
+"""
+evaluate_rollouts_meta.py
+
+This script is the core PRM Judge pipeline. It asynchronously calls the Meta API (`muse-spark-1.1`) 
+to evaluate the reasoning rollouts for the PRM dataset. To heavily optimize API token costs, it groups 
+all reasoning steps for a single rollout into one API call (Rollout-Level Batching) and resizes 
+images to a maximum of 512px before encoding them to Base64.
+"""
 import os
 import json
 import base64

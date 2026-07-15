@@ -1,3 +1,10 @@
+"""
+clean_dataset.py
+
+This script processes the raw CharXiv data (specifically the 500 reasoning questions subset)
+to filter, sanitize, and extract the generated reasoning steps. It parses Qwen2.5's text outputs 
+into a structured JSONL format (separating the steps) so they can be easily fed into the PRM judge.
+"""
 import json
 import re
 import os

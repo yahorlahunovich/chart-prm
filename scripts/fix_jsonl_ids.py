@@ -1,3 +1,11 @@
+"""
+fix_jsonl_ids.py
+
+This utility script corrects the `question_id` mismatch between the cleaned dataset and the 
+downloaded CharXiv images. It reads the raw HuggingFace dataset to map the sequential dataset 
+indices to the original `figure_id`s, ensuring that the PRM judge receives the correct image 
+for each reasoning question.
+"""
 import json
 import os
 

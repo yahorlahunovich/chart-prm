@@ -1,3 +1,10 @@
+"""
+test_evaluate_rollouts_meta.py
+
+Unit tests for the `evaluate_rollouts_meta.py` script. 
+It verifies JSON markdown stripping, API mocking, and ensures that the interrupt-resume 
+intermediate saving logic correctly handles partially processed data without calling the API redundantly.
+"""
 import os
 import json
 import asyncio

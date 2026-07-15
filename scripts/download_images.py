@@ -1,3 +1,10 @@
+"""
+download_images.py
+
+This script downloads the chart images referenced in the CharXiv dataset from HuggingFace.
+It fetches only the necessary images for our 500 reasoning questions subset, unzips them, 
+and stores them in the local `data/CharXiv/images/` directory for use by the Meta API judge.
+"""
 import json
 import os
 import urllib.request
