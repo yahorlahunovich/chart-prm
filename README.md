@@ -47,6 +47,19 @@ Analyze failure cases
 
 ---
 
+## Current Progress
+
+- [x] Sample 500 reasoning questions from CharXiv
+- [x] Generate step-by-step reasoning using Qwen2.5-VL-3B
+- [x] Clean and parse model outputs into discrete reasoning steps
+- [x] Map dataset indices to original chart image IDs
+- [x] Download chart images locally
+- [x] Build and test automated PRM-judge pipeline using Meta API (`muse-spark-1.1`)
+- [x] Evaluate all 1,287 reasoning rollouts (~4,947 steps)
+- [ ] Analyze failure cases and compare process-level scores with final-answer correctness
+
+---
+
 ## Development Workflow & Environment
 
 - **Environment Management**: We use `uv` for managing dependencies. **Do not** edit `pyproject.toml` or `uv.lock` directly. Always use `uv add <package>` or `uv remove <package>`.
@@ -77,9 +90,11 @@ project/
 │       └── utils.py            # Helper functions (e.g., logging, saving/loading JSON lines)
 │
 ├── scripts/                    # (.py) Entry points for running the pipeline in bulk
-│   ├── 01_generate_reasoning.py   
-│   ├── 02_score_steps.py          
-│   └── 03_evaluate_pipeline.py    
+│   ├── sample_questions.py     # Samples 500 reasoning questions
+│   ├── clean_dataset.py        # Cleans dataset and extracts reasoning steps
+│   ├── fix_jsonl_ids.py        # Maps dataset indices to CharXiv figure_ids
+│   ├── download_images.py      # Downloads the necessary charts from HuggingFace
+│   └── evaluate_rollouts_meta.py # Batched PRM Judge script using Meta API
 │
 ├── pyproject.toml              # Managed by uv for dependencies
 ├── uv.lock                     # Managed by uv
