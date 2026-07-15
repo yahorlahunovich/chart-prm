@@ -81,4 +81,10 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **Why**: The step-by-step script consumed ~1,600 tokens per step (mostly from the model re-generating internal "reasoning tokens" about the image for every step). By sending the image and all steps simultaneously, we reduce the API calls from 7,600 down to 1,287, saving ~70-80% on API costs and bringing the entire run comfortably below the user's remaining budget.
 - **Result**: Successfully evaluated the entire dataset of 1,287 rollouts (representing ~4,947 steps). The final pass rate was ~41.0% (Score 1) and fail rate was ~59.0% (Score 0). The data was saved to `experiments/001_500_reasoning/data/evaluated_rollouts.jsonl` and pushed to GitHub.
 
+## Post-Evaluation Cleanup
+- **What**: Cleaned up the codebase to prepare for the next phases.
+    - Updated `README.md` to specify that `muse-spark-1.1` from the Meta API was used as the PRM Judge.
+    - Deleted deprecated/test scripts (`evaluate_steps_meta.py`, `test_muse_api.py`, `test_muse_image.py`, `test_evaluate_steps_meta.py`) to reduce clutter.
+    - Added comprehensive module-level docstrings to every `.py` file in `scripts/` and `tests/` detailing their purpose.
+
 
