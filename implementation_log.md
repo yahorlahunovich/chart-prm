@@ -87,4 +87,6 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
     - Deleted deprecated/test scripts (`evaluate_steps_meta.py`, `test_muse_api.py`, `test_muse_image.py`, `test_evaluate_steps_meta.py`) to reduce clutter.
     - Added comprehensive module-level docstrings to every `.py` file in `scripts/` and `tests/` detailing their purpose.
 
-
+## Analysis Notebook
+- **What**: Created `notebooks/01_evaluate_rollouts.ipynb` to analyze the PRM evaluations. Loaded the data into a pandas dataframe and set up a publication-ready scientific plotting theme using `seaborn` with a colorblind-friendly palette. Proposing 10 ways of analyzing the PRM performance.
+- **Why**: To understand model reasoning patterns, calculate PRM accuracy, identify the most common steps of failure, and produce high-quality charts.
