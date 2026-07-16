@@ -56,7 +56,8 @@ Analyze failure cases
 - [x] Download chart images locally
 - [x] Build and test automated PRM-judge pipeline using Meta API (`muse-spark-1.1`)
 - [x] Evaluate all 1,287 reasoning rollouts (~4,947 steps)
-- [ ] Analyze failure cases and compare process-level scores with final-answer correctness
+- [x] Analyze failure cases and compare process-level scores with final-answer correctness
+- [x] Build visualization plots to analyze PRM performance, metadata correlations, and error cascades
 
 ---
 
