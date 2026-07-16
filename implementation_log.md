@@ -90,3 +90,8 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Analysis Notebook
 - **What**: Created `notebooks/evaluate_rollouts.ipynb` to analyze the PRM evaluations. Loaded the data into a pandas dataframe and set up a publication-ready scientific plotting theme using `seaborn` with a colorblind-friendly palette. Proposing 10 ways of analyzing the PRM performance.
 - **Why**: To understand model reasoning patterns, calculate PRM accuracy, identify the most common steps of failure, and produce high-quality charts.
+
+## DPO Sample Preparation Script
+- **What**: Created `scripts/prepare_dpo.py` to process the evaluated rollouts into a DPO dataset. For each chart, it finds a "Chosen Path" (all steps passed and final answer matches ground truth) and a "Rejected Path" (at least one step failed).
+- **Why**: To build a preference dataset (Direct Preference Optimization) for fine-tuning our reasoning models based on the PRM judge scores.
+
