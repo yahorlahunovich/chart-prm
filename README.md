@@ -75,10 +75,10 @@ Analyze failure cases
 project/
 ├── data/                       # Store raw and processed CharXiv data
 ├── notebooks/                  # (.ipynb) For exploration, visualization, and rapid prototyping
-│   ├── 01_data_exploration.ipynb    
-│   ├── 02_model_inference.ipynb     
-│   ├── 03_prm_judge_testing.ipynb   
-│   └── 04_failure_analysis.ipynb    
+│   ├── data_exploration.ipynb    
+│   ├── model_inference.ipynb     
+│   ├── prm_judge_testing.ipynb   
+│   └── failure_analysis.ipynb    
 │
 ├── src/                        # (.py) Reusable, clean, and modular Python package
 │   └── chart_prm/              
