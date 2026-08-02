@@ -95,3 +95,10 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Created `scripts/prepare_dpo.py` to process the evaluated rollouts into a DPO dataset. For each chart, it finds a "Chosen Path" (all steps passed and final answer matches ground truth) and a "Rejected Path" (at least one step failed).
 - **Why**: To build a preference dataset (Direct Preference Optimization) for fine-tuning our reasoning models based on the PRM judge scores.
 
+## Step-DPO Planning & Formatting
+- **What**: Drafted an execution plan for a small-scale Step-DPO experiment (using Kaggle 2xT4). Wrote `scripts/format_step_dpo.py` to automatically find the exact divergent reasoning step between a chosen path and a rejected path.
+- **Why**: Standard DPO evaluates the entire sequence. Step-DPO provides dense reward signals at the exact step where the model failed, giving maximum learning signal from our small 187-pair dataset.
+
+## Step-DPO Training & Evaluation Notebooks
+- **What**: Created `notebooks/train_dpo.ipynb` for distributed QLoRA training on 2xT4 GPUs using `trl.DPOTrainer` and `accelerate`. Created `notebooks/evaluate_dpo_model.ipynb` to run a direct side-by-side comparison of the base `Qwen2.5-VL` model versus the Step-DPO tuned model (via `disable_adapter()`) on holdout reasoning questions.
+- **Why**: To execute the Step-DPO plan on Kaggle and empirically verify if the 187 pairs successfully taught the model to correct its reasoning structure without catastrophic forgetting.

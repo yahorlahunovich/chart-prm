@@ -12,7 +12,7 @@ We need to make sure that model generates real reasoning steps and formats final
 5. Evaluation
 6. Analysis of results. Metrics.
 
-7. Optional: fine-tuning
+7. [x] Optional: fine-tuning (Proceeding with Step-DPO on Kaggle using QLoRA)
 
 
 - Reproducibility: declare dependencies, not only notebooks
