@@ -102,3 +102,8 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Step-DPO Training & Evaluation Notebooks
 - **What**: Created `notebooks/train_dpo.ipynb` for distributed QLoRA training on 2xT4 GPUs using `trl.DPOTrainer` and `accelerate`. Created `notebooks/evaluate_dpo_model.ipynb` to run a direct side-by-side comparison of the base `Qwen2.5-VL` model versus the Step-DPO tuned model (via `disable_adapter()`) on holdout reasoning questions.
 - **Why**: To execute the Step-DPO plan on Kaggle and empirically verify if the 187 pairs successfully taught the model to correct its reasoning structure without catastrophic forgetting.
+
+## Step-DPO Kaggle Image Decoding & Git Track Fix
+- **What**: Removed `images/*.jpg` from `data/CharXiv/.gitignore`, tracked and force-added all chart images to Git, and updated `notebooks/train_dpo.ipynb` with image existence checks, clean PIL RGB re-saving (`format="JPEG"`, `quality=95`), and an automatic fallback trigger to run `scripts/download_images.py` if images are missing.
+- **Why**: When running `train_dpo.ipynb` on Kaggle via `git clone`, `data/CharXiv/images/*.jpg` was missing because it was ignored in `data/CharXiv/.gitignore`. `Image.open` failed silently under `except: pass`, passing invalid image paths to `DPOTrainer`'s `dataset.map()`. Hugging Face `transformers` passed those invalid paths/buffers to `torchvision.io.image.decode_image`, causing `RuntimeError: Unsupported image file. Only jpeg, png, webp and gif are currently supported.` Tracking images in Git and adding auto-download / clean PIL RGB re-encoding completely eliminates this runtime error.
+

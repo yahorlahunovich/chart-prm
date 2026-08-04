@@ -163,7 +163,6 @@ cython_debug/
 temp/*
 results/*
 slurm/*
-images/*.jpg
 images/*.zip
 internal_generate.sh
 internal_evaluate.sh
