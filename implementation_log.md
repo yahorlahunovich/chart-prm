@@ -107,3 +107,8 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Removed `images/*.jpg` from `data/CharXiv/.gitignore`, tracked and force-added all chart images to Git, and updated `notebooks/train_dpo.ipynb` with image existence checks, clean PIL RGB re-saving (`format="JPEG"`, `quality=95`), and an automatic fallback trigger to run `scripts/download_images.py` if images are missing.
 - **Why**: When running `train_dpo.ipynb` on Kaggle via `git clone`, `data/CharXiv/images/*.jpg` was missing because it was ignored in `data/CharXiv/.gitignore`. `Image.open` failed silently under `except: pass`, passing invalid image paths to `DPOTrainer`'s `dataset.map()`. Hugging Face `transformers` passed those invalid paths/buffers to `torchvision.io.image.decode_image`, causing `RuntimeError: Unsupported image file. Only jpeg, png, webp and gif are currently supported.` Tracking images in Git and adding auto-download / clean PIL RGB re-encoding completely eliminates this runtime error.
 
+## SFT Training Notebook Setup
+- **What**: Created `notebooks/train_sft.ipynb` to run Supervised Fine-Tuning (SFT) on Qwen2.5-VL-3B using `trl.SFTTrainer` and QLoRA (4-bit NF4) on Kaggle 2xT4 / single T4 GPUs.
+- **Why**: SFT serves as our baseline supervised alignment model. It filters `evaluated_rollouts.jsonl` and `001_500_reasoning_cleaned.jsonl` for positive rollouts where all reasoning steps scored `1` and final answers matched ground truth. Training on these verified correct trajectories teaches the model explicit step-by-step formatting (`Step 1: ...`, `Final Answer: ...`), solidifies chart reading logic, and reduces hallucinations, providing the exact SFT benchmark needed for our Base vs SFT vs DPO vs KTO comparison.
+
+
