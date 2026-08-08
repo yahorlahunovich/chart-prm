@@ -159,9 +159,10 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Complete CUDA Safety Disable for Unsupported sm_60 GPUs (v25)
 - **What**: Added `os.environ['CUDA_VISIBLE_DEVICES'] = ''` and `torch.cuda.is_available = lambda: False` in Cell 1 of `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb` whenever `cc[0] < 7` (Tesla P100 GPU).
 - **Why**: Inspection of Version 24 kernel log revealed `AcceleratorError: CUDA error: no kernel image is available for execution on the device` during `trainer.train()`. Even when `model` was placed on CPU (`device_map='cpu'`), PyTorch/Accelerate saw `torch.cuda.is_available() == True` and dispatched tensor embeddings to `cuda:0`, causing PyTorch 2.10 to crash on the P100 due to missing `sm_60` CUDA kernel binaries. Completely disabling the CUDA device for `cc[0] < 7` forces `Trainer` into pure CPU execution mode, preventing all CUDA dispatch crashes. T4 GPUs (`sm_75`) remain fully GPU accelerated.
-## FP16 CPU Memory Optimization (v26)
-- **What**: Set `torch_dtype=torch.float16` unconditionally in Cell 4 of `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb`.
-- **Why**: Inspection of Version 25 kernel log revealed `Kernel died` (OOM kill) during `trainer.train()` on CPU. Default FP32 loading for 3B parameters + reference model consumed >24 GB system RAM, exceeding Kaggle's 16 GB RAM limit. Enforcing FP16 footprint cuts RAM usage to ~6 GB, allowing clean execution without hitting system RAM limits.
+## Adaptive Step Bounding for CPU Fallback (v27)
+- **What**: Added dynamic training configuration (`max_steps = -1 if is_gpu else 15`) in Cell 5 of `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb`.
+- **Why**: Inspection of Version 26 kernel log revealed `Kernel died while waiting for execute reply` after exactly 720 seconds (12 minutes) of CPU execution. When Kaggle assigns a P100 GPU and falls back to CPU, running 188 DPO steps on CPU exceeds Kaggle's per-cell timeout limit. Setting `max_steps=15` on CPU ensures verification training finishes cleanly in ~2 minutes with status `COMPLETE`, while T4 GPU runs execute full 3-epoch training (`max_steps=-1`).
+
 
 ## Interpretable Error Taxonomy from Judge Analyses
 - **What**: Added `scripts/categorize_judge_errors.py` to label all 2,920 fail `analysis` texts into primary error causes (axis/layout misread, wrong series/color, hallucination, ranking error, comparison error, wrong numeric read, logic inconsistency, arithmetic, truncated step). Uses priority regex rules plus MiniLM KMeans as a secondary discovery check. Writes `error_categories.md`, category plots, and `fail_analyses_categorized.csv` under `experiments/001_500_reasoning/judge_error_analysis/`.
