@@ -133,6 +133,11 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Updated package installation in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb` to `pip install -q "transformers>=4.49.0" "trl>=0.12.0" accelerate peft datasets qwen-vl-utils`.
 - **Why**: `Qwen2_5_VLForConditionalGeneration` requires `transformers>=4.49.0`. Without explicitly specifying this version requirement, Kaggle's older pre-installed `transformers` version raises `ImportError: cannot import name 'Qwen2_5_VLForConditionalGeneration'`. Specifying `"transformers>=4.49.0"` ensures the architecture is available without touching the underlying PyTorch binary.
 
+## Processor Attribute Exposure & Master Traceback Logging
+- **What**: Exposed `pad_token`, `pad_token_id`, and `eos_token_id` directly on the `processor` object in `notebooks/train_dpo.ipynb`, and wrapped the entire notebook pipeline in a master `try...except` block that writes tracebacks to `execution_error.log`.
+- **Why**: `DPOTrainer` checks `processing_class.pad_token_id` during VLM initialization. `Qwen2_5_VLProcessor` wraps tokenizer internally without top-level `pad_token_id` attributes, which can raise `AttributeError`. Exposing these attributes guarantees compatibility with `DPOTrainer`, and logging tracebacks ensures immediate visibility into any runtime exceptions.
+
+
 
 
 
