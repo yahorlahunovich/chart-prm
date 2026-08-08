@@ -109,6 +109,13 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 
 ## SFT Training Notebook Setup
 - **What**: Created `notebooks/train_sft.ipynb` to run Supervised Fine-Tuning (SFT) on Qwen2.5-VL-3B using `trl.SFTTrainer` and QLoRA (4-bit NF4) on Kaggle 2xT4 / single T4 GPUs.
-- **Why**: SFT serves as our baseline supervised alignment model. It filters `evaluated_rollouts.jsonl` and `001_500_reasoning_cleaned.jsonl` for positive rollouts where all reasoning steps scored `1` and final answers matched ground truth. Training on these verified correct trajectories teaches the model explicit step-by-step formatting (`Step 1: ...`, `Final Answer: ...`), solidifies chart reading logic, and reduces hallucinations, providing the exact SFT benchmark needed for our Base vs SFT vs DPO vs KTO comparison.
+- **Why**: SFT serves as our baseline supervised alignment model. It filters `evaluated_rollouts.jsonl` and `001_500_reasoning_cleaned.jsonl` for positive rollouts where all reasoning steps scored `1` and final answers matched ground truth. Training on these verified correct trajectories teaches the model explicit step-by-step formatting (`Step 1: ...`, `Step 2: ...`, `Final Answer: ...`), solidifies chart reading logic, and reduces hallucinations, providing the exact SFT benchmark needed for our Base vs SFT vs DPO vs KTO comparison.
+
+## Step-DPO Kaggle Timeout Fix & Pipeline Verification
+- **What**: Identified and resolved two critical issues in the Step-DPO Kaggle training pipeline:
+  1. Updated `scripts/format_step_dpo.py` to include the `'question'` text in `step_dpo_pairs.jsonl` and fixed relative path resolution so paths are resolved from the repository root. Re-ran script to generate 188 verified pairs with full question prompts.
+  2. Updated `notebooks/train_dpo.ipynb` to format VLM preference data with an explicit `images` column of PIL Image objects, added explicit `max_length=2048` and `max_prompt_length=1024` to `DPOConfig` (preventing default 512-token truncation that stripped text tokens), enabled `fp16=True` suitable for T4 GPUs, and reduced logging frequency to prevent cell output buffer lockup on Kaggle.
+- **Why**: The missing question string caused the prompt to fall back to a generic single line, and default token sequence truncation combined with unparsed VLM image inputs caused training to stall/timeout on Kaggle. These fixes ensure deterministic, efficient training on Kaggle GPU hardware.
+
 
 

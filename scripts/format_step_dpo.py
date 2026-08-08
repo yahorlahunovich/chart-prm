@@ -3,10 +3,11 @@ from pathlib import Path
 import random
 
 def main():
-    cleaned_path = Path('../experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl')
-    evals_path = Path('../experiments/001_500_reasoning/data/evaluated_rollouts.jsonl')
-    output_path = Path('../experiments/001_500_reasoning/data/step_dpo_pairs.jsonl')
-    images_dir = Path('../data/CharXiv/images')
+    base_dir = Path(__file__).resolve().parent.parent
+    cleaned_path = base_dir / 'experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl'
+    evals_path = base_dir / 'experiments/001_500_reasoning/data/evaluated_rollouts.jsonl'
+    output_path = base_dir / 'experiments/001_500_reasoning/data/step_dpo_pairs.jsonl'
+    images_dir = base_dir / 'data/CharXiv/images'
     
     # Load cleaned data for ground truth and question text
     rollout_meta = {}
@@ -100,6 +101,7 @@ def main():
             pairs.append({
                 'question_id': qid,
                 'image_path': f'data/CharXiv/images/{qid}.jpg',
+                'question': c_meta.get('question', ''),
                 'prefix': prefix,
                 'chosen': chosen_step,
                 'rejected': rejected_step
