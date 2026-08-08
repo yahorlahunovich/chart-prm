@@ -137,20 +137,17 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Exposed `pad_token`, `pad_token_id`, and `eos_token_id` directly on the `processor` object in `notebooks/train_dpo.ipynb`, and wrapped the entire notebook pipeline in a master `try...except` block that writes tracebacks to `execution_error.log`.
 - **Why**: `DPOTrainer` checks `processing_class.pad_token_id` during VLM initialization. `Qwen2_5_VLProcessor` wraps tokenizer internally without top-level `pad_token_id` attributes, which can raise `AttributeError`. Exposing these attributes guarantees compatibility with `DPOTrainer`, and logging tracebacks ensures immediate visibility into any runtime exceptions.
 
-## PyTorch Dependency Isolation (Dynamic Torch Version Pinning)
-- **What**: Updated package installation in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb` to `pip install -q "transformers>=4.49.0" "trl>=0.12.0" qwen-vl-utils accelerate peft "torch==$(python3 -c 'import torch; print(torch.__version__)')"`.
-- **Why**: Standard `pip install` upgraded `torch` to 2.6+, while `--no-deps` missed required sub-dependencies for `qwen-vl-utils`. Dynamically pinning `torch` to the exact environment version forces `pip` solver to resolve all sub-dependencies while keeping Kaggle's CUDA binary intact across P100 and T4 hardware.
-
-
+## Complete Notebook Rewrite for Kaggle Reliability (v19)
+- **What**: Rewrote `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb` with:
+  1. **Multi-cell structure** (7 cells for DPO, 6 for SFT) — each logical step in its own cell so Kaggle shows exactly which cell fails with the full traceback.
+  2. **Robust torch pinning** — reads `torch.__version__`, strips `+cu*` suffix, passes as `torch==X.Y.Z` constraint. This lets pip resolve all transitive dependencies while preventing torch upgrades.
+  3. **Version diagnostics** — prints PyTorch, CUDA, GPU name, VRAM, and package versions immediately after install for fast debugging.
+  4. **All deps explicitly listed** — `transformers>=4.49.0`, `trl>=0.12.0`, `peft>=0.10.0`, `accelerate>=0.30.0`, `datasets`, `qwen-vl-utils`. TRL is NOT pre-installed on Kaggle and must be installed explicitly.
+- **Why**: Previous single-cell notebooks masked the actual error location. Versions 14-17 each failed for different reasons (bitsandbytes CUDA crash, missing transformers, pip torch upgrade, missing sub-deps). The multi-cell approach isolates failures, and the comprehensive dependency list with torch pinning prevents all known installation failure modes.
 
 ## Judge Fail-Analysis Embedding Notebook (Kaggle/Colab)
 - **What**: Added `notebooks/analyze_judge_errors.ipynb` for semantic analysis of PRM-judge fail texts (`evaluations[].analysis` where `score == 0`). The notebook clones the repo on Kaggle/Colab, installs only lightweight packages (`sentence-transformers`, `umap-learn`, `hdbscan`), embeds fails with `all-MiniLM-L6-v2`, projects with UMAP, clusters with HDBSCAN, prints cluster exemplars, and supports nearest-neighbor browsing. Outputs go to `experiments/001_500_reasoning/judge_error_analysis/`. Also added `scripts/kaggle_judge_errors/` (`kernel-metadata.json` + notebook copy) so the job can be launched from the local terminal via `kaggle kernels push` (CPU + internet; no local CUDA install).
-- **Why**: Local machines without a GPU should not download CUDA/torch stacks just for ~3k short judge sentences. Running remotely reuses Kaggle/Colab’s existing PyTorch, keeps the laptop light, and still yields a topology map of recurring chart-reasoning error modes. The Kaggle API path lets us push/run/poll/download artifacts without opening the web UI.
-
-
-
-
-
+- **Why**: Local machines without a GPU should not download CUDA/torch stacks just for ~3k short judge sentences. Running remotely reuses Kaggle/Colab's existing PyTorch, keeps the laptop light, and still yields a topology map of recurring chart-reasoning error modes.
 
 
 
