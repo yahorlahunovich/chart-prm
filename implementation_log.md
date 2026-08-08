@@ -129,6 +129,11 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Removed `-U` (upgrade) flag from `pip install` commands in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb`.
 - **Why**: Running `pip install -U` forced `pip` to upgrade pre-installed PyTorch 2.4/2.5 to PyTorch 2.6+, which dropped CUDA capability `sm_60` (Tesla P100 GPU) support and triggered `Tesla P100-PCIE-16GB with CUDA capability sm_60 is not compatible with the current PyTorch installation`. Preserving the pre-installed Kaggle PyTorch maintains full hardware compatibility across both P100 and T4 GPUs.
 
+## Explicit Transformers Requirement for Qwen2.5-VL
+- **What**: Updated package installation in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb` to `pip install -q "transformers>=4.49.0" "trl>=0.12.0" accelerate peft datasets qwen-vl-utils`.
+- **Why**: `Qwen2_5_VLForConditionalGeneration` requires `transformers>=4.49.0`. Without explicitly specifying this version requirement, Kaggle's older pre-installed `transformers` version raises `ImportError: cannot import name 'Qwen2_5_VLForConditionalGeneration'`. Specifying `"transformers>=4.49.0"` ensures the architecture is available without touching the underlying PyTorch binary.
+
+
 
 
 
