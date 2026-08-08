@@ -121,6 +121,11 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Replaced 4-bit `BitsAndBytesConfig` quantization with native 16-bit half precision (`torch_dtype=torch.float16`) in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb`.
 - **Why**: Kaggle GPU environment hit `Error named symbol not found at line 74 in file /src/csrc/ops.cu` when `bitsandbytes` dynamic CUDA binary tried to initialize during weight loading. Since Qwen2.5-VL-3B consumes only ~6.0 GB VRAM in FP16 and peak training VRAM is ~8.5 GB (well below Kaggle T4's 16.0 GB VRAM limit), 4-bit quantization is completely unnecessary. Native FP16 eliminates `bitsandbytes` dependencies, resolves the CUDA symbol crash 100%, and improves training speed and accuracy.
 
+## DPOConfig API Cleanup & Kaggle T4 Accelerator Specification
+- **What**: Removed deprecated `max_prompt_length` keyword argument from `DPOConfig` in `notebooks/train_dpo.ipynb`, leaving `max_length=2048`. Added `"accelerator": "gpuT4x2"` to `kernel-metadata.json` for Kaggle API push.
+- **Why**: Modern TRL versions removed `max_prompt_length` from `DPOConfig`, triggering a `TypeError`. Specifying `gpuT4x2` explicitly forces Kaggle to provision T4 GPUs rather than legacy P100 GPUs (which lack PyTorch CUDA capability support).
+
+
 
 
 
