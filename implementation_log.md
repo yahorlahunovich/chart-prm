@@ -137,6 +137,15 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Exposed `pad_token`, `pad_token_id`, and `eos_token_id` directly on the `processor` object in `notebooks/train_dpo.ipynb`, and wrapped the entire notebook pipeline in a master `try...except` block that writes tracebacks to `execution_error.log`.
 - **Why**: `DPOTrainer` checks `processing_class.pad_token_id` during VLM initialization. `Qwen2_5_VLProcessor` wraps tokenizer internally without top-level `pad_token_id` attributes, which can raise `AttributeError`. Exposing these attributes guarantees compatibility with `DPOTrainer`, and logging tracebacks ensures immediate visibility into any runtime exceptions.
 
+## PyTorch Dependency Isolation (--no-deps Installation)
+- **What**: Updated package installation in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb` to `pip install -q --no-deps "transformers>=4.49.0" "trl>=0.12.0" qwen-vl-utils`.
+- **Why**: Standard `pip install` resolves dependencies by checking `torch` requirements, which triggered `pip` to update `torch` to 2.6+ in headless Kaggle worker containers. Using `--no-deps` installs only the updated `transformers` and `trl` packages while leaving Kaggle's CUDA 12.1 `torch` binary completely untouched, ensuring 100% compatibility across both P100 and T4 GPU nodes.
+
+
+## Judge Fail-Analysis Embedding Notebook (Kaggle/Colab)
+- **What**: Added `notebooks/analyze_judge_errors.ipynb` for semantic analysis of PRM-judge fail texts (`evaluations[].analysis` where `score == 0`). The notebook clones the repo on Kaggle/Colab, installs only lightweight packages (`sentence-transformers`, `umap-learn`, `hdbscan`), embeds fails with `all-MiniLM-L6-v2`, projects with UMAP, clusters with HDBSCAN, prints cluster exemplars, and supports nearest-neighbor browsing. Outputs go to `experiments/001_500_reasoning/judge_error_analysis/`.
+- **Why**: Local machines without a GPU should not download CUDA/torch stacks just for ~3k short judge sentences. Running remotely reuses Kaggle/Colab’s existing PyTorch, keeps the laptop light, and still yields a topology map of recurring chart-reasoning error modes.
+
 
 
 
