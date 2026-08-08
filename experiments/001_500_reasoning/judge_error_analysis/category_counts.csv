@@ -1,0 +1,11 @@
+error_category,count
+Incomplete / truncated reasoning,33
+Hallucinated entity / label not on chart,445
+Arithmetic / calculation mistake,38
+Axis / layout / chart-structure misread,702
+Wrong ranking / extremum (highest/lowest/second),319
+Wrong series / color / legend identity,568
+Bad comparison / threshold logic,179
+Wrong numeric value read from chart,181
+Logic inconsistency / false conclusion,240
+Other / unspecified,215

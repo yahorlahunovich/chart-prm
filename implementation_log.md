@@ -153,3 +153,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 
 
 
+
+## Interpretable Error Taxonomy from Judge Analyses
+- **What**: Added `scripts/categorize_judge_errors.py` to label all 2,920 fail `analysis` texts into primary error causes (axis/layout misread, wrong series/color, hallucination, ranking error, comparison error, wrong numeric read, logic inconsistency, arithmetic, truncated step). Uses priority regex rules plus MiniLM KMeans as a secondary discovery check. Writes `error_categories.md`, category plots, and `fail_analyses_categorized.csv` under `experiments/001_500_reasoning/judge_error_analysis/`.
+- **Why**: Default HDBSCAN (`min_cluster_size=25`) left ~97% of points as noise and only surfaced 2 tiny clusters, which is useless for reporting main failure modes. An explicit taxonomy answers the research question directly: what categories/causes dominate chart-reasoning failures according to the PRM judge.
