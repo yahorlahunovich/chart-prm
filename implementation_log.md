@@ -125,6 +125,11 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Removed deprecated `max_prompt_length` keyword argument from `DPOConfig` in `notebooks/train_dpo.ipynb`, leaving `max_length=2048`. Added `"accelerator": "gpuT4x2"` to `kernel-metadata.json` for Kaggle API push.
 - **Why**: Modern TRL versions removed `max_prompt_length` from `DPOConfig`, triggering a `TypeError`. Specifying `gpuT4x2` explicitly forces Kaggle to provision T4 GPUs rather than legacy P100 GPUs (which lack PyTorch CUDA capability support).
 
+## PyTorch Binary Preservation (Remove pip -U Flag)
+- **What**: Removed `-U` (upgrade) flag from `pip install` commands in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb`.
+- **Why**: Running `pip install -U` forced `pip` to upgrade pre-installed PyTorch 2.4/2.5 to PyTorch 2.6+, which dropped CUDA capability `sm_60` (Tesla P100 GPU) support and triggered `Tesla P100-PCIE-16GB with CUDA capability sm_60 is not compatible with the current PyTorch installation`. Preserving the pre-installed Kaggle PyTorch maintains full hardware compatibility across both P100 and T4 GPUs.
+
+
 
 
 
