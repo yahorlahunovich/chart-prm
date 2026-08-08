@@ -1,0 +1,14 @@
+{
+  "id": "egorlagunovich/prm-judge-error-analysis",
+  "title": "PRM Judge Error Analysis (UMAP+HDBSCAN)",
+  "code_file": "analyze_judge_errors.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

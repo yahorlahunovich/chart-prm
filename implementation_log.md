@@ -144,8 +144,8 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 
 
 ## Judge Fail-Analysis Embedding Notebook (Kaggle/Colab)
-- **What**: Added `notebooks/analyze_judge_errors.ipynb` for semantic analysis of PRM-judge fail texts (`evaluations[].analysis` where `score == 0`). The notebook clones the repo on Kaggle/Colab, installs only lightweight packages (`sentence-transformers`, `umap-learn`, `hdbscan`), embeds fails with `all-MiniLM-L6-v2`, projects with UMAP, clusters with HDBSCAN, prints cluster exemplars, and supports nearest-neighbor browsing. Outputs go to `experiments/001_500_reasoning/judge_error_analysis/`.
-- **Why**: Local machines without a GPU should not download CUDA/torch stacks just for ~3k short judge sentences. Running remotely reuses Kaggle/Colab’s existing PyTorch, keeps the laptop light, and still yields a topology map of recurring chart-reasoning error modes.
+- **What**: Added `notebooks/analyze_judge_errors.ipynb` for semantic analysis of PRM-judge fail texts (`evaluations[].analysis` where `score == 0`). The notebook clones the repo on Kaggle/Colab, installs only lightweight packages (`sentence-transformers`, `umap-learn`, `hdbscan`), embeds fails with `all-MiniLM-L6-v2`, projects with UMAP, clusters with HDBSCAN, prints cluster exemplars, and supports nearest-neighbor browsing. Outputs go to `experiments/001_500_reasoning/judge_error_analysis/`. Also added `scripts/kaggle_judge_errors/` (`kernel-metadata.json` + notebook copy) so the job can be launched from the local terminal via `kaggle kernels push` (CPU + internet; no local CUDA install).
+- **Why**: Local machines without a GPU should not download CUDA/torch stacks just for ~3k short judge sentences. Running remotely reuses Kaggle/Colab’s existing PyTorch, keeps the laptop light, and still yields a topology map of recurring chart-reasoning error modes. The Kaggle API path lets us push/run/poll/download artifacts without opening the web UI.
 
 
 
