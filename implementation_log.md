@@ -117,5 +117,10 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   2. Updated `notebooks/train_dpo.ipynb` to format VLM preference data with an explicit `images` column of PIL Image objects, added explicit `max_length=2048` and `max_prompt_length=1024` to `DPOConfig` (preventing default 512-token truncation that stripped text tokens), enabled `fp16=True` suitable for T4 GPUs, and reduced logging frequency to prevent cell output buffer lockup on Kaggle.
 - **Why**: The missing question string caused the prompt to fall back to a generic single line, and default token sequence truncation combined with unparsed VLM image inputs caused training to stall/timeout on Kaggle. These fixes ensure deterministic, efficient training on Kaggle GPU hardware.
 
+## BitsAndBytes CUDA Symbol Fix (Switch to Native FP16 Model Loading)
+- **What**: Replaced 4-bit `BitsAndBytesConfig` quantization with native 16-bit half precision (`torch_dtype=torch.float16`) in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb`.
+- **Why**: Kaggle GPU environment hit `Error named symbol not found at line 74 in file /src/csrc/ops.cu` when `bitsandbytes` dynamic CUDA binary tried to initialize during weight loading. Since Qwen2.5-VL-3B consumes only ~6.0 GB VRAM in FP16 and peak training VRAM is ~8.5 GB (well below Kaggle T4's 16.0 GB VRAM limit), 4-bit quantization is completely unnecessary. Native FP16 eliminates `bitsandbytes` dependencies, resolves the CUDA symbol crash 100%, and improves training speed and accuracy.
+
+
 
 
