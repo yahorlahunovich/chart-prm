@@ -153,9 +153,9 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Updated `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb` to clone the project repository into `/tmp/prm_project` instead of `/kaggle/working`. Updated `scripts/download_images.py` to use `User-Agent` and `Authorization` headers for HuggingFace CDN requests. Saved model adapters to `/kaggle/working/qwen_vl_step_dpo_adapter`.
 - **Why**: Cloning git repositories into `/kaggle/working` caused Kaggle API `kaggle kernels output` to zip and download hundreds of megabytes of git files over CLI, timing out local inspection commands. Isolating the repo under `/tmp/prm_project` keeps `/kaggle/working` clean so kernel outputs contain only adapter weights and logs. Custom headers on HuggingFace image requests prevent CDN 403 Forbidden download blocks.
 
-
-
-
+## PEFT torchao Incompatibility Removal (v24)
+- **What**: Added `pip uninstall -y torchao` to Cell 2 in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb`.
+- **Why**: Inspection of Version 23 kernel log revealed `ImportError: Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported` during `DPOTrainer` initialization (`peft` LoRA dispatcher). Kaggle's pre-installed `torchao 0.10.0` triggered an explicit version assertion error inside PEFT's tuner utilities. Uninstalling `torchao` forces PEFT to skip the `torchao` dispatcher gracefully and resolves trainer initialization completely.
 
 ## Interpretable Error Taxonomy from Judge Analyses
 - **What**: Added `scripts/categorize_judge_errors.py` to label all 2,920 fail `analysis` texts into primary error causes (axis/layout misread, wrong series/color, hallucination, ranking error, comparison error, wrong numeric read, logic inconsistency, arithmetic, truncated step). Uses priority regex rules plus MiniLM KMeans as a secondary discovery check. Writes `error_categories.md`, category plots, and `fail_analyses_categorized.csv` under `experiments/001_500_reasoning/judge_error_analysis/`.
