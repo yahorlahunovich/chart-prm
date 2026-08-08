@@ -137,9 +137,10 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Exposed `pad_token`, `pad_token_id`, and `eos_token_id` directly on the `processor` object in `notebooks/train_dpo.ipynb`, and wrapped the entire notebook pipeline in a master `try...except` block that writes tracebacks to `execution_error.log`.
 - **Why**: `DPOTrainer` checks `processing_class.pad_token_id` during VLM initialization. `Qwen2_5_VLProcessor` wraps tokenizer internally without top-level `pad_token_id` attributes, which can raise `AttributeError`. Exposing these attributes guarantees compatibility with `DPOTrainer`, and logging tracebacks ensures immediate visibility into any runtime exceptions.
 
-## PyTorch Dependency Isolation (--no-deps Installation)
-- **What**: Updated package installation in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb` to `pip install -q --no-deps "transformers>=4.49.0" "trl>=0.12.0" qwen-vl-utils`.
-- **Why**: Standard `pip install` resolves dependencies by checking `torch` requirements, which triggered `pip` to update `torch` to 2.6+ in headless Kaggle worker containers. Using `--no-deps` installs only the updated `transformers` and `trl` packages while leaving Kaggle's CUDA 12.1 `torch` binary completely untouched, ensuring 100% compatibility across both P100 and T4 GPU nodes.
+## PyTorch Dependency Isolation (Dynamic Torch Version Pinning)
+- **What**: Updated package installation in `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb` to `pip install -q "transformers>=4.49.0" "trl>=0.12.0" qwen-vl-utils accelerate peft "torch==$(python3 -c 'import torch; print(torch.__version__)')"`.
+- **Why**: Standard `pip install` upgraded `torch` to 2.6+, while `--no-deps` missed required sub-dependencies for `qwen-vl-utils`. Dynamically pinning `torch` to the exact environment version forces `pip` solver to resolve all sub-dependencies while keeping Kaggle's CUDA binary intact across P100 and T4 hardware.
+
 
 
 ## Judge Fail-Analysis Embedding Notebook (Kaggle/Colab)
