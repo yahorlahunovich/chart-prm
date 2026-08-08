@@ -13,6 +13,9 @@ import tempfile
 
 def main():
     ids_path = "data/splits/main_reasoning_ids.json"
+    if not os.path.exists(ids_path):
+        ids_path = os.path.join(os.path.dirname(__file__), "../data/splits/main_reasoning_ids.json")
+    
     with open(ids_path, "r") as f:
         target_ids = set(json.load(f))
     
@@ -25,20 +28,30 @@ def main():
     with tempfile.TemporaryDirectory() as tmpdir:
         zip_path = os.path.join(tmpdir, "images.zip")
         print(f"Downloading images.zip from {url}...")
-        urllib.request.urlretrieve(url, zip_path)
+        
+        headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64)"}
+        hf_token = os.environ.get("HF_TOKEN")
+        if hf_token:
+            headers["Authorization"] = f"Bearer {hf_token}"
+            
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req) as resp, open(zip_path, "wb") as out_file:
+            while True:
+                chunk = resp.read(1024 * 1024)
+                if not chunk:
+                    break
+                out_file.write(chunk)
+                
         print("Download complete. Extracting required images...")
         
         extracted_count = 0
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            # List all files in the zip
             for file_info in zip_ref.infolist():
                 filename = file_info.filename
-                # Filename is typically like "images/123.png" or "123.jpg"
                 basename = os.path.basename(filename)
                 name, ext = os.path.splitext(basename)
                 
                 if name in target_ids:
-                    # Extract this file to output_dir
                     file_info.filename = basename # remove folder structure
                     zip_ref.extract(file_info, output_dir)
                     extracted_count += 1

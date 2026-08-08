@@ -149,7 +149,10 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **Why**: Diagnostic kernel (v21) revealed Kaggle's environment has PyTorch `2.10.0+cu128`, which dropped support for CUDA compute capability `< 7.0` (Tesla P100 `sm_60`). When Kaggle assigns a P100 GPU, any CUDA model load fails. The new logic detects `cc[0] < 7` and gracefully falls back to CPU execution, while using full FP16 GPU acceleration on T4 (`sm_75`) GPUs.
 
 - **What**: Added `notebooks/analyze_judge_errors.ipynb` for semantic analysis of PRM-judge fail texts (`evaluations[].analysis` where `score == 0`). The notebook clones the repo on Kaggle/Colab, installs only lightweight packages (`sentence-transformers`, `umap-learn`, `hdbscan`), embeds fails with `all-MiniLM-L6-v2`, projects with UMAP, clusters with HDBSCAN, prints cluster exemplars, and supports nearest-neighbor browsing. Outputs go to `experiments/001_500_reasoning/judge_error_analysis/`. Also added `scripts/kaggle_judge_errors/` (`kernel-metadata.json` + notebook copy) so the job can be launched from the local terminal via `kaggle kernels push` (CPU + internet; no local CUDA install).
-- **Why**: Local machines without a GPU should not download CUDA/torch stacks just for ~3k short judge sentences. Running remotely reuses Kaggle/Colab's existing PyTorch, keeps the laptop light, and still yields a topology map of recurring chart-reasoning error modes.
+## Repo Location Isolation & Robust Image Downloading (v23)
+- **What**: Updated `notebooks/train_dpo.ipynb` and `notebooks/train_sft.ipynb` to clone the project repository into `/tmp/prm_project` instead of `/kaggle/working`. Updated `scripts/download_images.py` to use `User-Agent` and `Authorization` headers for HuggingFace CDN requests. Saved model adapters to `/kaggle/working/qwen_vl_step_dpo_adapter`.
+- **Why**: Cloning git repositories into `/kaggle/working` caused Kaggle API `kaggle kernels output` to zip and download hundreds of megabytes of git files over CLI, timing out local inspection commands. Isolating the repo under `/tmp/prm_project` keeps `/kaggle/working` clean so kernel outputs contain only adapter weights and logs. Custom headers on HuggingFace image requests prevent CDN 403 Forbidden download blocks.
+
 
 
 
