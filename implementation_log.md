@@ -177,3 +177,19 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   3. Created `scripts/kaggle_train_kto/` containing `kernel-metadata.json` (`gpuT4x2`, `enable_gpu: true`, `enable_internet: true`) and a copy of `train_kto.ipynb` for launching directly via `kaggle kernels push`.
 - **Why**: KTO enables direct optimization on binary feedback (desirable vs undesirable trajectories) without needing paired positive/negative rollouts for the exact same prompt (unlike DPO). This allows us to leverage all 1,274 rollouts (or 4,834 steps) for alignment and empirically compare Base vs SFT vs DPO vs KTO performance.
 
+## Step-DPO Root-Cause Repair (v30)
+- **What**: Replaced the broken PyTorch downgrade and TRL 0.15 path with a restart-free, pinned TRL 0.29.1 VLM-DPO stack. The training notebook now requests a T4-class GPU, uses FP16 LoRA on one GPU, left-pads processor inputs, disables VLM sequence truncation, validates `pixel_values`, `image_grid_thw`, completion masks, and a finite DPO loss before training, and defaults to a three-step smoke run. Added a private `gpuT4x2` Kaggle launcher that executes the canonical notebook at a recorded revision.
+- **Why**: TRL 0.15 has a confirmed Qwen2.5-VL DPO bug: it truncates `pixel_values` and fails to pass `image_grid_thw`. Installing an older PyTorch after importing it also leaves the live kernel on the incompatible binary. TRL 0.29.1 includes the rewritten multimodal preference collator and Qwen vision-key forwarding.
+
+## Audited Step-DPO Preference Construction
+- **What**: Made `scripts/format_step_dpo.py` deterministic with seed 42, replaced raw substring correctness checks with whole-token matching, requires chosen and rejected continuations to share the emitted prefix, rejects malformed steps, and records source rollout IDs, divergence position, ground truth, final answer, and judge analyses. Regeneration retained 54 auditable pairs from the previous 188. Added focused unit tests; two formatter runs produced the same SHA-256 (`e3165fa1cf577c4d66c83e6ae74dc451e7620e2b2cb5904ed2bca62efe6c54e2`).
+- **Why**: The old formatter could label `94` correct for ground truth `4`, splice a rejected step behind an unrelated chosen prefix, and produce a different dataset on every run. Those defects make the DPO preference signal unreliable even when the trainer runs.
+
+## Held-Out DPO Evaluation Repair
+- **What**: Reworked `notebooks/evaluate_dpo_model.ipynb` to load real questions from `eval_reasoning_ids.json` and CharXiv validation metadata, download exactly the requested split's images, generate through one PEFT wrapper with `disable_adapter()` for the base comparison, use FP16 on T4, and save paired responses as JSONL. Extended `download_images.py` with a repository-relative `--ids-file` option.
+- **Why**: The former evaluator referenced nonexistent placeholder question 123, called the adapter context on the underlying base model, and reintroduced the incompatible BitsAndBytes path, so it could not provide end-to-end evidence.
+
+## Step-DPO Local Validation
+- **What**: Ran all six project tests successfully, compiled every code cell in the training, Kaggle launcher, and evaluation notebooks, and passed `git diff --check`.
+- **Why**: These checks catch deterministic-data regressions, syntax errors hidden in notebook JSON, and malformed patches before the GPU-only Kaggle validation.
+
