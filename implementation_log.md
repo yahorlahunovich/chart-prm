@@ -205,3 +205,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Added `CompletionOnlyDPOTrainer`, a small TRL subclass that keeps TRL's model preparation, VLM collator, reference precomputation, PEFT integration, and Trainer lifecycle, but computes the standard DPO sigmoid loss locally. It passes Qwen's `logits_to_keep` argument so the language-model head materializes vocabulary logits only for the preferred/rejected completion region. The chart processor is bounded to 96–192 visual tokens.
 - **Why**: Even with cached reference scores, TRL 0.29.1 projects every image and prompt position into Qwen's 152k-token vocabulary before masking those positions out. That unnecessary full-sequence logits tensor filled the T4 during backward. Completion-only projection is mathematically equivalent because DPO sums log-probabilities only where `completion_mask == 1`, while materially reducing activation memory.
 
+## T4 QLoRA Conversion
+- **What**: Pinned `bitsandbytes==0.50.0` (tested against PyTorch 2.10/CUDA 12.8 upstream) and converted base-model loading to 4-bit NF4 with FP16 compute and double quantization.
+- **Why**: Completion-only logits and reduced chart resolution still left the native-FP16 backward pass at 14.52/14.56 GiB. Modern BitsAndBytes replaces the incompatible old Kaggle build that caused the earlier CUDA symbol failure and provides enough model-memory headroom for stable single-T4 training.
+
