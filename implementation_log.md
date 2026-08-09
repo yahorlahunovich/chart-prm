@@ -193,3 +193,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Ran all six project tests successfully, compiled every code cell in the training, Kaggle launcher, and evaluation notebooks, and passed `git diff --check`.
 - **Why**: These checks catch deterministic-data regressions, syntax errors hidden in notebook JSON, and malformed patches before the GPU-only Kaggle validation.
 
+## Kaggle Accelerator and T4 Memory Repair
+- **What**: Replaced the obsolete `accelerator: gpuT4x2` kernel metadata with `machine_shape: NvidiaTeslaT4` and launched through the current Kaggle CLI's explicit `--accelerator NvidiaTeslaT4` option. The first real T4 batch proved that TRL 0.29.1 preserved `pixel_values`, `image_grid_thw`, and completion masks and produced a finite initial loss of `0.693359375`. The backward pass then measured the original 512-token image bound at 14.55 GiB, so the processor bound was reduced to 128–256 visual tokens and reference log-probabilities are now precomputed before policy optimization.
+- **Why**: The old metadata was silently ignored and assigned P100 GPUs. On a real 14.56 GiB T4, processing duplicated chosen/rejected images at up to 512 visual tokens exhausted memory during backward. Bounding chart resolution and avoiding a simultaneous reference forward preserve the chart signal while fitting the project's single-T4 limit.
+
