@@ -94,17 +94,16 @@ def main():
     if processor.tokenizer.pad_token is None:
         processor.tokenizer.pad_token = processor.tokenizer.eos_token
 
+    torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+    device_map = "auto" if (torch.cuda.is_available() and torch.cuda.device_count() > 1) else ({"": 0} if torch.cuda.is_available() else None)
+
     model_kwargs = {
-        "dtype": torch.float16 if torch.cuda.is_available() else torch.float32,
+        "torch_dtype": torch_dtype,
         "low_cpu_mem_usage": True,
     }
 
-    if torch.cuda.is_available():
-        if torch.cuda.device_count() > 1:
-            print("Enabling multi-GPU automatic model parallelism across 2xT4 GPUs...")
-            model_kwargs["device_map"] = "auto"
-        else:
-            model_kwargs["device_map"] = {"": 0}
+    if device_map is not None:
+        model_kwargs["device_map"] = device_map
         model_kwargs["attn_implementation"] = "sdpa"
 
     if use_4bit and torch.cuda.is_available():
