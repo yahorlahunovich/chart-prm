@@ -47,7 +47,7 @@ def parse_args():
     parser.add_argument("--batch-size", type=int, default=1, help="Batch size per step")
     parser.add_argument("--lr", type=float, default=1e-5, help="Learning rate")
     parser.add_argument("--beta", type=float, default=0.1, help="DPO beta parameter")
-    parser.add_argument("--load-in-4bit", action="store_true", default=True, help="Load model in 4-bit NF4 quantization")
+    parser.add_argument("--load-in-4bit", action="store_true", default=False, help="Explicitly force 4-bit NF4 QLoRA quantization")
     parser.add_argument("--smoke-only", action="store_true", help="Run a 2-step smoke test")
     parser.add_argument("--no-lora", action="store_true", help="Disable LoRA peft adapter")
     return parser.parse_args()
@@ -72,17 +72,16 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using compute device: {device}")
 
+    use_4bit = False
     if torch.cuda.is_available():
         gpu_name = torch.cuda.get_device_name(0)
         capability = torch.cuda.get_device_capability(0)
         print(f"GPU: {gpu_name} (Compute Capability: {capability})")
-        if capability[0] < 7:
-            raise RuntimeError(
-                f"Unsupported GPU '{gpu_name}' with compute capability {capability} (sm_60). "
-                f"PyTorch 2.x requires CUDA compute capability >= 7.0 (Nvidia T4 or newer)."
-            )
+        # On T4 or newer GPUs (capability >= 7.0), 4-bit QLoRA is supported
+        if capability[0] >= 7 or args.load_in_4bit:
+            use_4bit = True
 
-    print(f"Loading processor and model for {args.model_id}...")
+    print(f"Loading processor and model for {args.model_id} (use_4bit={use_4bit})...")
     from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
 
     processor_kwargs = {}
@@ -104,15 +103,18 @@ def main():
         model_kwargs["device_map"] = {"": 0}
         model_kwargs["attn_implementation"] = "sdpa"
 
-    if args.load_in_4bit and torch.cuda.is_available():
-        from transformers import BitsAndBytesConfig
-        print("Enabling 4-bit NF4 QLoRA quantization...")
-        model_kwargs["quantization_config"] = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_quant_type="nf4",
-            bnb_4bit_use_double_quant=True,
-            bnb_4bit_compute_dtype=torch.float16,
-        )
+    if use_4bit and torch.cuda.is_available():
+        try:
+            from transformers import BitsAndBytesConfig
+            print("Enabling 4-bit NF4 QLoRA quantization...")
+            model_kwargs["quantization_config"] = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_use_double_quant=True,
+                bnb_4bit_compute_dtype=torch.float16,
+            )
+        except Exception as e:
+            print(f"BitsAndBytes unavailable ({e}), falling back to native FP16.")
 
     model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
         args.model_id,
