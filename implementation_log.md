@@ -217,5 +217,10 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Created centralized visualization module `src/visualization/style.py` exposing `setup_plot_style()` and `PALETTE`, and generated a representative example plot (`figures/example_prm_accuracy.png`, `figures/example_prm_accuracy.pdf`) via `scripts/generate_style_example.py`.
 - **Why**: To establish a standardized, publication-ready NeurIPS/ICML research figure style (restrained semantic colors, clean typography, Type 42 TrueType vector fonts for PDF embedding, subtle grid, frameless legends, top/right spine removal) prior to refactoring existing experiment visualizations.
 
+## Refactored Notebook Charts with Central Publication Style
+- **What**: Updated `scripts/create_notebook.py` and regenerated `notebooks/evaluate_rollouts.ipynb` along with all 13 figure files under `notebooks/charts/` (`01_overall_accuracy.png` through `13_hallucinated_correctness.png`).
+- **Why**: User explicitly approved the centralized NeurIPS style. Re-rendered all analysis charts using `setup_plot_style()` and standard `PALETTE` semantic colors for clear, publication-quality presentation across the evaluation suite.
+
+
 
 

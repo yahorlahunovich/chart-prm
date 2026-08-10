@@ -321,6 +321,7 @@ sns.countplot(
 ax.set_title('Error Cascade Analysis (Step N+1 Score | Step N Score)', loc='left', pad=10)
 ax.set_xlabel('Score at Step N')
 ax.set_ylabel('Count of Steps N+1')
+ax.set_xticks([0, 1])
 ax.set_xticklabels(['0 (Incorrect)', '1 (Correct)'])
 
 leg = ax.legend(title='Score at N+1', loc='upper right', frameon=False)
@@ -344,7 +345,9 @@ sns.boxplot(
     data=df_steps,
     x='score',
     y='analysis_len',
+    hue='score',
     palette=palette_box,
+    legend=False,
     width=0.45,
     fliersize=3,
     linewidth=1.2,
@@ -353,6 +356,7 @@ sns.boxplot(
 ax.set_title('PRM Judge Explanation Length by Step Score', loc='left', pad=10)
 ax.set_xlabel('Step Score')
 ax.set_ylabel('Analysis Length (characters)')
+ax.set_xticks([0, 1])
 ax.set_xticklabels(['0 (Incorrect)', '1 (Correct)'])
 
 plt.savefig('charts/09_analysis_length.png', dpi=300, bbox_inches='tight')
