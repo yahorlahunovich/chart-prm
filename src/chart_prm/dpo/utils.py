@@ -122,7 +122,7 @@ def build_qwen_dpo_batch(
     Processes a list of raw preference items into chosen and rejected multimodal batch dicts for Qwen2.5-VL.
 
     Each item in items must contain:
-      - "image": PIL.Image.Image or path to image
+      - "image" or "image_path": PIL.Image.Image or path to image
       - "question": str
       - "chosen": str
       - "rejected": str
@@ -137,7 +137,10 @@ def build_qwen_dpo_batch(
     prompt_texts = []
 
     for item in items:
-        img = item["image"]
+        img = item.get("image") or item.get("image_path")
+        if img is None:
+            raise KeyError(f"Item is missing required 'image' or 'image_path' key: {item}")
+
         if isinstance(img, (str, Path)):
             with Image.open(img) as opened_img:
                 img = opened_img.convert("RGB").copy()
@@ -235,6 +238,7 @@ def load_step_dpo_dataset(
 
             items.append({
                 "question_id": row["question_id"],
+                "image": str(img_path),
                 "image_path": str(img_path),
                 "question": row["question"],
                 "prefix": row.get("prefix", ""),
