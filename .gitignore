@@ -220,3 +220,10 @@ __marimo__/
 .streamlit/secrets.toml
 # Local Kaggle download cache
 kaggle_out/
+
+# Heavy model weights and checkpoints
+*.safetensors
+*.bin
+*.pt
+*.onnx
+*.pth
