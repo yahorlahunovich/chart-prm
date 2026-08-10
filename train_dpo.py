@@ -74,10 +74,10 @@ def main():
 
     use_4bit = False
     if torch.cuda.is_available():
+        gpu_count = torch.cuda.device_count()
         gpu_name = torch.cuda.get_device_name(0)
         capability = torch.cuda.get_device_capability(0)
-        print(f"GPU: {gpu_name} (Compute Capability: {capability})")
-        # On T4 or newer GPUs (capability >= 7.0), 4-bit QLoRA is supported
+        print(f"Detected {gpu_count} GPU(s): {gpu_name} (Compute Capability: {capability})")
         if capability[0] >= 7 or args.load_in_4bit:
             use_4bit = True
 
@@ -86,8 +86,8 @@ def main():
 
     processor_kwargs = {}
     if torch.cuda.is_available():
-        processor_kwargs["min_pixels"] = 96 * 28 * 28
-        processor_kwargs["max_pixels"] = 192 * 28 * 28
+        processor_kwargs["min_pixels"] = 128 * 28 * 28
+        processor_kwargs["max_pixels"] = 256 * 28 * 28
 
     processor = AutoProcessor.from_pretrained(args.model_id, **processor_kwargs)
     processor.tokenizer.padding_side = "left"
@@ -100,7 +100,11 @@ def main():
     }
 
     if torch.cuda.is_available():
-        model_kwargs["device_map"] = {"": 0}
+        if torch.cuda.device_count() > 1:
+            print("Enabling multi-GPU automatic model parallelism across 2xT4 GPUs...")
+            model_kwargs["device_map"] = "auto"
+        else:
+            model_kwargs["device_map"] = {"": 0}
         model_kwargs["attn_implementation"] = "sdpa"
 
     if use_4bit and torch.cuda.is_available():
