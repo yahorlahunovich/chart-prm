@@ -1,0 +1,3242 @@
+[
+  {
+    "step": 1,
+    "epoch": 1,
+    "loss": 0.5,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.0,
+    "policy_logp": -27.535900115966797,
+    "ref_logp": -27.535900115966797
+  },
+  {
+    "step": 2,
+    "epoch": 1,
+    "loss": 0.5103930830955505,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.04157829284667969,
+    "reward_margin": -0.04157829284667969,
+    "policy_logp": -32.77069091796875,
+    "ref_logp": -33.18647384643555
+  },
+  {
+    "step": 3,
+    "epoch": 1,
+    "loss": 0.4905453622341156,
+    "mean_desirable_reward": 0.03782310709357262,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.03782310709357262,
+    "policy_logp": -50.21223068237305,
+    "ref_logp": -50.59046173095703
+  },
+  {
+    "step": 4,
+    "epoch": 1,
+    "loss": 0.5126357674598694,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.05055389553308487,
+    "reward_margin": -0.05055389553308487,
+    "policy_logp": -46.35387420654297,
+    "ref_logp": -46.859413146972656
+  },
+  {
+    "step": 5,
+    "epoch": 1,
+    "loss": 0.4820251762866974,
+    "mean_desirable_reward": 0.07193031162023544,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.07193031162023544,
+    "policy_logp": -52.838619232177734,
+    "ref_logp": -53.55792236328125
+  },
+  {
+    "step": 6,
+    "epoch": 1,
+    "loss": 0.506769061088562,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.027077866718173027,
+    "reward_margin": -0.027077866718173027,
+    "policy_logp": -46.5886344909668,
+    "ref_logp": -46.859413146972656
+  },
+  {
+    "step": 7,
+    "epoch": 1,
+    "loss": 0.4665214419364929,
+    "mean_desirable_reward": 0.1341148465871811,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.1341148465871811,
+    "policy_logp": -41.176734924316406,
+    "ref_logp": -42.51788330078125
+  },
+  {
+    "step": 8,
+    "epoch": 1,
+    "loss": 0.519483208656311,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.077972412109375,
+    "reward_margin": -0.077972412109375,
+    "policy_logp": -29.21649169921875,
+    "ref_logp": -29.9962158203125
+  },
+  {
+    "step": 9,
+    "epoch": 1,
+    "loss": 0.4445576071739197,
+    "mean_desirable_reward": 0.22268524765968323,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.22268524765968323,
+    "policy_logp": -40.29103088378906,
+    "ref_logp": -42.51788330078125
+  },
+  {
+    "step": 10,
+    "epoch": 1,
+    "loss": 0.5192091464996338,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.07687454670667648,
+    "reward_margin": -0.07687454670667648,
+    "policy_logp": -50.58336639404297,
+    "ref_logp": -51.35211181640625
+  },
+  {
+    "step": 11,
+    "epoch": 1,
+    "loss": 0.41890785098075867,
+    "mean_desirable_reward": 0.32725831866264343,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.32725831866264343,
+    "policy_logp": -39.24530029296875,
+    "ref_logp": -42.51788330078125
+  },
+  {
+    "step": 12,
+    "epoch": 1,
+    "loss": 0.5272709131240845,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.10919189453125,
+    "reward_margin": -0.10919189453125,
+    "policy_logp": -55.400184631347656,
+    "ref_logp": -56.492103576660156
+  },
+  {
+    "step": 13,
+    "epoch": 1,
+    "loss": 0.393047034740448,
+    "mean_desirable_reward": 0.43452188372612,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.43452188372612,
+    "policy_logp": -43.88153839111328,
+    "ref_logp": -48.22675704956055
+  },
+  {
+    "step": 14,
+    "epoch": 1,
+    "loss": 0.5558651685714722,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.2243976593017578,
+    "reward_margin": -0.2243976593017578,
+    "policy_logp": -28.540491104125977,
+    "ref_logp": -30.784467697143555
+  },
+  {
+    "step": 15,
+    "epoch": 1,
+    "loss": 0.4606253206729889,
+    "mean_desirable_reward": 0.15782546997070312,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.15782546997070312,
+    "policy_logp": -42.21439743041992,
+    "ref_logp": -43.79265213012695
+  },
+  {
+    "step": 16,
+    "epoch": 1,
+    "loss": 0.5215469598770142,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.08624114841222763,
+    "reward_margin": -0.08624114841222763,
+    "policy_logp": -73.90021514892578,
+    "ref_logp": -74.76262664794922
+  },
+  {
+    "step": 17,
+    "epoch": 1,
+    "loss": 0.48294979333877563,
+    "mean_desirable_reward": 0.0682273879647255,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.0682273879647255,
+    "policy_logp": -39.71446228027344,
+    "ref_logp": -40.39673614501953
+  },
+  {
+    "step": 18,
+    "epoch": 1,
+    "loss": 0.5354525446891785,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.14204846322536469,
+    "reward_margin": -0.14204846322536469,
+    "policy_logp": -29.174428939819336,
+    "ref_logp": -30.594913482666016
+  },
+  {
+    "step": 19,
+    "epoch": 1,
+    "loss": 0.473295658826828,
+    "mean_desirable_reward": 0.10691910237073898,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.10691910237073898,
+    "policy_logp": -43.98387908935547,
+    "ref_logp": -45.053070068359375
+  },
+  {
+    "step": 20,
+    "epoch": 1,
+    "loss": 0.5283657908439636,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.11358528584241867,
+    "reward_margin": -0.11358528584241867,
+    "policy_logp": -48.0323486328125,
+    "ref_logp": -49.1682014465332
+  },
+  {
+    "step": 21,
+    "epoch": 1,
+    "loss": 0.47743791341781616,
+    "mean_desirable_reward": 0.09030971676111221,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.09030971676111221,
+    "policy_logp": -17.04486656188965,
+    "ref_logp": -17.94796371459961
+  },
+  {
+    "step": 22,
+    "epoch": 1,
+    "loss": 0.5336301326751709,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.13472405076026917,
+    "reward_margin": -0.13472405076026917,
+    "policy_logp": -30.12591552734375,
+    "ref_logp": -31.473155975341797
+  },
+  {
+    "step": 23,
+    "epoch": 1,
+    "loss": 0.4592576324939728,
+    "mean_desirable_reward": 0.16333161294460297,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.16333161294460297,
+    "policy_logp": -21.79819107055664,
+    "ref_logp": -23.431507110595703
+  },
+  {
+    "step": 24,
+    "epoch": 1,
+    "loss": 0.529431164264679,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.11786079406738281,
+    "reward_margin": -0.11786079406738281,
+    "policy_logp": -30.29454803466797,
+    "ref_logp": -31.473155975341797
+  },
+  {
+    "step": 25,
+    "epoch": 1,
+    "loss": 0.45183444023132324,
+    "mean_desirable_reward": 0.19326172769069672,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.19326172769069672,
+    "policy_logp": -21.498889923095703,
+    "ref_logp": -23.431507110595703
+  },
+  {
+    "step": 26,
+    "epoch": 1,
+    "loss": 0.5231391787528992,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.09262295067310333,
+    "reward_margin": -0.09262295067310333,
+    "policy_logp": -17.0217342376709,
+    "ref_logp": -17.94796371459961
+  },
+  {
+    "step": 27,
+    "epoch": 1,
+    "loss": 0.4954150915145874,
+    "mean_desirable_reward": 0.018340302631258965,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.018340302631258965,
+    "policy_logp": -44.04816436767578,
+    "ref_logp": -44.2315673828125
+  },
+  {
+    "step": 28,
+    "epoch": 1,
+    "loss": 0.5051335692405701,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.020534897223114967,
+    "reward_margin": -0.020534897223114967,
+    "policy_logp": -63.594791412353516,
+    "ref_logp": -63.800140380859375
+  },
+  {
+    "step": 29,
+    "epoch": 1,
+    "loss": 0.4523758590221405,
+    "mean_desirable_reward": 0.1910759061574936,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.1910759061574936,
+    "policy_logp": -38.164085388183594,
+    "ref_logp": -40.07484436035156
+  },
+  {
+    "step": 30,
+    "epoch": 1,
+    "loss": 0.501930832862854,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.0077232359908521175,
+    "reward_margin": -0.0077232359908521175,
+    "policy_logp": -38.092933654785156,
+    "ref_logp": -38.170166015625
+  },
+  {
+    "step": 31,
+    "epoch": 1,
+    "loss": 0.4736189842224121,
+    "mean_desirable_reward": 0.10562210530042648,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.10562210530042648,
+    "policy_logp": -16.838573455810547,
+    "ref_logp": -17.894794464111328
+  },
+  {
+    "step": 32,
+    "epoch": 1,
+    "loss": 0.49509894847869873,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.019604874774813652,
+    "reward_margin": 0.019604874774813652,
+    "policy_logp": -38.366214752197266,
+    "ref_logp": -38.170166015625
+  },
+  {
+    "step": 33,
+    "epoch": 1,
+    "loss": 0.49486708641052246,
+    "mean_desirable_reward": 0.02053222618997097,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.02053222618997097,
+    "policy_logp": -28.995712280273438,
+    "ref_logp": -29.201034545898438
+  },
+  {
+    "step": 34,
+    "epoch": 1,
+    "loss": 0.5541781187057495,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.21756668388843536,
+    "reward_margin": -0.21756668388843536,
+    "policy_logp": -53.910865783691406,
+    "ref_logp": -56.08653259277344
+  },
+  {
+    "step": 35,
+    "epoch": 1,
+    "loss": 0.4873581826686859,
+    "mean_desirable_reward": 0.05057811737060547,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.05057811737060547,
+    "policy_logp": -28.695253372192383,
+    "ref_logp": -29.201034545898438
+  },
+  {
+    "step": 36,
+    "epoch": 1,
+    "loss": 0.5844457149505615,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.3410507142543793,
+    "reward_margin": -0.3410507142543793,
+    "policy_logp": -42.797607421875,
+    "ref_logp": -46.20811462402344
+  },
+  {
+    "step": 37,
+    "epoch": 1,
+    "loss": 0.49721184372901917,
+    "mean_desirable_reward": 0.01115264929831028,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.01115264929831028,
+    "policy_logp": -40.411277770996094,
+    "ref_logp": -40.522804260253906
+  },
+  {
+    "step": 38,
+    "epoch": 1,
+    "loss": 0.5353947281837463,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.1418161392211914,
+    "reward_margin": -0.1418161392211914,
+    "policy_logp": -31.38224983215332,
+    "ref_logp": -32.800411224365234
+  },
+  {
+    "step": 39,
+    "epoch": 1,
+    "loss": 0.39110246300697327,
+    "mean_desirable_reward": 0.44268035888671875,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.44268035888671875,
+    "policy_logp": -78.797607421875,
+    "ref_logp": -83.22441101074219
+  },
+  {
+    "step": 40,
+    "epoch": 1,
+    "loss": 0.48039963841438293,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.07844161987304688,
+    "reward_margin": 0.07844161987304688,
+    "policy_logp": -51.56049346923828,
+    "ref_logp": -50.77607727050781
+  },
+  {
+    "step": 41,
+    "epoch": 1,
+    "loss": 0.3800824284553528,
+    "mean_desirable_reward": 0.4891982972621918,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.4891982972621918,
+    "policy_logp": -78.33242797851562,
+    "ref_logp": -83.22441101074219
+  },
+  {
+    "step": 42,
+    "epoch": 1,
+    "loss": 0.4736860692501068,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.1053529754281044,
+    "reward_margin": 0.1053529754281044,
+    "policy_logp": -30.114425659179688,
+    "ref_logp": -29.060895919799805
+  },
+  {
+    "step": 43,
+    "epoch": 1,
+    "loss": 0.48319151997566223,
+    "mean_desirable_reward": 0.06725921481847763,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.06725921481847763,
+    "policy_logp": -93.20460510253906,
+    "ref_logp": -93.877197265625
+  },
+  {
+    "step": 44,
+    "epoch": 1,
+    "loss": 0.4940952658653259,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.023620033636689186,
+    "reward_margin": 0.023620033636689186,
+    "policy_logp": -31.89777946472168,
+    "ref_logp": -31.661579132080078
+  },
+  {
+    "step": 45,
+    "epoch": 1,
+    "loss": 0.4836808145046234,
+    "mean_desirable_reward": 0.06529998779296875,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.06529998779296875,
+    "policy_logp": -92.8476333618164,
+    "ref_logp": -93.5006332397461
+  },
+  {
+    "step": 46,
+    "epoch": 1,
+    "loss": 0.4820665121078491,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.0717647597193718,
+    "reward_margin": 0.0717647597193718,
+    "policy_logp": -32.37922668457031,
+    "ref_logp": -31.661579132080078
+  },
+  {
+    "step": 47,
+    "epoch": 1,
+    "loss": 0.4758244454860687,
+    "mean_desirable_reward": 0.09677772969007492,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.09677772969007492,
+    "policy_logp": -25.632606506347656,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 48,
+    "epoch": 1,
+    "loss": 0.46010294556617737,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.1599281281232834,
+    "reward_margin": 0.1599281281232834,
+    "policy_logp": -65.53035736083984,
+    "ref_logp": -63.93107604980469
+  },
+  {
+    "step": 49,
+    "epoch": 1,
+    "loss": 0.46892374753952026,
+    "mean_desirable_reward": 0.12446536868810654,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.12446536868810654,
+    "policy_logp": -25.355730056762695,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 50,
+    "epoch": 1,
+    "loss": 0.5282501578330994,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.11312103271484375,
+    "reward_margin": -0.11312103271484375,
+    "policy_logp": -34.22278594970703,
+    "ref_logp": -35.35399627685547
+  },
+  {
+    "step": 51,
+    "epoch": 1,
+    "loss": 0.459610253572464,
+    "mean_desirable_reward": 0.16191159188747406,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.16191159188747406,
+    "policy_logp": -24.98126792907715,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 52,
+    "epoch": 1,
+    "loss": 0.6723858118057251,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.7189956903457642,
+    "reward_margin": -0.7189956903457642,
+    "policy_logp": -37.740169525146484,
+    "ref_logp": -44.93012619018555
+  },
+  {
+    "step": 53,
+    "epoch": 1,
+    "loss": 0.4466904401779175,
+    "mean_desirable_reward": 0.21405182778835297,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.21405182778835297,
+    "policy_logp": -24.45986557006836,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 54,
+    "epoch": 1,
+    "loss": 0.4937015175819397,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.02519531361758709,
+    "reward_margin": 0.02519531361758709,
+    "policy_logp": -19.8824462890625,
+    "ref_logp": -19.6304931640625
+  },
+  {
+    "step": 55,
+    "epoch": 1,
+    "loss": 0.45359861850738525,
+    "mean_desirable_reward": 0.1861412078142166,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.1861412078142166,
+    "policy_logp": -43.343101501464844,
+    "ref_logp": -45.20451354980469
+  },
+  {
+    "step": 56,
+    "epoch": 1,
+    "loss": 0.4757542908191681,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.09705886989831924,
+    "reward_margin": 0.09705886989831924,
+    "policy_logp": -40.67949676513672,
+    "ref_logp": -39.70890808105469
+  },
+  {
+    "step": 57,
+    "epoch": 1,
+    "loss": 0.44218477606773376,
+    "mean_desirable_reward": 0.2322998046875,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.2322998046875,
+    "policy_logp": -42.88151550292969,
+    "ref_logp": -45.20451354980469
+  },
+  {
+    "step": 58,
+    "epoch": 1,
+    "loss": 0.472308874130249,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.11087799072265625,
+    "reward_margin": 0.11087799072265625,
+    "policy_logp": -46.667083740234375,
+    "ref_logp": -45.55830383300781
+  },
+  {
+    "step": 59,
+    "epoch": 1,
+    "loss": 0.46816450357437134,
+    "mean_desirable_reward": 0.12751446664333344,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.12751446664333344,
+    "policy_logp": -30.55936622619629,
+    "ref_logp": -31.834510803222656
+  },
+  {
+    "step": 60,
+    "epoch": 1,
+    "loss": 0.4563102126121521,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.1752059906721115,
+    "reward_margin": 0.1752059906721115,
+    "policy_logp": -196.00491333007812,
+    "ref_logp": -194.2528533935547
+  },
+  {
+    "step": 61,
+    "epoch": 1,
+    "loss": 0.4589957892894745,
+    "mean_desirable_reward": 0.16438598930835724,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.16438598930835724,
+    "policy_logp": -30.190650939941406,
+    "ref_logp": -31.834510803222656
+  },
+  {
+    "step": 62,
+    "epoch": 1,
+    "loss": 0.4764045774936676,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.094451904296875,
+    "reward_margin": 0.094451904296875,
+    "policy_logp": -40.850250244140625,
+    "ref_logp": -39.905731201171875
+  },
+  {
+    "step": 63,
+    "epoch": 1,
+    "loss": 0.5225722193717957,
+    "mean_desirable_reward": -0.09035034477710724,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.09035034477710724,
+    "policy_logp": -34.51447296142578,
+    "ref_logp": -33.61096954345703
+  },
+  {
+    "step": 64,
+    "epoch": 1,
+    "loss": 0.4690738916397095,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.12386246025562286,
+    "reward_margin": 0.12386246025562286,
+    "policy_logp": -46.73332214355469,
+    "ref_logp": -45.49469757080078
+  },
+  {
+    "step": 65,
+    "epoch": 1,
+    "loss": 0.5190398693084717,
+    "mean_desirable_reward": -0.07619629055261612,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.07619629055261612,
+    "policy_logp": -34.37293243408203,
+    "ref_logp": -33.61096954345703
+  },
+  {
+    "step": 66,
+    "epoch": 1,
+    "loss": 0.6105036735534668,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.4494298994541168,
+    "reward_margin": -0.4494298994541168,
+    "policy_logp": -29.336145401000977,
+    "ref_logp": -33.8304443359375
+  },
+  {
+    "step": 67,
+    "epoch": 1,
+    "loss": 0.3781537115573883,
+    "mean_desirable_reward": 0.4973922669887543,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.4973922669887543,
+    "policy_logp": -26.681915283203125,
+    "ref_logp": -31.655838012695312
+  },
+  {
+    "step": 68,
+    "epoch": 1,
+    "loss": 0.5103815793991089,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.041532136499881744,
+    "reward_margin": -0.041532136499881744,
+    "policy_logp": -68.25503540039062,
+    "ref_logp": -68.67035675048828
+  },
+  {
+    "step": 69,
+    "epoch": 1,
+    "loss": 0.48704561591148376,
+    "mean_desirable_reward": 0.05182914808392525,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.05182914808392525,
+    "policy_logp": -30.579708099365234,
+    "ref_logp": -31.097999572753906
+  },
+  {
+    "step": 70,
+    "epoch": 1,
+    "loss": 0.500305712223053,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.0012229919666424394,
+    "reward_margin": -0.0012229919666424394,
+    "policy_logp": -68.65812683105469,
+    "ref_logp": -68.67035675048828
+  },
+  {
+    "step": 71,
+    "epoch": 1,
+    "loss": 0.362198144197464,
+    "mean_desirable_reward": 0.5658363699913025,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.5658363699913025,
+    "policy_logp": -25.997474670410156,
+    "ref_logp": -31.655838012695312
+  },
+  {
+    "step": 72,
+    "epoch": 1,
+    "loss": 0.482825368642807,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.0687255859375,
+    "reward_margin": 0.0687255859375,
+    "policy_logp": -262.13214111328125,
+    "ref_logp": -261.44488525390625
+  },
+  {
+    "step": 73,
+    "epoch": 1,
+    "loss": 0.47321242094039917,
+    "mean_desirable_reward": 0.10725288838148117,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.10725288838148117,
+    "policy_logp": -30.025470733642578,
+    "ref_logp": -31.097999572753906
+  },
+  {
+    "step": 74,
+    "epoch": 1,
+    "loss": 0.453747421503067,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.18554078042507172,
+    "reward_margin": 0.18554078042507172,
+    "policy_logp": -263.30029296875,
+    "ref_logp": -261.44488525390625
+  },
+  {
+    "step": 75,
+    "epoch": 1,
+    "loss": 0.48222485184669495,
+    "mean_desirable_reward": 0.07113037258386612,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.07113037258386612,
+    "policy_logp": -20.8707275390625,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 76,
+    "epoch": 1,
+    "loss": 0.39469465613365173,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.4276205003261566,
+    "reward_margin": 0.4276205003261566,
+    "policy_logp": -22.321678161621094,
+    "ref_logp": -18.045473098754883
+  },
+  {
+    "step": 77,
+    "epoch": 1,
+    "loss": 0.4736907184123993,
+    "mean_desirable_reward": 0.10533447563648224,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.10533447563648224,
+    "policy_logp": -20.5286865234375,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 78,
+    "epoch": 1,
+    "loss": 0.3814344108104706,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.48346424102783203,
+    "reward_margin": 0.48346424102783203,
+    "policy_logp": -22.880115509033203,
+    "ref_logp": -18.045473098754883
+  },
+  {
+    "step": 79,
+    "epoch": 1,
+    "loss": 0.4628576338291168,
+    "mean_desirable_reward": 0.14884339272975922,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.14884339272975922,
+    "policy_logp": -20.093597412109375,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 80,
+    "epoch": 1,
+    "loss": 0.42422163486480713,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.30546674132347107,
+    "reward_margin": 0.30546674132347107,
+    "policy_logp": -18.837909698486328,
+    "ref_logp": -15.783242225646973
+  },
+  {
+    "step": 81,
+    "epoch": 1,
+    "loss": 0.44938355684280396,
+    "mean_desirable_reward": 0.20316162705421448,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.20316162705421448,
+    "policy_logp": -19.5504150390625,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 82,
+    "epoch": 1,
+    "loss": 0.40149304270744324,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.399247944355011,
+    "reward_margin": 0.399247944355011,
+    "policy_logp": -19.98773193359375,
+    "ref_logp": -15.99525260925293
+  },
+  {
+    "step": 83,
+    "epoch": 1,
+    "loss": 0.5416508913040161,
+    "mean_desirable_reward": -0.16699066758155823,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.16699066758155823,
+    "policy_logp": -37.32774353027344,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 84,
+    "epoch": 1,
+    "loss": 0.28070786595344543,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.9409530758857727,
+    "reward_margin": 0.9409530758857727,
+    "policy_logp": -144.6420135498047,
+    "ref_logp": -135.23248291015625
+  },
+  {
+    "step": 85,
+    "epoch": 1,
+    "loss": 0.5298627018928528,
+    "mean_desirable_reward": -0.119593046605587,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.119593046605587,
+    "policy_logp": -36.85376739501953,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 86,
+    "epoch": 1,
+    "loss": 0.38269859552383423,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.478109747171402,
+    "reward_margin": 0.478109747171402,
+    "policy_logp": -39.22344207763672,
+    "ref_logp": -34.442344665527344
+  },
+  {
+    "step": 87,
+    "epoch": 1,
+    "loss": 0.5132372379302979,
+    "mean_desirable_reward": -0.05296134948730469,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.05296134948730469,
+    "policy_logp": -36.18745040893555,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 88,
+    "epoch": 1,
+    "loss": 0.30438297986984253,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.8265125155448914,
+    "reward_margin": 0.8265125155448914,
+    "policy_logp": -60.37726974487305,
+    "ref_logp": -52.112144470214844
+  },
+  {
+    "step": 89,
+    "epoch": 1,
+    "loss": 0.49312832951545715,
+    "mean_desirable_reward": 0.027488326653838158,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.027488326653838158,
+    "policy_logp": -35.38295364379883,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 90,
+    "epoch": 1,
+    "loss": 0.5007582306861877,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.0030330659355968237,
+    "reward_margin": -0.0030330659355968237,
+    "policy_logp": -30.164548873901367,
+    "ref_logp": -30.19487953186035
+  },
+  {
+    "step": 91,
+    "epoch": 1,
+    "loss": 0.47764086723327637,
+    "mean_desirable_reward": 0.08949623256921768,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.08949623256921768,
+    "policy_logp": -25.758081436157227,
+    "ref_logp": -26.653043746948242
+  },
+  {
+    "step": 92,
+    "epoch": 1,
+    "loss": 0.5213218927383423,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.08533935993909836,
+    "reward_margin": -0.08533935993909836,
+    "policy_logp": -67.49325561523438,
+    "ref_logp": -68.34664916992188
+  },
+  {
+    "step": 93,
+    "epoch": 1,
+    "loss": 0.5665549635887146,
+    "mean_desirable_reward": -0.26780930161476135,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.26780930161476135,
+    "policy_logp": -38.25155258178711,
+    "ref_logp": -35.57345962524414
+  },
+  {
+    "step": 94,
+    "epoch": 1,
+    "loss": 0.3912959098815918,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.44186821579933167,
+    "reward_margin": 0.44186821579933167,
+    "policy_logp": -45.558223724365234,
+    "ref_logp": -41.13954162597656
+  },
+  {
+    "step": 95,
+    "epoch": 1,
+    "loss": 0.6931101679801941,
+    "mean_desirable_reward": -0.8147003054618835,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.8147003054618835,
+    "policy_logp": -36.657920837402344,
+    "ref_logp": -28.51091766357422
+  },
+  {
+    "step": 96,
+    "epoch": 1,
+    "loss": 0.29375985264778137,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.8771926760673523,
+    "reward_margin": 0.8771926760673523,
+    "policy_logp": -42.46661376953125,
+    "ref_logp": -33.69468688964844
+  },
+  {
+    "step": 97,
+    "epoch": 1,
+    "loss": 0.4988795518875122,
+    "mean_desirable_reward": 0.00448188791051507,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.00448188791051507,
+    "policy_logp": -44.26987838745117,
+    "ref_logp": -44.314697265625
+  },
+  {
+    "step": 98,
+    "epoch": 1,
+    "loss": 0.360054612159729,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.5751270651817322,
+    "reward_margin": 0.5751270651817322,
+    "policy_logp": -31.7369384765625,
+    "ref_logp": -25.985668182373047
+  },
+  {
+    "step": 99,
+    "epoch": 1,
+    "loss": 0.5359314680099487,
+    "mean_desirable_reward": -0.1439739316701889,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.1439739316701889,
+    "policy_logp": -35.9885139465332,
+    "ref_logp": -34.54877471923828
+  },
+  {
+    "step": 100,
+    "epoch": 1,
+    "loss": 0.5315183997154236,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.12624092400074005,
+    "reward_margin": -0.12624092400074005,
+    "policy_logp": -20.168956756591797,
+    "ref_logp": -21.431365966796875
+  },
+  {
+    "step": 101,
+    "epoch": 1,
+    "loss": 0.5293632745742798,
+    "mean_desirable_reward": -0.11758842319250107,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.11758842319250107,
+    "policy_logp": -29.812257766723633,
+    "ref_logp": -28.63637351989746
+  },
+  {
+    "step": 102,
+    "epoch": 1,
+    "loss": 0.5270005464553833,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.10810738056898117,
+    "reward_margin": -0.10810738056898117,
+    "policy_logp": -20.350292205810547,
+    "ref_logp": -21.431365966796875
+  },
+  {
+    "step": 103,
+    "epoch": 1,
+    "loss": 0.42572101950645447,
+    "mean_desirable_reward": 0.2993309199810028,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.2993309199810028,
+    "policy_logp": -48.28478240966797,
+    "ref_logp": -51.27809143066406
+  },
+  {
+    "step": 104,
+    "epoch": 1,
+    "loss": 0.18884024024009705,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.4575637578964233,
+    "reward_margin": 1.4575637578964233,
+    "policy_logp": -76.21836853027344,
+    "ref_logp": -61.642730712890625
+  },
+  {
+    "step": 105,
+    "epoch": 1,
+    "loss": 0.41498515009880066,
+    "mean_desirable_reward": 0.3433944880962372,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.3433944880962372,
+    "policy_logp": -47.844146728515625,
+    "ref_logp": -51.27809143066406
+  },
+  {
+    "step": 106,
+    "epoch": 1,
+    "loss": 0.38428643345832825,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.4713935852050781,
+    "reward_margin": 0.4713935852050781,
+    "policy_logp": -53.557472229003906,
+    "ref_logp": -48.843536376953125
+  },
+  {
+    "step": 107,
+    "epoch": 1,
+    "loss": 0.4242015779018402,
+    "mean_desirable_reward": 0.30554887652397156,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.30554887652397156,
+    "policy_logp": -48.22260284423828,
+    "ref_logp": -51.27809143066406
+  },
+  {
+    "step": 108,
+    "epoch": 1,
+    "loss": 0.3781525194644928,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.497397243976593,
+    "reward_margin": 0.497397243976593,
+    "policy_logp": -50.478275299072266,
+    "ref_logp": -45.504302978515625
+  },
+  {
+    "step": 109,
+    "epoch": 2,
+    "loss": 0.6163575053215027,
+    "mean_desirable_reward": -0.47411614656448364,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.47411614656448364,
+    "policy_logp": -32.277061462402344,
+    "ref_logp": -27.535900115966797
+  },
+  {
+    "step": 110,
+    "epoch": 2,
+    "loss": 0.24881327152252197,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.1049515008926392,
+    "reward_margin": 1.1049515008926392,
+    "policy_logp": -44.23598861694336,
+    "ref_logp": -33.18647384643555
+  },
+  {
+    "step": 111,
+    "epoch": 2,
+    "loss": 0.45958030223846436,
+    "mean_desirable_reward": 0.1620323210954666,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.1620323210954666,
+    "policy_logp": -48.97013854980469,
+    "ref_logp": -50.59046173095703
+  },
+  {
+    "step": 112,
+    "epoch": 2,
+    "loss": 0.27142268419265747,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.9874164462089539,
+    "reward_margin": 0.9874164462089539,
+    "policy_logp": -56.733577728271484,
+    "ref_logp": -46.859413146972656
+  },
+  {
+    "step": 113,
+    "epoch": 2,
+    "loss": 0.5764629244804382,
+    "mean_desirable_reward": -0.3082698881626129,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.3082698881626129,
+    "policy_logp": -56.640621185302734,
+    "ref_logp": -53.55792236328125
+  },
+  {
+    "step": 114,
+    "epoch": 2,
+    "loss": 0.26550817489624023,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.0175331830978394,
+    "reward_margin": 1.0175331830978394,
+    "policy_logp": -57.03474426269531,
+    "ref_logp": -46.859413146972656
+  },
+  {
+    "step": 115,
+    "epoch": 2,
+    "loss": 0.42742905020713806,
+    "mean_desirable_reward": 0.2923484742641449,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.2923484742641449,
+    "policy_logp": -39.594398498535156,
+    "ref_logp": -42.51788330078125
+  },
+  {
+    "step": 116,
+    "epoch": 2,
+    "loss": 0.4248356819152832,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.3029533326625824,
+    "reward_margin": 0.3029533326625824,
+    "policy_logp": -33.02574920654297,
+    "ref_logp": -29.9962158203125
+  },
+  {
+    "step": 117,
+    "epoch": 2,
+    "loss": 0.41908684372901917,
+    "mean_desirable_reward": 0.32652321457862854,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.32652321457862854,
+    "policy_logp": -39.25265121459961,
+    "ref_logp": -42.51788330078125
+  },
+  {
+    "step": 118,
+    "epoch": 2,
+    "loss": 0.2879847586154938,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.9051918387413025,
+    "reward_margin": 0.9051918387413025,
+    "policy_logp": -60.404029846191406,
+    "ref_logp": -51.35211181640625
+  },
+  {
+    "step": 119,
+    "epoch": 2,
+    "loss": 0.3950125277042389,
+    "mean_desirable_reward": 0.4262901246547699,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.4262901246547699,
+    "policy_logp": -38.254981994628906,
+    "ref_logp": -42.51788330078125
+  },
+  {
+    "step": 120,
+    "epoch": 2,
+    "loss": 0.4547504186630249,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.18149490654468536,
+    "reward_margin": 0.18149490654468536,
+    "policy_logp": -58.30705261230469,
+    "ref_logp": -56.492103576660156
+  },
+  {
+    "step": 121,
+    "epoch": 2,
+    "loss": 0.40252742171287537,
+    "mean_desirable_reward": 0.3949451446533203,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.3949451446533203,
+    "policy_logp": -44.277305603027344,
+    "ref_logp": -48.22675704956055
+  },
+  {
+    "step": 122,
+    "epoch": 2,
+    "loss": 0.30200377106666565,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.8377740979194641,
+    "reward_margin": 0.8377740979194641,
+    "policy_logp": -39.162208557128906,
+    "ref_logp": -30.784467697143555
+  },
+  {
+    "step": 123,
+    "epoch": 2,
+    "loss": 0.5667718648910522,
+    "mean_desirable_reward": -0.26869240403175354,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.26869240403175354,
+    "policy_logp": -46.479576110839844,
+    "ref_logp": -43.79265213012695
+  },
+  {
+    "step": 124,
+    "epoch": 2,
+    "loss": 0.16382800042629242,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.6300171613693237,
+    "reward_margin": 1.6300171613693237,
+    "policy_logp": -91.06279754638672,
+    "ref_logp": -74.76262664794922
+  },
+  {
+    "step": 125,
+    "epoch": 2,
+    "loss": 0.4729626178741455,
+    "mean_desirable_reward": 0.10825500637292862,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.10825500637292862,
+    "policy_logp": -39.314186096191406,
+    "ref_logp": -40.39673614501953
+  },
+  {
+    "step": 126,
+    "epoch": 2,
+    "loss": 0.5576058030128479,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.23145084083080292,
+    "reward_margin": -0.23145084083080292,
+    "policy_logp": -28.280405044555664,
+    "ref_logp": -30.594913482666016
+  },
+  {
+    "step": 127,
+    "epoch": 2,
+    "loss": 0.719033420085907,
+    "mean_desirable_reward": -0.9396721124649048,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.9396721124649048,
+    "policy_logp": -54.449790954589844,
+    "ref_logp": -45.053070068359375
+  },
+  {
+    "step": 128,
+    "epoch": 2,
+    "loss": 0.2974274456501007,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.8595783114433289,
+    "reward_margin": 0.8595783114433289,
+    "policy_logp": -57.76398468017578,
+    "ref_logp": -49.1682014465332
+  },
+  {
+    "step": 129,
+    "epoch": 2,
+    "loss": 0.731370210647583,
+    "mean_desirable_reward": -1.001585841178894,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.001585841178894,
+    "policy_logp": -27.963821411132812,
+    "ref_logp": -17.94796371459961
+  },
+  {
+    "step": 130,
+    "epoch": 2,
+    "loss": 0.28818479180336,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.9042164087295532,
+    "reward_margin": 0.9042164087295532,
+    "policy_logp": -40.51531982421875,
+    "ref_logp": -31.473155975341797
+  },
+  {
+    "step": 131,
+    "epoch": 2,
+    "loss": 0.32593241333961487,
+    "mean_desirable_reward": 0.7266403436660767,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.7266403436660767,
+    "policy_logp": -16.165103912353516,
+    "ref_logp": -23.431507110595703
+  },
+  {
+    "step": 132,
+    "epoch": 2,
+    "loss": 0.2575077414512634,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.0589627027511597,
+    "reward_margin": 1.0589627027511597,
+    "policy_logp": -42.062782287597656,
+    "ref_logp": -31.473155975341797
+  },
+  {
+    "step": 133,
+    "epoch": 2,
+    "loss": 0.31935372948646545,
+    "mean_desirable_reward": 0.7567434310913086,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.7567434310913086,
+    "policy_logp": -15.864072799682617,
+    "ref_logp": -23.431507110595703
+  },
+  {
+    "step": 134,
+    "epoch": 2,
+    "loss": 0.25624847412109375,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.0655593872070312,
+    "reward_margin": 1.0655593872070312,
+    "policy_logp": -28.603557586669922,
+    "ref_logp": -17.94796371459961
+  },
+  {
+    "step": 135,
+    "epoch": 2,
+    "loss": 0.3744173049926758,
+    "mean_desirable_reward": 0.5133125185966492,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.5133125185966492,
+    "policy_logp": -39.09844207763672,
+    "ref_logp": -44.2315673828125
+  },
+  {
+    "step": 136,
+    "epoch": 2,
+    "loss": 0.39484265446662903,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.4270012080669403,
+    "reward_margin": 0.4270012080669403,
+    "policy_logp": -68.07015228271484,
+    "ref_logp": -63.800140380859375
+  },
+  {
+    "step": 137,
+    "epoch": 2,
+    "loss": 0.32968857884407043,
+    "mean_desirable_reward": 0.7095939517021179,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.7095939517021179,
+    "policy_logp": -32.978904724121094,
+    "ref_logp": -40.07484436035156
+  },
+  {
+    "step": 138,
+    "epoch": 2,
+    "loss": 0.19536443054676056,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.415522813796997,
+    "reward_margin": 1.415522813796997,
+    "policy_logp": -52.32539367675781,
+    "ref_logp": -38.170166015625
+  },
+  {
+    "step": 139,
+    "epoch": 2,
+    "loss": 0.681583046913147,
+    "mean_desirable_reward": -0.7610565423965454,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.7610565423965454,
+    "policy_logp": -25.505359649658203,
+    "ref_logp": -17.894794464111328
+  },
+  {
+    "step": 140,
+    "epoch": 2,
+    "loss": 0.18516649305820465,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.481728434562683,
+    "reward_margin": 1.481728434562683,
+    "policy_logp": -52.987449645996094,
+    "ref_logp": -38.170166015625
+  },
+  {
+    "step": 141,
+    "epoch": 2,
+    "loss": 0.3935035467147827,
+    "mean_desirable_reward": 0.43260881304740906,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.43260881304740906,
+    "policy_logp": -24.87494659423828,
+    "ref_logp": -29.201034545898438
+  },
+  {
+    "step": 142,
+    "epoch": 2,
+    "loss": 0.2386893481016159,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.1598786115646362,
+    "reward_margin": 1.1598786115646362,
+    "policy_logp": -67.68531799316406,
+    "ref_logp": -56.08653259277344
+  },
+  {
+    "step": 143,
+    "epoch": 2,
+    "loss": 0.3849550783634186,
+    "mean_desirable_reward": 0.4685686230659485,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.4685686230659485,
+    "policy_logp": -24.515348434448242,
+    "ref_logp": -29.201034545898438
+  },
+  {
+    "step": 144,
+    "epoch": 2,
+    "loss": 0.29947879910469055,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.8497810363769531,
+    "reward_margin": 0.8497810363769531,
+    "policy_logp": -54.70592498779297,
+    "ref_logp": -46.20811462402344
+  },
+  {
+    "step": 145,
+    "epoch": 2,
+    "loss": 0.7460838556289673,
+    "mean_desirable_reward": -1.0778340101242065,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.0778340101242065,
+    "policy_logp": -51.301143646240234,
+    "ref_logp": -40.522804260253906
+  },
+  {
+    "step": 146,
+    "epoch": 2,
+    "loss": 0.5838968753814697,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.33879128098487854,
+    "reward_margin": -0.33879128098487854,
+    "policy_logp": -29.412498474121094,
+    "ref_logp": -32.800411224365234
+  },
+  {
+    "step": 147,
+    "epoch": 2,
+    "loss": 0.5074033737182617,
+    "mean_desirable_reward": -0.02961578406393528,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.02961578406393528,
+    "policy_logp": -83.52056884765625,
+    "ref_logp": -83.22441101074219
+  },
+  {
+    "step": 148,
+    "epoch": 2,
+    "loss": 0.1405537873506546,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.8106979131698608,
+    "reward_margin": 1.8106979131698608,
+    "policy_logp": -68.883056640625,
+    "ref_logp": -50.77607727050781
+  },
+  {
+    "step": 149,
+    "epoch": 2,
+    "loss": 0.5022216439247131,
+    "mean_desirable_reward": -0.00888671912252903,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.00888671912252903,
+    "policy_logp": -83.31327819824219,
+    "ref_logp": -83.22441101074219
+  },
+  {
+    "step": 150,
+    "epoch": 2,
+    "loss": 0.1578269898891449,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.6744860410690308,
+    "reward_margin": 1.6744860410690308,
+    "policy_logp": -45.805755615234375,
+    "ref_logp": -29.060895919799805
+  },
+  {
+    "step": 151,
+    "epoch": 2,
+    "loss": 0.7863863110542297,
+    "mean_desirable_reward": -1.303279161453247,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.303279161453247,
+    "policy_logp": -106.90998840332031,
+    "ref_logp": -93.877197265625
+  },
+  {
+    "step": 152,
+    "epoch": 2,
+    "loss": 0.21158583462238312,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.3153927326202393,
+    "reward_margin": 1.3153927326202393,
+    "policy_logp": -44.81550598144531,
+    "ref_logp": -31.661579132080078
+  },
+  {
+    "step": 153,
+    "epoch": 2,
+    "loss": 0.7939872145652771,
+    "mean_desirable_reward": -1.3491287231445312,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.3491287231445312,
+    "policy_logp": -106.9919204711914,
+    "ref_logp": -93.5006332397461
+  },
+  {
+    "step": 154,
+    "epoch": 2,
+    "loss": 0.20328709483146667,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.365875244140625,
+    "reward_margin": 1.365875244140625,
+    "policy_logp": -45.32033157348633,
+    "ref_logp": -31.661579132080078
+  },
+  {
+    "step": 155,
+    "epoch": 2,
+    "loss": 0.2878577411174774,
+    "mean_desirable_reward": 0.9058113098144531,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.9058113098144531,
+    "policy_logp": -17.54227066040039,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 156,
+    "epoch": 2,
+    "loss": 0.1575603038072586,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.6764938831329346,
+    "reward_margin": 1.6764938831329346,
+    "policy_logp": -80.69601440429688,
+    "ref_logp": -63.93107604980469
+  },
+  {
+    "step": 157,
+    "epoch": 2,
+    "loss": 0.28210943937301636,
+    "mean_desirable_reward": 0.9340221285820007,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.9340221285820007,
+    "policy_logp": -17.260162353515625,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 158,
+    "epoch": 2,
+    "loss": 0.5845301151275635,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.3413982391357422,
+    "reward_margin": -0.3413982391357422,
+    "policy_logp": -31.940013885498047,
+    "ref_logp": -35.35399627685547
+  },
+  {
+    "step": 159,
+    "epoch": 2,
+    "loss": 0.27163606882095337,
+    "mean_desirable_reward": 0.9863376617431641,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.9863376617431641,
+    "policy_logp": -16.73700714111328,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 160,
+    "epoch": 2,
+    "loss": 0.5068175196647644,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.027271652594208717,
+    "reward_margin": -0.027271652594208717,
+    "policy_logp": -44.65740966796875,
+    "ref_logp": -44.93012619018555
+  },
+  {
+    "step": 161,
+    "epoch": 2,
+    "loss": 0.2586710751056671,
+    "mean_desirable_reward": 1.052887201309204,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.052887201309204,
+    "policy_logp": -16.07151222229004,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 162,
+    "epoch": 2,
+    "loss": 0.3127500116825104,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.7872940301895142,
+    "reward_margin": 0.7872940301895142,
+    "policy_logp": -27.503433227539062,
+    "ref_logp": -19.6304931640625
+  },
+  {
+    "step": 163,
+    "epoch": 2,
+    "loss": 0.2684110403060913,
+    "mean_desirable_reward": 1.0026992559432983,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.0026992559432983,
+    "policy_logp": -35.177520751953125,
+    "ref_logp": -45.20451354980469
+  },
+  {
+    "step": 164,
+    "epoch": 2,
+    "loss": 0.2636200785636902,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.0272372961044312,
+    "reward_margin": 1.0272372961044312,
+    "policy_logp": -49.98128128051758,
+    "ref_logp": -39.70890808105469
+  },
+  {
+    "step": 165,
+    "epoch": 2,
+    "loss": 0.2568514347076416,
+    "mean_desirable_reward": 1.0623981952667236,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.0623981952667236,
+    "policy_logp": -34.58053207397461,
+    "ref_logp": -45.20451354980469
+  },
+  {
+    "step": 166,
+    "epoch": 2,
+    "loss": 0.2705332636833191,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.9919185638427734,
+    "reward_margin": 0.9919185638427734,
+    "policy_logp": -55.47748947143555,
+    "ref_logp": -45.55830383300781
+  },
+  {
+    "step": 167,
+    "epoch": 2,
+    "loss": 0.32040196657180786,
+    "mean_desirable_reward": 0.7519251108169556,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.7519251108169556,
+    "policy_logp": -24.31525993347168,
+    "ref_logp": -31.834510803222656
+  },
+  {
+    "step": 168,
+    "epoch": 2,
+    "loss": 0.004634829703718424,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -5.369510173797607,
+    "reward_margin": 5.369510173797607,
+    "policy_logp": -247.9479522705078,
+    "ref_logp": -194.2528533935547
+  },
+  {
+    "step": 169,
+    "epoch": 2,
+    "loss": 0.3137367367744446,
+    "mean_desirable_reward": 0.7827072143554688,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.7827072143554688,
+    "policy_logp": -24.00743865966797,
+    "ref_logp": -31.834510803222656
+  },
+  {
+    "step": 170,
+    "epoch": 2,
+    "loss": 0.31128934025764465,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.7940983176231384,
+    "reward_margin": 0.7940983176231384,
+    "policy_logp": -47.84671401977539,
+    "ref_logp": -39.905731201171875
+  },
+  {
+    "step": 171,
+    "epoch": 2,
+    "loss": 0.5418426990509033,
+    "mean_desirable_reward": -0.1677631437778473,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.1677631437778473,
+    "policy_logp": -35.28860092163086,
+    "ref_logp": -33.61096954345703
+  },
+  {
+    "step": 172,
+    "epoch": 2,
+    "loss": 0.2781912088394165,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.9534515738487244,
+    "reward_margin": 0.9534515738487244,
+    "policy_logp": -55.029212951660156,
+    "ref_logp": -45.49469757080078
+  },
+  {
+    "step": 173,
+    "epoch": 2,
+    "loss": 0.5127001404762268,
+    "mean_desirable_reward": -0.05081138759851456,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.05081138759851456,
+    "policy_logp": -34.119083404541016,
+    "ref_logp": -33.61096954345703
+  },
+  {
+    "step": 174,
+    "epoch": 2,
+    "loss": 0.6350314617156982,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.5538633465766907,
+    "reward_margin": -0.5538633465766907,
+    "policy_logp": -28.291810989379883,
+    "ref_logp": -33.8304443359375
+  },
+  {
+    "step": 175,
+    "epoch": 2,
+    "loss": 0.23754329979419708,
+    "mean_desirable_reward": 1.1661957502365112,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.1661957502365112,
+    "policy_logp": -19.993881225585938,
+    "ref_logp": -31.655838012695312
+  },
+  {
+    "step": 176,
+    "epoch": 2,
+    "loss": 0.1730637103319168,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.5640678405761719,
+    "reward_margin": 1.5640678405761719,
+    "policy_logp": -84.31103515625,
+    "ref_logp": -68.67035675048828
+  },
+  {
+    "step": 177,
+    "epoch": 2,
+    "loss": 0.548634946346283,
+    "mean_desirable_reward": -0.19515685737133026,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.19515685737133026,
+    "policy_logp": -33.04956817626953,
+    "ref_logp": -31.097999572753906
+  },
+  {
+    "step": 178,
+    "epoch": 2,
+    "loss": 0.13388854265213013,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.8670059442520142,
+    "reward_margin": 1.8670059442520142,
+    "policy_logp": -87.34041595458984,
+    "ref_logp": -68.67035675048828
+  },
+  {
+    "step": 179,
+    "epoch": 2,
+    "loss": 0.21759913861751556,
+    "mean_desirable_reward": 1.2797126770019531,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.2797126770019531,
+    "policy_logp": -18.85871124267578,
+    "ref_logp": -31.655838012695312
+  },
+  {
+    "step": 180,
+    "epoch": 2,
+    "loss": 0.007640080526471138,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.866677761077881,
+    "reward_margin": 4.866677761077881,
+    "policy_logp": -310.1116638183594,
+    "ref_logp": -261.44488525390625
+  },
+  {
+    "step": 181,
+    "epoch": 2,
+    "loss": 0.5302535891532898,
+    "mean_desirable_reward": -0.12116241455078125,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.12116241455078125,
+    "policy_logp": -32.30962371826172,
+    "ref_logp": -31.097999572753906
+  },
+  {
+    "step": 182,
+    "epoch": 2,
+    "loss": 0.006033882964402437,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -5.104312419891357,
+    "reward_margin": 5.104312419891357,
+    "policy_logp": -312.4880065917969,
+    "ref_logp": -261.44488525390625
+  },
+  {
+    "step": 183,
+    "epoch": 2,
+    "loss": 0.448557049036026,
+    "mean_desirable_reward": 0.2065025418996811,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.2065025418996811,
+    "policy_logp": -19.517005920410156,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 184,
+    "epoch": 2,
+    "loss": 0.009289320558309555,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.669557094573975,
+    "reward_margin": 4.669557094573975,
+    "policy_logp": -64.74104309082031,
+    "ref_logp": -18.045473098754883
+  },
+  {
+    "step": 185,
+    "epoch": 2,
+    "loss": 0.4420798420906067,
+    "mean_desirable_reward": 0.23272553086280823,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.23272553086280823,
+    "policy_logp": -19.254776000976562,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 186,
+    "epoch": 2,
+    "loss": 0.012056306935846806,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.4060378074646,
+    "reward_margin": 4.4060378074646,
+    "policy_logp": -62.10585021972656,
+    "ref_logp": -18.045473098754883
+  },
+  {
+    "step": 187,
+    "epoch": 2,
+    "loss": 0.4328352212905884,
+    "mean_desirable_reward": 0.27029284834861755,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.27029284834861755,
+    "policy_logp": -18.87910270690918,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 188,
+    "epoch": 2,
+    "loss": 0.03295435383915901,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.379122257232666,
+    "reward_margin": 3.379122257232666,
+    "policy_logp": -49.574462890625,
+    "ref_logp": -15.783242225646973
+  },
+  {
+    "step": 189,
+    "epoch": 2,
+    "loss": 0.41604554653167725,
+    "mean_desirable_reward": 0.33902835845947266,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.33902835845947266,
+    "policy_logp": -18.191747665405273,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 190,
+    "epoch": 2,
+    "loss": 0.03777763620018959,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.2375283241271973,
+    "reward_margin": 3.2375283241271973,
+    "policy_logp": -48.37053298950195,
+    "ref_logp": -15.99525260925293
+  },
+  {
+    "step": 191,
+    "epoch": 2,
+    "loss": 0.7560942769050598,
+    "mean_desirable_reward": -1.131384253501892,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.131384253501892,
+    "policy_logp": -46.9716796875,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 192,
+    "epoch": 2,
+    "loss": 0.0010212721535935998,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -6.885684490203857,
+    "reward_margin": 6.885684490203857,
+    "policy_logp": -204.08932495117188,
+    "ref_logp": -135.23248291015625
+  },
+  {
+    "step": 193,
+    "epoch": 2,
+    "loss": 0.7066788673400879,
+    "mean_desirable_reward": -0.8793083429336548,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.8793083429336548,
+    "policy_logp": -44.45092010498047,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 194,
+    "epoch": 2,
+    "loss": 0.05650694668292999,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.81522536277771,
+    "reward_margin": 2.81522536277771,
+    "policy_logp": -62.59459686279297,
+    "ref_logp": -34.442344665527344
+  },
+  {
+    "step": 195,
+    "epoch": 2,
+    "loss": 0.7010390758514404,
+    "mean_desirable_reward": -0.8522506952285767,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.8522506952285767,
+    "policy_logp": -44.18034362792969,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 196,
+    "epoch": 2,
+    "loss": 0.011184114962816238,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.482013702392578,
+    "reward_margin": 4.482013702392578,
+    "policy_logp": -96.93228149414062,
+    "ref_logp": -52.112144470214844
+  },
+  {
+    "step": 197,
+    "epoch": 2,
+    "loss": 0.6993200182914734,
+    "mean_desirable_reward": -0.8440620303153992,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.8440620303153992,
+    "policy_logp": -44.09845733642578,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 198,
+    "epoch": 2,
+    "loss": 0.21518923342227936,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.2939249277114868,
+    "reward_margin": 1.2939249277114868,
+    "policy_logp": -43.13412857055664,
+    "ref_logp": -30.19487953186035
+  },
+  {
+    "step": 199,
+    "epoch": 2,
+    "loss": 0.6711686849594116,
+    "mean_desirable_reward": -0.7134756445884705,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.7134756445884705,
+    "policy_logp": -33.78779983520508,
+    "ref_logp": -26.653043746948242
+  },
+  {
+    "step": 200,
+    "epoch": 2,
+    "loss": 0.11917656660079956,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.000251054763794,
+    "reward_margin": 2.000251054763794,
+    "policy_logp": -88.34915924072266,
+    "ref_logp": -68.34664916992188
+  },
+  {
+    "step": 201,
+    "epoch": 2,
+    "loss": 0.7855136394500732,
+    "mean_desirable_reward": -1.2980918884277344,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.2980918884277344,
+    "policy_logp": -48.554378509521484,
+    "ref_logp": -35.57345962524414
+  },
+  {
+    "step": 202,
+    "epoch": 2,
+    "loss": 0.15788361430168152,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.6740601062774658,
+    "reward_margin": 1.6740601062774658,
+    "policy_logp": -57.88014221191406,
+    "ref_logp": -41.13954162597656
+  },
+  {
+    "step": 203,
+    "epoch": 2,
+    "loss": 0.9428063035011292,
+    "mean_desirable_reward": -2.8024182319641113,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -2.8024182319641113,
+    "policy_logp": -56.535099029541016,
+    "ref_logp": -28.51091766357422
+  },
+  {
+    "step": 204,
+    "epoch": 2,
+    "loss": 0.04908124729990959,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.963951587677002,
+    "reward_margin": 2.963951587677002,
+    "policy_logp": -63.33420181274414,
+    "ref_logp": -33.69468688964844
+  },
+  {
+    "step": 205,
+    "epoch": 2,
+    "loss": 0.6205260157585144,
+    "mean_desirable_reward": -0.491781622171402,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.491781622171402,
+    "policy_logp": -49.232513427734375,
+    "ref_logp": -44.314697265625
+  },
+  {
+    "step": 206,
+    "epoch": 2,
+    "loss": 0.07629560679197311,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.493776798248291,
+    "reward_margin": 2.493776798248291,
+    "policy_logp": -50.92343521118164,
+    "ref_logp": -25.985668182373047
+  },
+  {
+    "step": 207,
+    "epoch": 2,
+    "loss": 0.6308979392051697,
+    "mean_desirable_reward": -0.5360710024833679,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.5360710024833679,
+    "policy_logp": -39.90948486328125,
+    "ref_logp": -34.54877471923828
+  },
+  {
+    "step": 208,
+    "epoch": 2,
+    "loss": 0.39652708172798157,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.4199569821357727,
+    "reward_margin": 0.4199569821357727,
+    "policy_logp": -25.630935668945312,
+    "ref_logp": -21.431365966796875
+  },
+  {
+    "step": 209,
+    "epoch": 2,
+    "loss": 0.6698969006538391,
+    "mean_desirable_reward": -0.7077188491821289,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.7077188491821289,
+    "policy_logp": -35.71356201171875,
+    "ref_logp": -28.63637351989746
+  },
+  {
+    "step": 210,
+    "epoch": 2,
+    "loss": 0.39734989404678345,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.41651955246925354,
+    "reward_margin": 0.41651955246925354,
+    "policy_logp": -25.596561431884766,
+    "ref_logp": -21.431365966796875
+  },
+  {
+    "step": 211,
+    "epoch": 2,
+    "loss": 0.3390119969844818,
+    "mean_desirable_reward": 0.6677002310752869,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.6677002310752869,
+    "policy_logp": -44.60108947753906,
+    "ref_logp": -51.27809143066406
+  },
+  {
+    "step": 212,
+    "epoch": 2,
+    "loss": 0.00905713438987732,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.695104122161865,
+    "reward_margin": 4.695104122161865,
+    "policy_logp": -108.5937728881836,
+    "ref_logp": -61.642730712890625
+  },
+  {
+    "step": 213,
+    "epoch": 2,
+    "loss": 0.3234151601791382,
+    "mean_desirable_reward": 0.7381210327148438,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.7381210327148438,
+    "policy_logp": -43.896881103515625,
+    "ref_logp": -51.27809143066406
+  },
+  {
+    "step": 214,
+    "epoch": 2,
+    "loss": 0.07558771967887878,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.503864288330078,
+    "reward_margin": 2.503864288330078,
+    "policy_logp": -73.8821792602539,
+    "ref_logp": -48.843536376953125
+  },
+  {
+    "step": 215,
+    "epoch": 2,
+    "loss": 0.30179697275161743,
+    "mean_desirable_reward": 0.8387554287910461,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.8387554287910461,
+    "policy_logp": -42.89053726196289,
+    "ref_logp": -51.27809143066406
+  },
+  {
+    "step": 216,
+    "epoch": 2,
+    "loss": 0.09408966451883316,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.2646920680999756,
+    "reward_margin": 2.2646920680999756,
+    "policy_logp": -68.1512222290039,
+    "ref_logp": -45.504302978515625
+  },
+  {
+    "step": 217,
+    "epoch": 3,
+    "loss": 0.8503479957580566,
+    "mean_desirable_reward": -1.7373325824737549,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.7373325824737549,
+    "policy_logp": -44.90922546386719,
+    "ref_logp": -27.535900115966797
+  },
+  {
+    "step": 218,
+    "epoch": 3,
+    "loss": 0.05742745101451874,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.7980904579162598,
+    "reward_margin": 2.7980904579162598,
+    "policy_logp": -61.16737747192383,
+    "ref_logp": -33.18647384643555
+  },
+  {
+    "step": 219,
+    "epoch": 3,
+    "loss": 0.823923647403717,
+    "mean_desirable_reward": -1.543160319328308,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.543160319328308,
+    "policy_logp": -66.02206420898438,
+    "ref_logp": -50.59046173095703
+  },
+  {
+    "step": 220,
+    "epoch": 3,
+    "loss": 0.048800114542245865,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.969991445541382,
+    "reward_margin": 2.969991445541382,
+    "policy_logp": -76.559326171875,
+    "ref_logp": -46.859413146972656
+  },
+  {
+    "step": 221,
+    "epoch": 3,
+    "loss": 0.8689848780632019,
+    "mean_desirable_reward": -1.8920128345489502,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.8920128345489502,
+    "policy_logp": -72.4780502319336,
+    "ref_logp": -53.55792236328125
+  },
+  {
+    "step": 222,
+    "epoch": 3,
+    "loss": 0.04898333176970482,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.9660515785217285,
+    "reward_margin": 2.9660515785217285,
+    "policy_logp": -76.51992797851562,
+    "ref_logp": -46.859413146972656
+  },
+  {
+    "step": 223,
+    "epoch": 3,
+    "loss": 0.7480965256690979,
+    "mean_desirable_reward": -1.0884857177734375,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.0884857177734375,
+    "policy_logp": -53.402740478515625,
+    "ref_logp": -42.51788330078125
+  },
+  {
+    "step": 224,
+    "epoch": 3,
+    "loss": 0.10169969499111176,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.1784801483154297,
+    "reward_margin": 2.1784801483154297,
+    "policy_logp": -51.7810173034668,
+    "ref_logp": -29.9962158203125
+  },
+  {
+    "step": 225,
+    "epoch": 3,
+    "loss": 0.7379316091537476,
+    "mean_desirable_reward": -1.0352455377578735,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.0352455377578735,
+    "policy_logp": -52.870338439941406,
+    "ref_logp": -42.51788330078125
+  },
+  {
+    "step": 226,
+    "epoch": 3,
+    "loss": 0.05887847766280174,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.771596670150757,
+    "reward_margin": 2.771596670150757,
+    "policy_logp": -79.06807708740234,
+    "ref_logp": -51.35211181640625
+  },
+  {
+    "step": 227,
+    "epoch": 3,
+    "loss": 0.734247088432312,
+    "mean_desirable_reward": -1.016278862953186,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.016278862953186,
+    "policy_logp": -52.68067169189453,
+    "ref_logp": -42.51788330078125
+  },
+  {
+    "step": 228,
+    "epoch": 3,
+    "loss": 0.16348809003829956,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.6325005292892456,
+    "reward_margin": 1.6325005292892456,
+    "policy_logp": -72.81710815429688,
+    "ref_logp": -56.492103576660156
+  },
+  {
+    "step": 229,
+    "epoch": 3,
+    "loss": 0.7374337315559387,
+    "mean_desirable_reward": -1.0326728820800781,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.0326728820800781,
+    "policy_logp": -58.55348587036133,
+    "ref_logp": -48.22675704956055
+  },
+  {
+    "step": 230,
+    "epoch": 3,
+    "loss": 0.062002792954444885,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.7165675163269043,
+    "reward_margin": 2.7165675163269043,
+    "policy_logp": -57.95014190673828,
+    "ref_logp": -30.784467697143555
+  },
+  {
+    "step": 231,
+    "epoch": 3,
+    "loss": 0.8119354844093323,
+    "mean_desirable_reward": -1.46263587474823,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.46263587474823,
+    "policy_logp": -58.419010162353516,
+    "ref_logp": -43.79265213012695
+  },
+  {
+    "step": 232,
+    "epoch": 3,
+    "loss": 0.015253649093210697,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.16756534576416,
+    "reward_margin": 4.16756534576416,
+    "policy_logp": -116.43827819824219,
+    "ref_logp": -74.76262664794922
+  },
+  {
+    "step": 233,
+    "epoch": 3,
+    "loss": 0.6518320441246033,
+    "mean_desirable_reward": -0.6271018981933594,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.6271018981933594,
+    "policy_logp": -46.667755126953125,
+    "ref_logp": -40.39673614501953
+  },
+  {
+    "step": 234,
+    "epoch": 3,
+    "loss": 0.3724994361400604,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.5215091705322266,
+    "reward_margin": 0.5215091705322266,
+    "policy_logp": -35.81000518798828,
+    "ref_logp": -30.594913482666016
+  },
+  {
+    "step": 235,
+    "epoch": 3,
+    "loss": 0.9539461135864258,
+    "mean_desirable_reward": -3.0307939052581787,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -3.0307939052581787,
+    "policy_logp": -75.36100769042969,
+    "ref_logp": -45.053070068359375
+  },
+  {
+    "step": 236,
+    "epoch": 3,
+    "loss": 0.056048933416604996,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.8238492012023926,
+    "reward_margin": 2.8238492012023926,
+    "policy_logp": -77.40669250488281,
+    "ref_logp": -49.1682014465332
+  },
+  {
+    "step": 237,
+    "epoch": 3,
+    "loss": 0.9150370955467224,
+    "mean_desirable_reward": -2.3767502307891846,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -2.3767502307891846,
+    "policy_logp": -41.7154655456543,
+    "ref_logp": -17.94796371459961
+  },
+  {
+    "step": 238,
+    "epoch": 3,
+    "loss": 0.039793938398361206,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.1834332942962646,
+    "reward_margin": 3.1834332942962646,
+    "policy_logp": -63.30748748779297,
+    "ref_logp": -31.473155975341797
+  },
+  {
+    "step": 239,
+    "epoch": 3,
+    "loss": 0.2231767326593399,
+    "mean_desirable_reward": 1.2472490072250366,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.2472490072250366,
+    "policy_logp": -10.959016799926758,
+    "ref_logp": -23.431507110595703
+  },
+  {
+    "step": 240,
+    "epoch": 3,
+    "loss": 0.039303332567214966,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.1963493824005127,
+    "reward_margin": 3.1963493824005127,
+    "policy_logp": -63.436649322509766,
+    "ref_logp": -31.473155975341797
+  },
+  {
+    "step": 241,
+    "epoch": 3,
+    "loss": 0.2149680107831955,
+    "mean_desirable_reward": 1.295235276222229,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.295235276222229,
+    "policy_logp": -10.479154586791992,
+    "ref_logp": -23.431507110595703
+  },
+  {
+    "step": 242,
+    "epoch": 3,
+    "loss": 0.05115055665373802,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.9204766750335693,
+    "reward_margin": 2.9204766750335693,
+    "policy_logp": -47.15272903442383,
+    "ref_logp": -17.94796371459961
+  },
+  {
+    "step": 243,
+    "epoch": 3,
+    "loss": 0.29698315262794495,
+    "mean_desirable_reward": 0.8617054224014282,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.8617054224014282,
+    "policy_logp": -35.6145133972168,
+    "ref_logp": -44.2315673828125
+  },
+  {
+    "step": 244,
+    "epoch": 3,
+    "loss": 0.2223755270242691,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.2518761157989502,
+    "reward_margin": 1.2518761157989502,
+    "policy_logp": -76.31890106201172,
+    "ref_logp": -63.800140380859375
+  },
+  {
+    "step": 245,
+    "epoch": 3,
+    "loss": 0.3547790050506592,
+    "mean_desirable_reward": 0.5980976223945618,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.5980976223945618,
+    "policy_logp": -34.093868255615234,
+    "ref_logp": -40.07484436035156
+  },
+  {
+    "step": 246,
+    "epoch": 3,
+    "loss": 0.023533739149570465,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.7255051136016846,
+    "reward_margin": 3.7255051136016846,
+    "policy_logp": -75.42521667480469,
+    "ref_logp": -38.170166015625
+  },
+  {
+    "step": 247,
+    "epoch": 3,
+    "loss": 0.9087232351303101,
+    "mean_desirable_reward": -2.298145055770874,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -2.298145055770874,
+    "policy_logp": -40.876243591308594,
+    "ref_logp": -17.894794464111328
+  },
+  {
+    "step": 248,
+    "epoch": 3,
+    "loss": 0.02079404518008232,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.8520753383636475,
+    "reward_margin": 3.8520753383636475,
+    "policy_logp": -76.69091796875,
+    "ref_logp": -38.170166015625
+  },
+  {
+    "step": 249,
+    "epoch": 3,
+    "loss": 0.28014782071113586,
+    "mean_desirable_reward": 0.9437284469604492,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.9437284469604492,
+    "policy_logp": -19.763750076293945,
+    "ref_logp": -29.201034545898438
+  },
+  {
+    "step": 250,
+    "epoch": 3,
+    "loss": 0.05622532591223717,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.8205201625823975,
+    "reward_margin": 2.8205201625823975,
+    "policy_logp": -84.29173278808594,
+    "ref_logp": -56.08653259277344
+  },
+  {
+    "step": 251,
+    "epoch": 3,
+    "loss": 0.27081117033958435,
+    "mean_desirable_reward": 0.9905109405517578,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.9905109405517578,
+    "policy_logp": -19.29592514038086,
+    "ref_logp": -29.201034545898438
+  },
+  {
+    "step": 252,
+    "epoch": 3,
+    "loss": 0.073792465031147,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.529841661453247,
+    "reward_margin": 2.529841661453247,
+    "policy_logp": -71.50653076171875,
+    "ref_logp": -46.20811462402344
+  },
+  {
+    "step": 253,
+    "epoch": 3,
+    "loss": 0.9482492208480835,
+    "mean_desirable_reward": -2.908177137374878,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -2.908177137374878,
+    "policy_logp": -69.60457611083984,
+    "ref_logp": -40.522804260253906
+  },
+  {
+    "step": 254,
+    "epoch": 3,
+    "loss": 0.6281274557113647,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.524191677570343,
+    "reward_margin": -0.524191677570343,
+    "policy_logp": -27.558494567871094,
+    "ref_logp": -32.800411224365234
+  },
+  {
+    "step": 255,
+    "epoch": 3,
+    "loss": 0.862947940826416,
+    "mean_desirable_reward": -1.8399933576583862,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.8399933576583862,
+    "policy_logp": -101.62434387207031,
+    "ref_logp": -83.22441101074219
+  },
+  {
+    "step": 256,
+    "epoch": 3,
+    "loss": 0.007985146716237068,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.822154998779297,
+    "reward_margin": 4.822154998779297,
+    "policy_logp": -98.99762725830078,
+    "ref_logp": -50.77607727050781
+  },
+  {
+    "step": 257,
+    "epoch": 3,
+    "loss": 0.863016664981842,
+    "mean_desirable_reward": -1.8405746221542358,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.8405746221542358,
+    "policy_logp": -101.63015747070312,
+    "ref_logp": -83.22441101074219
+  },
+  {
+    "step": 258,
+    "epoch": 3,
+    "loss": 0.009412686340510845,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.6562395095825195,
+    "reward_margin": 4.6562395095825195,
+    "policy_logp": -75.623291015625,
+    "ref_logp": -29.060895919799805
+  },
+  {
+    "step": 259,
+    "epoch": 3,
+    "loss": 0.9911447167396545,
+    "mean_desirable_reward": -4.7178497314453125,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -4.7178497314453125,
+    "policy_logp": -141.05569458007812,
+    "ref_logp": -93.877197265625
+  },
+  {
+    "step": 260,
+    "epoch": 3,
+    "loss": 0.035751111805438995,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.2947680950164795,
+    "reward_margin": 3.2947680950164795,
+    "policy_logp": -64.60926055908203,
+    "ref_logp": -31.661579132080078
+  },
+  {
+    "step": 261,
+    "epoch": 3,
+    "loss": 0.9820778965950012,
+    "mean_desirable_reward": -4.003636837005615,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -4.003636837005615,
+    "policy_logp": -133.53700256347656,
+    "ref_logp": -93.5006332397461
+  },
+  {
+    "step": 262,
+    "epoch": 3,
+    "loss": 0.03288803622126579,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.3812053203582764,
+    "reward_margin": 3.3812053203582764,
+    "policy_logp": -65.4736328125,
+    "ref_logp": -31.661579132080078
+  },
+  {
+    "step": 263,
+    "epoch": 3,
+    "loss": 0.1694590300321579,
+    "mean_desirable_reward": 1.5894659757614136,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.5894659757614136,
+    "policy_logp": -10.705724716186523,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 264,
+    "epoch": 3,
+    "loss": 0.01147193182259798,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.456313610076904,
+    "reward_margin": 4.456313610076904,
+    "policy_logp": -108.49420928955078,
+    "ref_logp": -63.93107604980469
+  },
+  {
+    "step": 265,
+    "epoch": 3,
+    "loss": 0.1620917171239853,
+    "mean_desirable_reward": 1.6427463293075562,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.6427463293075562,
+    "policy_logp": -10.172919273376465,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 266,
+    "epoch": 3,
+    "loss": 0.530310869216919,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.12139244377613068,
+    "reward_margin": -0.12139244377613068,
+    "policy_logp": -34.140071868896484,
+    "ref_logp": -35.35399627685547
+  },
+  {
+    "step": 267,
+    "epoch": 3,
+    "loss": 0.15146812796592712,
+    "mean_desirable_reward": 1.7231323719024658,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.7231323719024658,
+    "policy_logp": -9.369059562683105,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 268,
+    "epoch": 3,
+    "loss": 0.09337395429611206,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.2731175422668457,
+    "reward_margin": 2.2731175422668457,
+    "policy_logp": -67.66130065917969,
+    "ref_logp": -44.93012619018555
+  },
+  {
+    "step": 269,
+    "epoch": 3,
+    "loss": 0.141231968998909,
+    "mean_desirable_reward": 1.8050950765609741,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.8050950765609741,
+    "policy_logp": -8.549432754516602,
+    "ref_logp": -26.600383758544922
+  },
+  {
+    "step": 270,
+    "epoch": 3,
+    "loss": 0.0785926952958107,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.461623430252075,
+    "reward_margin": 2.461623430252075,
+    "policy_logp": -44.246726989746094,
+    "ref_logp": -19.6304931640625
+  },
+  {
+    "step": 271,
+    "epoch": 3,
+    "loss": 0.14685501158237457,
+    "mean_desirable_reward": 1.7594836950302124,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.7594836950302124,
+    "policy_logp": -27.609676361083984,
+    "ref_logp": -45.20451354980469
+  },
+  {
+    "step": 272,
+    "epoch": 3,
+    "loss": 0.028605017811059952,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.525151014328003,
+    "reward_margin": 3.525151014328003,
+    "policy_logp": -74.96041870117188,
+    "ref_logp": -39.70890808105469
+  },
+  {
+    "step": 273,
+    "epoch": 3,
+    "loss": 0.1368311047554016,
+    "mean_desirable_reward": 1.8418629169464111,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.8418629169464111,
+    "policy_logp": -26.785884857177734,
+    "ref_logp": -45.20451354980469
+  },
+  {
+    "step": 274,
+    "epoch": 3,
+    "loss": 0.06627747416496277,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.645329236984253,
+    "reward_margin": 2.645329236984253,
+    "policy_logp": -72.0115966796875,
+    "ref_logp": -45.55830383300781
+  },
+  {
+    "step": 275,
+    "epoch": 3,
+    "loss": 0.17988352477550507,
+    "mean_desirable_reward": 1.517136812210083,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.517136812210083,
+    "policy_logp": -16.663143157958984,
+    "ref_logp": -31.834510803222656
+  },
+  {
+    "step": 276,
+    "epoch": 3,
+    "loss": 0.00012999984028283507,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -8.947847366333008,
+    "reward_margin": 8.947847366333008,
+    "policy_logp": -283.7313232421875,
+    "ref_logp": -194.2528533935547
+  },
+  {
+    "step": 277,
+    "epoch": 3,
+    "loss": 0.17040938138961792,
+    "mean_desirable_reward": 1.5827287435531616,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.5827287435531616,
+    "policy_logp": -16.00722312927246,
+    "ref_logp": -31.834510803222656
+  },
+  {
+    "step": 278,
+    "epoch": 3,
+    "loss": 0.15407094359397888,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.7030223608016968,
+    "reward_margin": 1.7030223608016968,
+    "policy_logp": -56.93595504760742,
+    "ref_logp": -39.905731201171875
+  },
+  {
+    "step": 279,
+    "epoch": 3,
+    "loss": 0.660780668258667,
+    "mean_desirable_reward": -0.6667751669883728,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.6667751669883728,
+    "policy_logp": -40.27872085571289,
+    "ref_logp": -33.61096954345703
+  },
+  {
+    "step": 280,
+    "epoch": 3,
+    "loss": 0.11061742901802063,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.0844497680664062,
+    "reward_margin": 2.0844497680664062,
+    "policy_logp": -66.33919525146484,
+    "ref_logp": -45.49469757080078
+  },
+  {
+    "step": 281,
+    "epoch": 3,
+    "loss": 0.6606903672218323,
+    "mean_desirable_reward": -0.6663722991943359,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.6663722991943359,
+    "policy_logp": -40.27469253540039,
+    "ref_logp": -33.61096954345703
+  },
+  {
+    "step": 282,
+    "epoch": 3,
+    "loss": 0.5833154320716858,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": 0.3363986909389496,
+    "reward_margin": -0.3363986909389496,
+    "policy_logp": -30.46645736694336,
+    "ref_logp": -33.8304443359375
+  },
+  {
+    "step": 283,
+    "epoch": 3,
+    "loss": 0.13511669635772705,
+    "mean_desirable_reward": 1.856455683708191,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.856455683708191,
+    "policy_logp": -13.09128189086914,
+    "ref_logp": -31.655838012695312
+  },
+  {
+    "step": 284,
+    "epoch": 3,
+    "loss": 0.02513739839196205,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.657939910888672,
+    "reward_margin": 3.657939910888672,
+    "policy_logp": -105.249755859375,
+    "ref_logp": -68.67035675048828
+  },
+  {
+    "step": 285,
+    "epoch": 3,
+    "loss": 0.6289384961128235,
+    "mean_desirable_reward": -0.5276657342910767,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.5276657342910767,
+    "policy_logp": -36.374656677246094,
+    "ref_logp": -31.097999572753906
+  },
+  {
+    "step": 286,
+    "epoch": 3,
+    "loss": 0.02141239307820797,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.8221404552459717,
+    "reward_margin": 3.8221404552459717,
+    "policy_logp": -106.89176177978516,
+    "ref_logp": -68.67035675048828
+  },
+  {
+    "step": 287,
+    "epoch": 3,
+    "loss": 0.1238732635974884,
+    "mean_desirable_reward": 1.9562517404556274,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.9562517404556274,
+    "policy_logp": -12.093320846557617,
+    "ref_logp": -31.655838012695312
+  },
+  {
+    "step": 288,
+    "epoch": 3,
+    "loss": 0.0002599461586214602,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -8.254776000976562,
+    "reward_margin": 8.254776000976562,
+    "policy_logp": -343.9926452636719,
+    "ref_logp": -261.44488525390625
+  },
+  {
+    "step": 289,
+    "epoch": 3,
+    "loss": 0.6453584432601929,
+    "mean_desirable_reward": -0.5986984372138977,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.5986984372138977,
+    "policy_logp": -37.084983825683594,
+    "ref_logp": -31.097999572753906
+  },
+  {
+    "step": 290,
+    "epoch": 3,
+    "loss": 0.00021639070473611355,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -8.43820858001709,
+    "reward_margin": 8.43820858001709,
+    "policy_logp": -345.82696533203125,
+    "ref_logp": -261.44488525390625
+  },
+  {
+    "step": 291,
+    "epoch": 3,
+    "loss": 0.2886958122253418,
+    "mean_desirable_reward": 0.9017265439033508,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.9017265439033508,
+    "policy_logp": -12.564765930175781,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 292,
+    "epoch": 3,
+    "loss": 0.0005014132475480437,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -7.597578525543213,
+    "reward_margin": 7.597578525543213,
+    "policy_logp": -94.02125549316406,
+    "ref_logp": -18.045473098754883
+  },
+  {
+    "step": 293,
+    "epoch": 3,
+    "loss": 0.2784820795059204,
+    "mean_desirable_reward": 0.9520034790039062,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.9520034790039062,
+    "policy_logp": -12.061996459960938,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 294,
+    "epoch": 3,
+    "loss": 0.0005884918500669301,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -7.437358856201172,
+    "reward_margin": 7.437358856201172,
+    "policy_logp": -92.41905975341797,
+    "ref_logp": -18.045473098754883
+  },
+  {
+    "step": 295,
+    "epoch": 3,
+    "loss": 0.26334401965141296,
+    "mean_desirable_reward": 1.0286598205566406,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.0286598205566406,
+    "policy_logp": -11.295433044433594,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 296,
+    "epoch": 3,
+    "loss": 0.003396776970475912,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -5.681525707244873,
+    "reward_margin": 5.681525707244873,
+    "policy_logp": -72.59849548339844,
+    "ref_logp": -15.783242225646973
+  },
+  {
+    "step": 297,
+    "epoch": 3,
+    "loss": 0.24474763870239258,
+    "mean_desirable_reward": 1.1268242597579956,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.1268242597579956,
+    "policy_logp": -10.313789367675781,
+    "ref_logp": -21.58203125
+  },
+  {
+    "step": 298,
+    "epoch": 3,
+    "loss": 0.00577428936958313,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -5.1485490798950195,
+    "reward_margin": 5.1485490798950195,
+    "policy_logp": -67.48074340820312,
+    "ref_logp": -15.99525260925293
+  },
+  {
+    "step": 299,
+    "epoch": 3,
+    "loss": 0.7533854246139526,
+    "mean_desirable_reward": -1.1167503595352173,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.1167503595352173,
+    "policy_logp": -46.825340270996094,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 300,
+    "epoch": 3,
+    "loss": 4.436488961800933e-05,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -10.023017883300781,
+    "reward_margin": 10.023017883300781,
+    "policy_logp": -235.46266174316406,
+    "ref_logp": -135.23248291015625
+  },
+  {
+    "step": 301,
+    "epoch": 3,
+    "loss": 0.6975837349891663,
+    "mean_desirable_reward": -0.8358181118965149,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.8358181118965149,
+    "policy_logp": -44.01601791381836,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 302,
+    "epoch": 3,
+    "loss": 0.022329185158014297,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.779278516769409,
+    "reward_margin": 3.779278516769409,
+    "policy_logp": -72.2351303100586,
+    "ref_logp": -34.442344665527344
+  },
+  {
+    "step": 303,
+    "epoch": 3,
+    "loss": 0.5133930444717407,
+    "mean_desirable_reward": -0.053585052490234375,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.053585052490234375,
+    "policy_logp": -36.193687438964844,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 304,
+    "epoch": 3,
+    "loss": 0.005416961386799812,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -5.2127885818481445,
+    "reward_margin": 5.2127885818481445,
+    "policy_logp": -104.24002838134766,
+    "ref_logp": -52.112144470214844
+  },
+  {
+    "step": 305,
+    "epoch": 3,
+    "loss": 0.5356749892234802,
+    "mean_desirable_reward": -0.14294281601905823,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.14294281601905823,
+    "policy_logp": -37.08726501464844,
+    "ref_logp": -35.6578369140625
+  },
+  {
+    "step": 306,
+    "epoch": 3,
+    "loss": 0.3121446669101715,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -0.7901117205619812,
+    "reward_margin": 0.7901117205619812,
+    "policy_logp": -38.09599685668945,
+    "ref_logp": -30.19487953186035
+  },
+  {
+    "step": 307,
+    "epoch": 3,
+    "loss": 0.5835798382759094,
+    "mean_desirable_reward": -0.3374866545200348,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.3374866545200348,
+    "policy_logp": -30.027910232543945,
+    "ref_logp": -26.653043746948242
+  },
+  {
+    "step": 308,
+    "epoch": 3,
+    "loss": 0.016644056886434555,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.078917980194092,
+    "reward_margin": 4.078917980194092,
+    "policy_logp": -109.13582611083984,
+    "ref_logp": -68.34664916992188
+  },
+  {
+    "step": 309,
+    "epoch": 3,
+    "loss": 0.804150402545929,
+    "mean_desirable_reward": -1.4124393463134766,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -1.4124393463134766,
+    "policy_logp": -49.697853088378906,
+    "ref_logp": -35.57345962524414
+  },
+  {
+    "step": 310,
+    "epoch": 3,
+    "loss": 0.08318857848644257,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -2.399791717529297,
+    "reward_margin": 2.399791717529297,
+    "policy_logp": -65.13745880126953,
+    "ref_logp": -41.13954162597656
+  },
+  {
+    "step": 311,
+    "epoch": 3,
+    "loss": 0.9889638423919678,
+    "mean_desirable_reward": -4.49547815322876,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -4.49547815322876,
+    "policy_logp": -73.4656982421875,
+    "ref_logp": -28.51091766357422
+  },
+  {
+    "step": 312,
+    "epoch": 3,
+    "loss": 0.008423306047916412,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.768293857574463,
+    "reward_margin": 4.768293857574463,
+    "policy_logp": -81.37762451171875,
+    "ref_logp": -33.69468688964844
+  },
+  {
+    "step": 313,
+    "epoch": 3,
+    "loss": 0.47205159068107605,
+    "mean_desirable_reward": 0.11191024631261826,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 0.11191024631261826,
+    "policy_logp": -43.195594787597656,
+    "ref_logp": -44.314697265625
+  },
+  {
+    "step": 314,
+    "epoch": 3,
+    "loss": 0.047285500913858414,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.0031116008758545,
+    "reward_margin": 3.0031116008758545,
+    "policy_logp": -56.01678466796875,
+    "ref_logp": -25.985668182373047
+  },
+  {
+    "step": 315,
+    "epoch": 3,
+    "loss": 0.5748873353004456,
+    "mean_desirable_reward": -0.3018200099468231,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.3018200099468231,
+    "policy_logp": -37.56697463989258,
+    "ref_logp": -34.54877471923828
+  },
+  {
+    "step": 316,
+    "epoch": 3,
+    "loss": 0.267053484916687,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.0096237659454346,
+    "reward_margin": 1.0096237659454346,
+    "policy_logp": -31.527603149414062,
+    "ref_logp": -21.431365966796875
+  },
+  {
+    "step": 317,
+    "epoch": 3,
+    "loss": 0.6504964232444763,
+    "mean_desirable_reward": -0.6212221384048462,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": -0.6212221384048462,
+    "policy_logp": -34.848594665527344,
+    "ref_logp": -28.63637351989746
+  },
+  {
+    "step": 318,
+    "epoch": 3,
+    "loss": 0.2580411434173584,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -1.056174635887146,
+    "reward_margin": 1.056174635887146,
+    "policy_logp": -31.993112564086914,
+    "ref_logp": -21.431365966796875
+  },
+  {
+    "step": 319,
+    "epoch": 3,
+    "loss": 0.13958579301834106,
+    "mean_desirable_reward": 1.8187344074249268,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.8187344074249268,
+    "policy_logp": -33.09074783325195,
+    "ref_logp": -51.27809143066406
+  },
+  {
+    "step": 320,
+    "epoch": 3,
+    "loss": 0.0020852924790233374,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -6.1707587242126465,
+    "reward_margin": 6.1707587242126465,
+    "policy_logp": -123.3503189086914,
+    "ref_logp": -61.642730712890625
+  },
+  {
+    "step": 321,
+    "epoch": 3,
+    "loss": 0.12834888696670532,
+    "mean_desirable_reward": 1.9156368970870972,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 1.9156368970870972,
+    "policy_logp": -32.12172317504883,
+    "ref_logp": -51.27809143066406
+  },
+  {
+    "step": 322,
+    "epoch": 3,
+    "loss": 0.017220361158251762,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -4.044292449951172,
+    "reward_margin": 4.044292449951172,
+    "policy_logp": -89.28646087646484,
+    "ref_logp": -48.843536376953125
+  },
+  {
+    "step": 323,
+    "epoch": 3,
+    "loss": 0.11531761288642883,
+    "mean_desirable_reward": 2.037538528442383,
+    "mean_undesirable_reward": 0.0,
+    "reward_margin": 2.037538528442383,
+    "policy_logp": -30.902706146240234,
+    "ref_logp": -51.27809143066406
+  },
+  {
+    "step": 324,
+    "epoch": 3,
+    "loss": 0.02816116437315941,
+    "mean_desirable_reward": 0.0,
+    "mean_undesirable_reward": -3.541246175765991,
+    "reward_margin": 3.541246175765991,
+    "policy_logp": -80.91676330566406,
+    "ref_logp": -45.504302978515625
+  }
+]
