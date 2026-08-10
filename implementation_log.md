@@ -221,6 +221,12 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Updated `scripts/create_notebook.py` and regenerated `notebooks/evaluate_rollouts.ipynb` along with all 13 figure files under `notebooks/charts/` (`01_overall_accuracy.png` through `13_hallucinated_correctness.png`).
 - **Why**: User explicitly approved the centralized NeurIPS style. Re-rendered all analysis charts using `setup_plot_style()` and standard `PALETTE` semantic colors for clear, publication-quality presentation across the evaluation suite.
 
-
-
-
+## Successful Custom Step-DPO Training Run (Kaggle 2xT4 / P100)
+- **What**: Successfully executed full 3-epoch custom Step-DPO fine-tuning of Qwen2.5-VL-3B on Kaggle using our minimal DPO trainer pipeline (`train_dpo.py`, `src/chart_prm/dpo/`).
+- **Why**: Standard TRL DPOTrainer failed due to VRAM OOM, logits projection memory explosion, and VLM collator issues. Our custom implementation resolves all VRAM bottlenecks via per-substep VRAM cache clearing (`torch.cuda.empty_cache()`), gradient checkpointing, `torch_dtype` handling, and in-line reference log-prob calculation via `model.disable_adapter()`.
+- **Results**:
+  - **Epochs**: 3 epochs over 54 audited Step-DPO preference pairs (162 total steps).
+  - **Loss Progression**: Smooth convergence from initial DPO loss `0.6931` ($\log 2$) down to `0.0000203` ($2.03 \times 10^{-5}$).
+  - **Reward Margin**: Expanded to **+10.80** (chosen response rewards heavily favored over rejected step rollouts).
+  - **Preference Accuracy**: Reached **100.0%** final preference accuracy.
+  - **Artifacts Saved**: Trained LoRA adapter (`adapter_model.safetensors`, `adapter_config.json`, `training_history.json`, `tokenizer.json`) downloaded to [`qwen_vl_dpo_adapter/`](file:///home/yahor/Documents/uni/sem_6/prm/project/qwen_vl_dpo_adapter/).
