@@ -209,3 +209,8 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Pinned `bitsandbytes==0.50.0` (tested against PyTorch 2.10/CUDA 12.8 upstream) and converted base-model loading to 4-bit NF4 with FP16 compute and double quantization.
 - **Why**: Completion-only logits and reduced chart resolution still left the native-FP16 backward pass at 14.52/14.56 GiB. Modern BitsAndBytes replaces the incompatible old Kaggle build that caused the earlier CUDA symbol failure and provides enough model-memory headroom for stable single-T4 training.
 
+## Minimal Custom DPO Trainer Implementation (Zero-TRL Dependency)
+- **What**: Built a self-contained, minimal native PyTorch DPO training package (`src/chart_prm/dpo/`: `loss.py`, `trainer.py`, `utils.py`), executable script (`train_dpo.py`), and full test suite (`tests/test_dpo_loss.py`, `tests/test_logprob.py`, `tests/test_data.py`, `tests/test_dpo_trainer.py`).
+- **Why**: Eliminates all TRL `DPOTrainer` dependencies and monkey-patches for VLMs. Calculates response log-probabilities strictly over completion tokens (ignoring `-100` prompt labels), computes reference log-probabilities in-line using `with model.disable_adapter():` (or a frozen `ref_model`), computes exact DPO sigmoid loss, logs reward margins & preference accuracy, and passes 17 unit tests including synthetic preference optimization.
+
+
