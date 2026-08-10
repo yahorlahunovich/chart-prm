@@ -47,6 +47,7 @@ def parse_args():
     parser.add_argument("--batch-size", type=int, default=1, help="Batch size per step")
     parser.add_argument("--lr", type=float, default=1e-5, help="Learning rate")
     parser.add_argument("--beta", type=float, default=0.1, help="DPO beta parameter")
+    parser.add_argument("--load-in-4bit", action="store_true", default=True, help="Load model in 4-bit NF4 quantization")
     parser.add_argument("--smoke-only", action="store_true", help="Run a 2-step smoke test")
     parser.add_argument("--no-lora", action="store_true", help="Disable LoRA peft adapter")
     return parser.parse_args()
@@ -74,16 +75,39 @@ def main():
     print(f"Loading processor and model for {args.model_id}...")
     from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
 
-    processor = AutoProcessor.from_pretrained(args.model_id)
+    processor_kwargs = {}
+    if torch.cuda.is_available():
+        # Bound chart resolution for T4 VRAM safety
+        processor_kwargs["min_pixels"] = 96 * 28 * 28
+        processor_kwargs["max_pixels"] = 192 * 28 * 28
 
-    # Use FP16 precision if CUDA is available, else FP32
-    torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+    processor = AutoProcessor.from_pretrained(args.model_id, **processor_kwargs)
+    processor.tokenizer.padding_side = "left"
+    if processor.tokenizer.pad_token is None:
+        processor.tokenizer.pad_token = processor.tokenizer.eos_token
+
+    model_kwargs = {
+        "dtype": torch.float16 if torch.cuda.is_available() else torch.float32,
+        "low_cpu_mem_usage": True,
+    }
+
+    if torch.cuda.is_available():
+        model_kwargs["device_map"] = {"": 0}
+        model_kwargs["attn_implementation"] = "sdpa"
+
+    if args.load_in_4bit and torch.cuda.is_available():
+        from transformers import BitsAndBytesConfig
+        print("Enabling 4-bit NF4 QLoRA quantization...")
+        model_kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_compute_dtype=torch.float16,
+        )
 
     model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
         args.model_id,
-        torch_dtype=torch_dtype,
-        device_map={"": device.type} if torch.cuda.is_available() else None,
-        low_cpu_mem_usage=True,
+        **model_kwargs,
     )
     model.config.use_cache = False
 
