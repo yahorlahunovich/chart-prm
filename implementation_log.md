@@ -234,3 +234,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Minimal Custom SFT Pipeline Implementation
 - **What**: Built a self-contained, minimal native PyTorch Supervised Fine-Tuning (SFT) package (`src/chart_prm/sft/`: `loss.py`, `trainer.py`, `utils.py`), executable script (`train_sft.py`), Kaggle runner (`scripts/kaggle_train_sft/`), and unit tests (`tests/test_sft.py`).
 - **Why**: Allows supervised fine-tuning of Qwen2.5-VL on target reasoning trajectories as a baseline or warm-up stage prior to Step-DPO. Mirrors the robust hardware optimizations of our custom DPO trainer (prompt token label masking `-100`, gradient checkpointing, `torch_dtype` handling, `torch.cuda.empty_cache()`, and multi-GPU `device_map="auto"`).
+- **Results**:
+  - **Epochs**: 3 epochs over target reasoning solutions (162 total steps).
+  - **Loss Progression**: Masked Cross-Entropy loss converged from initial `1.50` down to **`0.2364`**.
+  - **Artifacts Saved**: Trained SFT LoRA adapter metadata & logs downloaded to [`qwen_vl_sft_adapter/`](file:///home/yahor/Documents/uni/sem_6/prm/project/qwen_vl_sft_adapter/).
