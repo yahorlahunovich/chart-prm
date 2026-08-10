@@ -238,3 +238,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   - **Epochs**: 3 epochs over target reasoning solutions (162 total steps).
   - **Loss Progression**: Masked Cross-Entropy loss converged from initial `1.50` down to **`0.2364`**.
   - **Artifacts Saved**: Trained SFT LoRA adapter metadata & logs downloaded to [`qwen_vl_sft_adapter/`](file:///home/yahor/Documents/uni/sem_6/prm/project/qwen_vl_sft_adapter/).
+
+## Minimal Custom KTO Pipeline Implementation
+- **What**: Built a self-contained, minimal native PyTorch Kahneman-Tversky Optimization (KTO) package (`src/chart_prm/kto/`: `loss.py`, `trainer.py`, `utils.py`), executable script (`train_kto.py`), Kaggle runner (`scripts/kaggle_train_kto/`), and unit tests (`tests/test_kto.py`).
+- **Why**: Implements Prospect Theory-based preference optimization for unpaired completions ($z = +1$ desirable vs $z = -1$ undesirable). Unpacks preference pairs into individual single completions to optimize utility functions directly without requiring matched pairs at step inference time. Shares all VRAM optimizations (gradient checkpointing, per-substep cache clearing, `torch_dtype`, multi-GPU `device_map="auto"`).
