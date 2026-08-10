@@ -72,12 +72,21 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using compute device: {device}")
 
+    if torch.cuda.is_available():
+        gpu_name = torch.cuda.get_device_name(0)
+        capability = torch.cuda.get_device_capability(0)
+        print(f"GPU: {gpu_name} (Compute Capability: {capability})")
+        if capability[0] < 7:
+            raise RuntimeError(
+                f"Unsupported GPU '{gpu_name}' with compute capability {capability} (sm_60). "
+                f"PyTorch 2.x requires CUDA compute capability >= 7.0 (Nvidia T4 or newer)."
+            )
+
     print(f"Loading processor and model for {args.model_id}...")
     from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
 
     processor_kwargs = {}
     if torch.cuda.is_available():
-        # Bound chart resolution for T4 VRAM safety
         processor_kwargs["min_pixels"] = 96 * 28 * 28
         processor_kwargs["max_pixels"] = 192 * 28 * 28
 
