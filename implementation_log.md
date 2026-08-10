@@ -213,4 +213,9 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Built a self-contained, minimal native PyTorch DPO training package (`src/chart_prm/dpo/`: `loss.py`, `trainer.py`, `utils.py`), executable script (`train_dpo.py`), and full test suite (`tests/test_dpo_loss.py`, `tests/test_logprob.py`, `tests/test_data.py`, `tests/test_dpo_trainer.py`).
 - **Why**: Eliminates all TRL `DPOTrainer` dependencies and monkey-patches for VLMs. Calculates response log-probabilities strictly over completion tokens (ignoring `-100` prompt labels), computes reference log-probabilities in-line using `with model.disable_adapter():` (or a frozen `ref_model`), computes exact DPO sigmoid loss, logs reward margins & preference accuracy, and passes 17 unit tests including synthetic preference optimization.
 
+## Publication Plotting Style Setup
+- **What**: Created centralized visualization module `src/visualization/style.py` exposing `setup_plot_style()` and `PALETTE`, and generated a representative example plot (`figures/example_prm_accuracy.png`, `figures/example_prm_accuracy.pdf`) via `scripts/generate_style_example.py`.
+- **Why**: To establish a standardized, publication-ready NeurIPS/ICML research figure style (restrained semantic colors, clean typography, Type 42 TrueType vector fonts for PDF embedding, subtle grid, frameless legends, top/right spine removal) prior to refactoring existing experiment visualizations.
+
+
 
