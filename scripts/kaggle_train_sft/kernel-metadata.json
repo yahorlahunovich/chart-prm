@@ -1,0 +1,15 @@
+{
+  "id": "egorlagunovich/qwen-vl-sft-custom",
+  "title": "qwen-vl-sft-custom",
+  "code_file": "train_sft.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "accelerator": "gpuT4x2",
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
