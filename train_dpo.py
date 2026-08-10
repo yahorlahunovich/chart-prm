@@ -86,8 +86,8 @@ def main():
 
     processor_kwargs = {}
     if torch.cuda.is_available():
-        processor_kwargs["min_pixels"] = 128 * 28 * 28
-        processor_kwargs["max_pixels"] = 256 * 28 * 28
+        processor_kwargs["min_pixels"] = 64 * 28 * 28
+        processor_kwargs["max_pixels"] = 128 * 28 * 28
 
     processor = AutoProcessor.from_pretrained(args.model_id, **processor_kwargs)
     processor.tokenizer.padding_side = "left"
@@ -124,6 +124,10 @@ def main():
         **model_kwargs,
     )
     model.config.use_cache = False
+
+    if hasattr(model, "gradient_checkpointing_enable"):
+        print("Enabling gradient checkpointing for VRAM optimization...")
+        model.gradient_checkpointing_enable()
 
     if not args.no_lora:
         print("Applying PEFT LoRA adapter...")
