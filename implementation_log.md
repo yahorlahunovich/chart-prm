@@ -253,3 +253,15 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **Why**: Collect comparable held-out results for all three fine-tunes without a local GPU by driving the run through the Kaggle API (`kaggle kernels push`) on `gpuT4x2`.
 - **Fix**: First Kaggle run failed on `ImportError: TransformGetItemToIndex` because the image now ships `transformers 5.0` + `torch 2.10`. The install cell force-uninstalls and pins `torch==2.5.1+cu124` with `transformers==4.49.0` / `peft==0.14.0`. A follow-up run was assigned a P100 and aborted on an over-strict T4-only check; eval now accepts P100/T4 since the pinned torch build includes `sm_60`. Kernel `kernel_sources` did not mount adapter files, so adapters were uploaded as private datasets (`qwen-vl-{sft,dpo,kto}-adapter`) and attached via `dataset_sources`. Also fixed `dtype=` → `torch_dtype=` for transformers 4.49 model loading.
 - **Result**: Kernel completed. Exact-match on 100 holdout questions: Base **26%**, SFT **0%**, DPO **0%**, KTO **3%**. Saved to `experiments/002_holdout_eval/`. Adapter outputs are degraded (SFT drops format; DPO emits empty strings; KTO rarely emits `Final Answer:`), so this is not a clean method ranking yet — next step is to debug adapter loading / generation for SFT/DPO/KTO.
+
+## Holdout Failure Root-Cause Fix (Train Targets + Guards)
+- **What**: Fixed the training/eval mismatch that caused SFT/DPO/KTO holdout collapse:
+  1. Added `scripts/format_sft.py` → `sft_samples.jsonl` (70 full correct rollouts with intact `Step N:` + `Final Answer:`).
+  2. Added `scripts/format_full_dpo.py` → `dpo_pairs.jsonl` (134 full-trajectory preference pairs).
+  3. Retargeted `train_sft.py` / `train_dpo.py` / `train_kto.py` and Kaggle runners away from `step_dpo_pairs.jsonl` fragments toward `sft_samples.jsonl`, `dpo_pairs.jsonl`, and `kto_samples.jsonl`.
+  4. `format_step_dpo.py` now keeps `Step N:` labels in chosen/rejected/prefix (normalize only for matching).
+  5. Fixed KTO loader to read `completion` + bool `label` from `format_kto.py` outputs.
+  6. Added `chart_prm.data_guards` (refuse fragment targets; DPO/KTO logprob-collapse abort) and safer right-padded `label_mask` helpers.
+  7. Holdout eval now smoke-fails on the first empty adapter generation.
+- **Why**: All three custom trainers had been fine-tuning on 54 unlabeled step fragments as if they were full answers. SFT learned `"The x-axis..."` stubs; DPO drove policy logprobs into collapse → 100% empty generations. This is an engineering/data bug, not weak preference methods.
+- **Next**: Re-run Kaggle SFT/DPO/KTO training with the new defaults, re-upload adapter datasets, and re-run `qwen-vl-holdout-eval`.

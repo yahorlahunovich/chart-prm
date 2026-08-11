@@ -10,6 +10,7 @@ import torch
 from PIL import Image
 
 from chart_prm.generator import build_generation_prompt
+from chart_prm.label_mask import join_prefix_and_completion, mask_response_labels
 
 
 def format_qwen_vlm_sft_messages(
@@ -37,7 +38,7 @@ def format_qwen_vlm_sft_messages(
 
     prompt_messages = [{"role": "user", "content": user_content}]
 
-    full_response = (prefix + " " + solution).strip() if prefix else solution.strip()
+    full_response = join_prefix_and_completion(prefix, solution)
     solution_messages = [
         {"role": "user", "content": user_content},
         {"role": "assistant", "content": full_response},
@@ -111,14 +112,16 @@ def build_qwen_sft_batch(
     )
 
     pad_id = processor.tokenizer.pad_token_id
+    eos_id = processor.tokenizer.eos_token_id
     prompt_lengths = (prompt_inputs["attention_mask"] == 1).sum(dim=1)
 
-    labels = solution_inputs["input_ids"].clone()
-    for i, p_len in enumerate(prompt_lengths):
-        labels[i, :p_len] = -100
-    if pad_id is not None:
-        labels[labels == pad_id] = -100
-    solution_inputs["labels"] = labels
+    solution_inputs["labels"] = mask_response_labels(
+        input_ids=solution_inputs["input_ids"],
+        attention_mask=solution_inputs["attention_mask"],
+        prompt_lengths=prompt_lengths,
+        pad_token_id=pad_id,
+        eos_token_id=eos_id,
+    )
 
     if device is not None:
         solution_inputs = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in solution_inputs.items()}
@@ -149,7 +152,12 @@ def load_sft_dataset(
             if not img_path.is_absolute() and not img_path.exists():
                 img_path = images_dir / f"{row.get('question_id', line_idx)}.jpg"
 
-            solution = row.get("solution") or row.get("chosen") or row.get("response", "")
+            solution = (
+                row.get("solution")
+                or row.get("completion")
+                or row.get("chosen")
+                or row.get("response", "")
+            )
             if not solution:
                 continue
 

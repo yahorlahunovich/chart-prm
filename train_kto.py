@@ -4,7 +4,7 @@ Minimal Custom Kahneman-Tversky Optimization (KTO) Training Script for Qwen2.5-V
 
 Usage:
   python train_kto.py --smoke-only
-  python train_kto.py --dataset-path experiments/001_500_reasoning/data/step_dpo_pairs.jsonl --epochs 3
+  python train_kto.py --dataset-path experiments/001_500_reasoning/data/kto_samples.jsonl --epochs 2
 """
 
 import argparse
@@ -13,6 +13,7 @@ from pathlib import Path
 import sys
 import torch
 
+from chart_prm.data_guards import collapse_guard, validate_training_dataset
 from chart_prm.kto.trainer import fit_kto
 from chart_prm.kto.utils import load_kto_dataset
 
@@ -22,8 +23,8 @@ def parse_args():
     parser.add_argument(
         "--dataset-path",
         type=str,
-        default="experiments/001_500_reasoning/data/step_dpo_pairs.jsonl",
-        help="Path to preference jsonl dataset (which will be unpacked into desirable/undesirable samples)",
+        default="experiments/001_500_reasoning/data/kto_samples.jsonl",
+        help="Path to sequence-level KTO jsonl (completion + label)",
     )
     parser.add_argument(
         "--images-dir",
@@ -43,12 +44,18 @@ def parse_args():
         default="qwen_vl_kto_adapter",
         help="Directory to save final trained KTO adapter/model",
     )
-    parser.add_argument("--epochs", type=int, default=3, help="Number of training epochs")
+    parser.add_argument("--epochs", type=int, default=2, help="Number of training epochs")
     parser.add_argument("--batch-size", type=int, default=1, help="Batch size per step")
     parser.add_argument("--lr", type=float, default=1e-5, help="Learning rate")
     parser.add_argument("--beta", type=float, default=0.1, help="KTO beta parameter")
     parser.add_argument("--desirable-weight", type=float, default=1.0, help="Weight for desirable completions")
     parser.add_argument("--undesirable-weight", type=float, default=1.0, help="Weight for undesirable completions")
+    parser.add_argument(
+        "--max-logp-drop",
+        type=float,
+        default=40.0,
+        help="Abort if policy_logp falls this many nats below ref_logp",
+    )
     parser.add_argument("--load-in-4bit", action="store_true", default=False, help="Explicitly force 4-bit NF4 QLoRA quantization")
     parser.add_argument("--smoke-only", action="store_true", help="Run a 2-step smoke test")
     parser.add_argument("--no-lora", action="store_true", help="Disable LoRA peft adapter")
@@ -66,6 +73,11 @@ def main():
     print(f"Loading KTO dataset from {data_path}...")
     dataset = load_kto_dataset(data_path, images_dir=args.images_dir, unpack_pairs=True)
     print(f"Loaded {len(dataset)} unpacked KTO training samples.")
+    stats = validate_training_dataset(dataset, name="KTO")
+    print(
+        f"KTO data guard OK: mean_chars={stats['mean_chars']:.1f} "
+        f"final_answer_rate={stats['final_answer_rate']:.1%}"
+    )
 
     if args.smoke_only:
         print("Running in SMOKE-ONLY mode (limiting dataset to 2 samples)...")
@@ -92,7 +104,7 @@ def main():
         processor_kwargs["max_pixels"] = 128 * 28 * 28
 
     processor = AutoProcessor.from_pretrained(args.model_id, **processor_kwargs)
-    processor.tokenizer.padding_side = "left"
+    processor.tokenizer.padding_side = "right"
     if processor.tokenizer.pad_token is None:
         processor.tokenizer.pad_token = processor.tokenizer.eos_token
 
@@ -151,6 +163,14 @@ def main():
             f"Desirable R: {metrics['mean_desirable_reward']:.4f} | "
             f"Undesirable R: {metrics['mean_undesirable_reward']:.4f}"
         )
+        warning = collapse_guard(
+            metrics,
+            max_logp_drop_vs_ref=args.max_logp_drop,
+            logp_key="policy_logp",
+            ref_key="ref_logp",
+        )
+        if warning:
+            raise RuntimeError(f"KTO collapse guard tripped at step {step}: {warning}")
 
     print("Starting KTO fine-tuning...")
     history = fit_kto(

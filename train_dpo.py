@@ -4,7 +4,7 @@ Minimal Custom DPO Training Script for Qwen2.5-VL.
 
 Usage:
   python train_dpo.py --smoke-only
-  python train_dpo.py --dataset-path experiments/001_500_reasoning/data/step_dpo_pairs.jsonl --epochs 3
+  python train_dpo.py --dataset-path experiments/001_500_reasoning/data/dpo_pairs.jsonl --epochs 2
 """
 
 import argparse
@@ -13,6 +13,7 @@ from pathlib import Path
 import sys
 import torch
 
+from chart_prm.data_guards import collapse_guard, validate_training_dataset
 from chart_prm.dpo.trainer import fit_dpo, train_dpo_step
 from chart_prm.dpo.utils import load_step_dpo_dataset
 
@@ -22,8 +23,8 @@ def parse_args():
     parser.add_argument(
         "--dataset-path",
         type=str,
-        default="experiments/001_500_reasoning/data/step_dpo_pairs.jsonl",
-        help="Path to Step-DPO jsonl preference file",
+        default="experiments/001_500_reasoning/data/dpo_pairs.jsonl",
+        help="Path to full-trajectory (or Step-DPO) preference jsonl",
     )
     parser.add_argument(
         "--images-dir",
@@ -43,13 +44,24 @@ def parse_args():
         default="qwen_vl_dpo_adapter",
         help="Directory to save final trained adapter/model",
     )
-    parser.add_argument("--epochs", type=int, default=1, help="Number of training epochs")
+    parser.add_argument("--epochs", type=int, default=2, help="Number of training epochs")
     parser.add_argument("--batch-size", type=int, default=1, help="Batch size per step")
     parser.add_argument("--lr", type=float, default=1e-5, help="Learning rate")
     parser.add_argument("--beta", type=float, default=0.1, help="DPO beta parameter")
+    parser.add_argument(
+        "--max-logp-drop",
+        type=float,
+        default=40.0,
+        help="Abort if chosen_logp falls this many nats below chosen_ref_logp",
+    )
     parser.add_argument("--load-in-4bit", action="store_true", default=False, help="Explicitly force 4-bit NF4 QLoRA quantization")
     parser.add_argument("--smoke-only", action="store_true", help="Run a 2-step smoke test")
     parser.add_argument("--no-lora", action="store_true", help="Disable LoRA peft adapter")
+    parser.add_argument(
+        "--skip-data-guard",
+        action="store_true",
+        help="Allow fragment/step-only targets (not recommended for full-generation eval)",
+    )
     return parser.parse_args()
 
 
@@ -64,6 +76,14 @@ def main():
     print(f"Loading Step-DPO dataset from {data_path}...")
     dataset = load_step_dpo_dataset(data_path, images_dir=args.images_dir)
     print(f"Loaded {len(dataset)} preference pairs.")
+    if not args.skip_data_guard:
+        stats = validate_training_dataset(dataset, name="DPO")
+        print(
+            f"DPO data guard OK: mean_chars={stats['mean_chars']:.1f} "
+            f"final_answer_rate={stats['final_answer_rate']:.1%}"
+        )
+    else:
+        print("WARNING: --skip-data-guard set; fragment targets allowed.")
 
     if args.smoke_only:
         print("Running in SMOKE-ONLY mode (limiting dataset to 2 samples)...")
@@ -90,7 +110,7 @@ def main():
         processor_kwargs["max_pixels"] = 128 * 28 * 28
 
     processor = AutoProcessor.from_pretrained(args.model_id, **processor_kwargs)
-    processor.tokenizer.padding_side = "left"
+    processor.tokenizer.padding_side = "right"
     if processor.tokenizer.pad_token is None:
         processor.tokenizer.pad_token = processor.tokenizer.eos_token
 
@@ -150,6 +170,9 @@ def main():
             f"Chosen Reward: {metrics['chosen_reward']:.4f} | "
             f"Rejected Reward: {metrics['rejected_reward']:.4f}"
         )
+        warning = collapse_guard(metrics, max_logp_drop_vs_ref=args.max_logp_drop)
+        if warning:
+            raise RuntimeError(f"DPO collapse guard tripped at step {step}: {warning}")
 
     print("Starting DPO fine-tuning...")
     history = fit_dpo(

@@ -138,18 +138,19 @@ def main():
             if r_evals[divergence_idx].get('score') != 0:
                 continue
 
-            chosen_step = normalize_step(c_steps[divergence_idx])
-            rejected_step = normalize_step(r_steps[divergence_idx])
+            # Keep original Step N: labels in training targets; normalize only for matching.
+            chosen_step = str(c_steps[divergence_idx]).strip()
+            rejected_step = str(r_steps[divergence_idx]).strip()
             if not valid_step(chosen_step) or not valid_step(rejected_step):
                 continue
-            if normalize_text(chosen_step) == normalize_text(rejected_step):
+            if normalize_text(normalize_step(chosen_step)) == normalize_text(normalize_step(rejected_step)):
                 continue
 
-            prefix_steps = [normalize_step(step) for step in c_steps[:divergence_idx]]
+            prefix_steps = [str(step).strip() for step in c_steps[:divergence_idx]]
             prefix = "\n".join(prefix_steps)
             if prefix:
                 prefix += "\n"
-            
+
             pairs.append({
                 'question_id': qid,
                 'image_path': f'data/CharXiv/images/{qid}.jpg',
@@ -158,6 +159,7 @@ def main():
                 'chosen': chosen_step,
                 'rejected': rejected_step,
                 'metadata': {
+                    'pair_type': 'step_dpo',
                     'chosen_rollout_index': c[0],
                     'rejected_rollout_index': r[0],
                     'divergence_step_index': divergence_idx,

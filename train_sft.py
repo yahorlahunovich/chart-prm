@@ -4,7 +4,7 @@ Minimal Custom Supervised Fine-Tuning (SFT) Training Script for Qwen2.5-VL.
 
 Usage:
   python train_sft.py --smoke-only
-  python train_sft.py --dataset-path experiments/001_500_reasoning/data/step_dpo_pairs.jsonl --epochs 3
+  python train_sft.py --dataset-path experiments/001_500_reasoning/data/sft_samples.jsonl --epochs 3
 """
 
 import argparse
@@ -13,6 +13,7 @@ from pathlib import Path
 import sys
 import torch
 
+from chart_prm.data_guards import validate_training_dataset
 from chart_prm.sft.trainer import fit_sft
 from chart_prm.sft.utils import load_sft_dataset
 
@@ -22,8 +23,8 @@ def parse_args():
     parser.add_argument(
         "--dataset-path",
         type=str,
-        default="experiments/001_500_reasoning/data/step_dpo_pairs.jsonl",
-        help="Path to jsonl file containing target reasoning solutions",
+        default="experiments/001_500_reasoning/data/sft_samples.jsonl",
+        help="Path to jsonl file containing full Step/Final Answer solutions",
     )
     parser.add_argument(
         "--images-dir",
@@ -63,6 +64,11 @@ def main():
     print(f"Loading SFT dataset from {data_path}...")
     dataset = load_sft_dataset(data_path, images_dir=args.images_dir)
     print(f"Loaded {len(dataset)} SFT training samples.")
+    stats = validate_training_dataset(dataset, name="SFT")
+    print(
+        f"SFT data guard OK: mean_chars={stats['mean_chars']:.1f} "
+        f"final_answer_rate={stats['final_answer_rate']:.1%}"
+    )
 
     if args.smoke_only:
         print("Running in SMOKE-ONLY mode (limiting dataset to 2 samples)...")
@@ -89,7 +95,8 @@ def main():
         processor_kwargs["max_pixels"] = 128 * 28 * 28
 
     processor = AutoProcessor.from_pretrained(args.model_id, **processor_kwargs)
-    processor.tokenizer.padding_side = "left"
+    # Right padding keeps prompt-length label masks aligned (batch_size may be >1).
+    processor.tokenizer.padding_side = "right"
     if processor.tokenizer.pad_token is None:
         processor.tokenizer.pad_token = processor.tokenizer.eos_token
 

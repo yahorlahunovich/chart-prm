@@ -10,6 +10,7 @@ import torch
 from PIL import Image
 
 from chart_prm.generator import build_generation_prompt
+from chart_prm.label_mask import join_prefix_and_completion, mask_response_labels
 
 
 def format_qwen_vlm_kto_messages(
@@ -37,7 +38,7 @@ def format_qwen_vlm_kto_messages(
 
     prompt_messages = [{"role": "user", "content": user_content}]
 
-    full_response = (prefix + " " + response).strip() if prefix else response.strip()
+    full_response = join_prefix_and_completion(prefix, response)
     response_messages = [
         {"role": "user", "content": user_content},
         {"role": "assistant", "content": full_response},
@@ -80,7 +81,12 @@ def build_qwen_kto_batch(
             img = img.convert("RGB")
         images.append(img)
 
-        response = item.get("response") or item.get("solution") or item.get("chosen")
+        response = (
+            item.get("response")
+            or item.get("solution")
+            or item.get("completion")
+            or item.get("chosen")
+        )
         if not response:
             raise KeyError(f"Item is missing required completion 'response' key: {item}")
 
@@ -116,21 +122,48 @@ def build_qwen_kto_batch(
     )
 
     pad_id = processor.tokenizer.pad_token_id
+    eos_id = processor.tokenizer.eos_token_id
     prompt_lengths = (prompt_inputs["attention_mask"] == 1).sum(dim=1)
 
-    labels = batch_inputs["input_ids"].clone()
-    for i, p_len in enumerate(prompt_lengths):
-        labels[i, :p_len] = -100
-    if pad_id is not None:
-        labels[labels == pad_id] = -100
-
-    batch_inputs["labels"] = labels
+    batch_inputs["labels"] = mask_response_labels(
+        input_ids=batch_inputs["input_ids"],
+        attention_mask=batch_inputs["attention_mask"],
+        prompt_lengths=prompt_lengths,
+        pad_token_id=pad_id,
+        eos_token_id=eos_id,
+    )
     batch_inputs["kto_labels"] = torch.tensor(kto_labels, dtype=torch.long)
 
     if device is not None:
         batch_inputs = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in batch_inputs.items()}
 
     return batch_inputs
+
+
+def _coerce_kto_label(row: Dict[str, Any]) -> int:
+    if "kto_label" in row:
+        value = row["kto_label"]
+    elif "label" in row:
+        value = row["label"]
+    elif "is_correct" in row:
+        value = row["is_correct"]
+    else:
+        value = 1
+
+    if isinstance(value, str):
+        lowered = value.strip().lower()
+        if lowered in {"1", "true", "yes", "desirable", "positive"}:
+            return 1
+        if lowered in {"0", "-1", "false", "no", "undesirable", "negative"}:
+            return -1
+        raise ValueError(f"Unrecognized KTO label string: {value!r}")
+    if isinstance(value, bool):
+        return 1 if value else -1
+    ivalue = int(value)
+    if ivalue >= 0 and ivalue != -1:
+        # Treat 0 as undesirable, >0 as desirable
+        return 1 if ivalue > 0 else -1
+    return -1
 
 
 def load_kto_dataset(
@@ -143,6 +176,8 @@ def load_kto_dataset(
     If jsonl contains chosen/rejected pairs and unpack_pairs=True, it unpacks each pair into:
       - 1 desirable sample (kto_label = +1)
       - 1 undesirable sample (kto_label = -1)
+
+    Also accepts format_kto.py rows with `completion` + boolean `label`.
     """
     jsonl_path = Path(jsonl_path)
     images_dir = Path(images_dir)
@@ -160,9 +195,15 @@ def load_kto_dataset(
             if not img_path.is_absolute() and not img_path.exists():
                 img_path = images_dir / f"{row.get('question_id', line_idx)}.jpg"
 
-            # Check if row is a preference pair (chosen & rejected)
-            if unpack_pairs and "chosen" in row and "rejected" in row:
-                # Add desirable sample
+            # Preference pairs only when completion-style KTO fields are absent
+            is_pair = (
+                unpack_pairs
+                and "chosen" in row
+                and "rejected" in row
+                and "completion" not in row
+                and "label" not in row
+            )
+            if is_pair:
                 items.append({
                     "question_id": row.get("question_id", line_idx),
                     "image": str(img_path),
@@ -170,9 +211,8 @@ def load_kto_dataset(
                     "question": row["question"],
                     "prefix": row.get("prefix", ""),
                     "response": row["chosen"],
-                    "kto_label": 1,  # Desirable (+1)
+                    "kto_label": 1,
                 })
-                # Add undesirable sample
                 items.append({
                     "question_id": row.get("question_id", line_idx),
                     "image": str(img_path),
@@ -180,19 +220,26 @@ def load_kto_dataset(
                     "question": row["question"],
                     "prefix": row.get("prefix", ""),
                     "response": row["rejected"],
-                    "kto_label": -1,  # Undesirable (-1)
+                    "kto_label": -1,
                 })
-            else:
-                label = row.get("kto_label", 1 if row.get("is_correct", True) else -1)
-                response = row.get("response") or row.get("solution") or row.get("chosen", "")
-                items.append({
-                    "question_id": row.get("question_id", line_idx),
-                    "image": str(img_path),
-                    "image_path": str(img_path),
-                    "question": row["question"],
-                    "prefix": row.get("prefix", ""),
-                    "response": response,
-                    "kto_label": label,
-                })
+                continue
+
+            response = (
+                row.get("response")
+                or row.get("completion")
+                or row.get("solution")
+                or row.get("chosen", "")
+            )
+            if not response:
+                continue
+            items.append({
+                "question_id": row.get("question_id", line_idx),
+                "image": str(img_path),
+                "image_path": str(img_path),
+                "question": row["question"],
+                "prefix": row.get("prefix", ""),
+                "response": response,
+                "kto_label": _coerce_kto_label(row),
+            })
 
     return items

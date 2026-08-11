@@ -11,6 +11,7 @@ import torch.nn.functional as F
 from PIL import Image
 
 from chart_prm.generator import build_generation_prompt
+from chart_prm.label_mask import join_prefix_and_completion, mask_response_labels
 
 
 def sequence_logprob(
@@ -79,8 +80,8 @@ def format_qwen_vlm_messages(
 
     prompt_messages = [{"role": "user", "content": user_content}]
 
-    chosen_response = (prefix + " " + chosen).strip() if prefix else chosen.strip()
-    rejected_response = (prefix + " " + rejected).strip() if prefix else rejected.strip()
+    chosen_response = join_prefix_and_completion(prefix, chosen)
+    rejected_response = join_prefix_and_completion(prefix, rejected)
 
     chosen_messages = [
         {"role": "user", "content": user_content},
@@ -100,17 +101,28 @@ def create_masked_labels(
     prompt_len: int,
     pad_token_id: Optional[int] = None,
     label_pad_token_id: int = -100,
+    attention_mask: Optional[torch.Tensor] = None,
+    eos_token_id: Optional[int] = None,
 ) -> torch.Tensor:
     """
     Creates target labels mask where prompt tokens and pad tokens are set to label_pad_token_id (-100).
     """
-    labels = input_ids.clone()
-    # Mask prompt tokens
-    labels[:, :prompt_len] = label_pad_token_id
-    # Mask pad tokens if specified
-    if pad_token_id is not None:
-        labels[labels == pad_token_id] = label_pad_token_id
-    return labels
+    if attention_mask is None:
+        attention_mask = torch.ones_like(input_ids)
+    prompt_lengths = torch.full(
+        (input_ids.shape[0],),
+        int(prompt_len),
+        dtype=torch.long,
+        device=input_ids.device,
+    )
+    return mask_response_labels(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        prompt_lengths=prompt_lengths,
+        pad_token_id=pad_token_id,
+        eos_token_id=eos_token_id,
+        label_pad_token_id=label_pad_token_id,
+    )
 
 
 def build_qwen_dpo_batch(
@@ -187,24 +199,25 @@ def build_qwen_dpo_batch(
         return_tensors="pt",
     )
 
-    # Construct labels for chosen
+    # Construct labels for chosen / rejected (right-padded prompt+response)
     pad_id = processor.tokenizer.pad_token_id
+    eos_id = processor.tokenizer.eos_token_id
     prompt_lengths = (prompt_inputs["attention_mask"] == 1).sum(dim=1)
 
-    chosen_labels = chosen_inputs["input_ids"].clone()
-    for i, p_len in enumerate(prompt_lengths):
-        chosen_labels[i, :p_len] = -100
-    if pad_id is not None:
-        chosen_labels[chosen_labels == pad_id] = -100
-    chosen_inputs["labels"] = chosen_labels
-
-    # Construct labels for rejected
-    rejected_labels = rejected_inputs["input_ids"].clone()
-    for i, p_len in enumerate(prompt_lengths):
-        rejected_labels[i, :p_len] = -100
-    if pad_id is not None:
-        rejected_labels[rejected_labels == pad_id] = -100
-    rejected_inputs["labels"] = rejected_labels
+    chosen_inputs["labels"] = mask_response_labels(
+        input_ids=chosen_inputs["input_ids"],
+        attention_mask=chosen_inputs["attention_mask"],
+        prompt_lengths=prompt_lengths,
+        pad_token_id=pad_id,
+        eos_token_id=eos_id,
+    )
+    rejected_inputs["labels"] = mask_response_labels(
+        input_ids=rejected_inputs["input_ids"],
+        attention_mask=rejected_inputs["attention_mask"],
+        prompt_lengths=prompt_lengths,
+        pad_token_id=pad_id,
+        eos_token_id=eos_id,
+    )
 
     if device is not None:
         chosen_inputs = {k: v.to(device) if isinstance(v, torch.Tensor) else v for k, v in chosen_inputs.items()}
