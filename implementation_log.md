@@ -247,3 +247,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   - **Reward Optimization**: Desirable step completion reward $r_\theta$ reached **`+2.0375`**, Undesirable step completion reward dropped to **`-3.5412`**.
   - **Reward Margin**: Reached **`+3.5412`** (peak margin **`+10.023`** on step 300).
   - **Artifacts Saved**: Trained KTO LoRA adapter metadata & logs downloaded to [`qwen_vl_kto_adapter/`](file:///home/yahor/Documents/uni/sem_6/prm/project/qwen_vl_kto_adapter/).
+
+## Holdout Evaluation Kernel (Base / SFT / DPO / KTO)
+- **What**: Added `scripts/kaggle_eval_holdout/` with a GPU notebook that evaluates base Qwen2.5-VL-3B plus the three LoRA adapters on the existing 100-question holdout (`data/splits/eval_reasoning_ids.json`). The kernel attaches completed training outputs via `kernel_sources` (`qwen-vl-sft-custom`, `qwen-vl-step-dpo-custom`, `qwen-vl-kto-custom`), generates greedy responses with the project reasoning prompt, writes resumable `/kaggle/working/holdout_generations.jsonl`, and reports exact-match accuracy in `holdout_accuracy.json`.
+- **Why**: Collect comparable held-out results for all three fine-tunes without a local GPU by driving the run through the Kaggle API (`kaggle kernels push`) on `gpuT4x2`.

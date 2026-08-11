@@ -1,0 +1,19 @@
+{
+  "id": "egorlagunovich/qwen-vl-holdout-eval",
+  "title": "qwen-vl-holdout-eval",
+  "code_file": "evaluate_holdout.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "accelerator": "gpuT4x2",
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [
+    "egorlagunovich/qwen-vl-sft-custom",
+    "egorlagunovich/qwen-vl-kto-custom",
+    "egorlagunovich/qwen-vl-step-dpo-custom"
+  ]
+}
