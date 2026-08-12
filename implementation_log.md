@@ -289,3 +289,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## KTO Collapse Guard Fix (desirable samples only)
 - **What**: KTO v5 failed at step 196 with 76.8-nat drop while loss/margin looked healthy — the guard was comparing batch-mean logp on an **undesirable-only** step (intended down-weighting). Fixed `kto_loss` to emit `desirable_policy_logp` / `desirable_ref_logp` and updated `train_kto.py` collapse guard to use those keys. Reverted Kaggle KTO notebook to default `lr=1e-5`, 2 epochs.
 - **Why**: KTO deliberately drives policy logp below reference on undesirable completions; the old guard false-positive aborted successful training.
+
+## KTO Kaggle Retry v7 (lr 2e-6 + fixed guard)
+- **What**: KTO v6 with fixed guard failed at step 49 on a **desirable** sample (reward −6.3, 63 nats below ref) — real instability at `lr=1e-5`. Resubmitted with `lr=2e-6` (v5 reached step 196 before the old guard false-positive).
+- **Why**: Lower LR prevents aggressive logprob collapse on desirable completions while the guard fix avoids aborting on undesirable-only steps.
