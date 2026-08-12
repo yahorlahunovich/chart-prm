@@ -273,3 +273,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Holdout Eval Adapter Mounting Fix (Use kernel_sources)
 - **What**: Updated `scripts/kaggle_eval_holdout/kernel-metadata.json` to mount the newly trained adapters via `kernel_sources` from the SFT/DPO/KTO kernels.
 - **Why**: Ensure the holdout evaluation reads the adapters produced by the most recent training runs, not stale datasets.
+
+## DPO Kaggle Retry (1 epoch after collapse guard)
+- **What**: Kaggle DPO kernel `egorlagunovich/qwen-vl-step-dpo-custom` failed at step 215/268 with `DPO collapse guard tripped` (42.4 nats below ref, threshold 40). Training used the correct `dpo_pairs.jsonl` (134 pairs). Reduced `scripts/kaggle_train_dpo/train_dpo.ipynb` to `--epochs 1` and resubmitted.
+- **Why**: Collapse occurred early in epoch 2 on a single outlier batch; 1 epoch completes the full preference set without the unstable second pass.
