@@ -269,3 +269,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Holdout Eval Adapter Resolution Fix (Remove step-DPO fallback)
 - **What**: Updated `scripts/kaggle_eval_holdout/evaluate_holdout.ipynb` to remove the fragment-trained (`step-dpo-custom`) adapter fallback from the DPO adapter candidate list.
 - **Why**: Prevent the evaluator from accidentally loading an adapter trained on `step_dpo_pairs.jsonl` fragments, which makes holdout parsing/results invalid for the full-trajectory DPO comparison.
+
+## Holdout Eval Adapter Mounting Fix (Use kernel_sources)
+- **What**: Updated `scripts/kaggle_eval_holdout/kernel-metadata.json` to mount the newly trained adapters via `kernel_sources` from the SFT/DPO/KTO kernels.
+- **Why**: Ensure the holdout evaluation reads the adapters produced by the most recent training runs, not stale datasets.

@@ -15,5 +15,9 @@
     "egorlagunovich/qwen-vl-kto-adapter"
   ],
   "competition_sources": [],
-  "kernel_sources": []
+  "kernel_sources": [
+    "egorlagunovich/qwen-vl-sft-custom",
+    "egorlagunovich/qwen-vl-step-dpo-custom",
+    "egorlagunovich/qwen-vl-kto-custom"
+  ]
 }
