@@ -297,3 +297,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## KTO Kaggle Retry v8 (lr 1e-6, beta 0.05, max-logp-drop 55)
 - **What**: KTO v7 failed at step 164 on a desirable sample (reward −5.1, 50.8 nats below ref). Resubmitted with `lr=1e-6`, `beta=0.05`, `--max-logp-drop 55`.
 - **Why**: Further reduce optimization aggressiveness on desirable completions that were collapsing policy logp.
+
+## KTO Collapse Guard Warn-Only (v9)
+- **What**: KTO v8 reached step 429/2548 before aborting on a desirable outlier (59.4 nats, threshold 55). Added `--collapse-guard-warn-only` to `train_kto.py` so sporadic collapses log a warning but training continues to completion.
+- **Why**: v8 was otherwise stable for 400+ steps; hard-aborting on single-batch outliers prevents finishing the 2-epoch KTO run.

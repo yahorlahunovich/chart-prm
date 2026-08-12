@@ -56,6 +56,11 @@ def parse_args():
         default=40.0,
         help="Abort if policy_logp falls this many nats below ref_logp",
     )
+    parser.add_argument(
+        "--collapse-guard-warn-only",
+        action="store_true",
+        help="Log collapse-guard warnings without aborting training",
+    )
     parser.add_argument("--load-in-4bit", action="store_true", default=False, help="Explicitly force 4-bit NF4 QLoRA quantization")
     parser.add_argument("--smoke-only", action="store_true", help="Run a 2-step smoke test")
     parser.add_argument("--no-lora", action="store_true", help="Disable LoRA peft adapter")
@@ -170,7 +175,10 @@ def main():
             ref_key="desirable_ref_logp",
         )
         if warning:
-            raise RuntimeError(f"KTO collapse guard tripped at step {step}: {warning}")
+            if args.collapse_guard_warn_only:
+                print(f"[WARN step {step}] KTO collapse guard: {warning}")
+            else:
+                raise RuntimeError(f"KTO collapse guard tripped at step {step}: {warning}")
 
     print("Starting KTO fine-tuning...")
     history = fit_kto(
