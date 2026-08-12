@@ -265,3 +265,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   7. Holdout eval now smoke-fails on the first empty adapter generation.
 - **Why**: All three custom trainers had been fine-tuning on 54 unlabeled step fragments as if they were full answers. SFT learned `"The x-axis..."` stubs; DPO drove policy logprobs into collapse → 100% empty generations. This is an engineering/data bug, not weak preference methods.
 - **Next**: Re-run Kaggle SFT/DPO/KTO training with the new defaults, re-upload adapter datasets, and re-run `qwen-vl-holdout-eval`.
+
+## Holdout Eval Adapter Resolution Fix (Remove step-DPO fallback)
+- **What**: Updated `scripts/kaggle_eval_holdout/evaluate_holdout.ipynb` to remove the fragment-trained (`step-dpo-custom`) adapter fallback from the DPO adapter candidate list.
+- **Why**: Prevent the evaluator from accidentally loading an adapter trained on `step_dpo_pairs.jsonl` fragments, which makes holdout parsing/results invalid for the full-trajectory DPO comparison.
