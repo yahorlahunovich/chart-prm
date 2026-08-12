@@ -293,3 +293,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## KTO Kaggle Retry v7 (lr 2e-6 + fixed guard)
 - **What**: KTO v6 with fixed guard failed at step 49 on a **desirable** sample (reward −6.3, 63 nats below ref) — real instability at `lr=1e-5`. Resubmitted with `lr=2e-6` (v5 reached step 196 before the old guard false-positive).
 - **Why**: Lower LR prevents aggressive logprob collapse on desirable completions while the guard fix avoids aborting on undesirable-only steps.
+
+## KTO Kaggle Retry v8 (lr 1e-6, beta 0.05, max-logp-drop 55)
+- **What**: KTO v7 failed at step 164 on a desirable sample (reward −5.1, 50.8 nats below ref). Resubmitted with `lr=1e-6`, `beta=0.05`, `--max-logp-drop 55`.
+- **Why**: Further reduce optimization aggressiveness on desirable completions that were collapsing policy logp.
