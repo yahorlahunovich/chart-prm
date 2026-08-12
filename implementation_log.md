@@ -277,3 +277,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## DPO Kaggle Retry (1 epoch after collapse guard)
 - **What**: Kaggle DPO kernel `egorlagunovich/qwen-vl-step-dpo-custom` failed at step 215/268 with `DPO collapse guard tripped` (42.4 nats below ref, threshold 40). Training used the correct `dpo_pairs.jsonl` (134 pairs). Reduced `scripts/kaggle_train_dpo/train_dpo.ipynb` to `--epochs 1` and resubmitted.
 - **Why**: Collapse occurred early in epoch 2 on a single outlier batch; 1 epoch completes the full preference set without the unstable second pass.
+
+## KTO Kaggle Retry (lower LR + relaxed collapse guard)
+- **What**: Kaggle KTO kernel `egorlagunovich/qwen-vl-kto-custom` v3 failed at step 39 with collapse guard (49.7 nats below ref on `kto_samples.jsonl`). Updated `scripts/kaggle_train_kto/train_kto.ipynb` to `--lr 5e-6` and `--max-logp-drop 55`, then resubmitted.
+- **Why**: Early outlier batch tripped the default 40-nat guard; lower LR reduces logprob swings while a modest threshold bump avoids aborting on a single spike.
