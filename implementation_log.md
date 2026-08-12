@@ -285,3 +285,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## KTO Kaggle Retry v5 (lr 2e-6, max-logp-drop 65)
 - **What**: KTO v4 reached step 80 then failed (56.3 nats below ref, threshold 55). Further reduced LR to `2e-6` and raised `--max-logp-drop` to 65.
 - **Why**: Lower LR slowed collapse progression; v4 got past the step-39 spike but still drifted by step 80.
+
+## KTO Collapse Guard Fix (desirable samples only)
+- **What**: KTO v5 failed at step 196 with 76.8-nat drop while loss/margin looked healthy — the guard was comparing batch-mean logp on an **undesirable-only** step (intended down-weighting). Fixed `kto_loss` to emit `desirable_policy_logp` / `desirable_ref_logp` and updated `train_kto.py` collapse guard to use those keys. Reverted Kaggle KTO notebook to default `lr=1e-5`, 2 epochs.
+- **Why**: KTO deliberately drives policy logp below reference on undesirable completions; the old guard false-positive aborted successful training.

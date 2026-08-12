@@ -166,8 +166,8 @@ def main():
         warning = collapse_guard(
             metrics,
             max_logp_drop_vs_ref=args.max_logp_drop,
-            logp_key="policy_logp",
-            ref_key="ref_logp",
+            logp_key="desirable_policy_logp",
+            ref_key="desirable_ref_logp",
         )
         if warning:
             raise RuntimeError(f"KTO collapse guard tripped at step {step}: {warning}")

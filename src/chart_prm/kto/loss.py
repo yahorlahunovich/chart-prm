@@ -80,4 +80,12 @@ def kto_loss(
         "ref_logp": ref_logp.mean().item(),
     }
 
+    if desirable_mask_float.sum() > 0:
+        metrics["desirable_policy_logp"] = (
+            (policy_logp * desirable_mask_float).sum() / desirable_mask_float.sum()
+        ).item()
+        metrics["desirable_ref_logp"] = (
+            (ref_logp * desirable_mask_float).sum() / desirable_mask_float.sum()
+        ).item()
+
     return loss, metrics

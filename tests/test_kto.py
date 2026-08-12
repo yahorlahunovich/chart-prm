@@ -54,6 +54,22 @@ def test_kto_loss_manual_math():
     assert metrics["mean_desirable_reward"] == pytest.approx(0.2, abs=1e-4)
     assert metrics["mean_undesirable_reward"] == pytest.approx(-0.2, abs=1e-4)
     assert metrics["reward_margin"] == pytest.approx(0.4, abs=1e-4)
+    assert metrics["desirable_policy_logp"] == pytest.approx(-20.0, abs=1e-4)
+    assert metrics["desirable_ref_logp"] == pytest.approx(-22.0, abs=1e-4)
+
+
+def test_kto_collapse_guard_skips_undesirable_only_batch():
+    """Undesirable-only steps must not expose desirable logp keys for collapse guard."""
+    from chart_prm.data_guards import collapse_guard
+
+    _, metrics = kto_loss(
+        policy_logp=torch.tensor([-150.0]),
+        ref_logp=torch.tensor([-80.0]),
+        kto_labels=torch.tensor([-1]),
+        beta=0.1,
+    )
+    assert "desirable_policy_logp" not in metrics
+    assert collapse_guard(metrics, logp_key="desirable_policy_logp", ref_key="desirable_ref_logp") is None
 
 
 def test_kto_trainer_synthetic_optimization():
