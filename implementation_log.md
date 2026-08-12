@@ -281,3 +281,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## KTO Kaggle Retry (lower LR + relaxed collapse guard)
 - **What**: Kaggle KTO kernel `egorlagunovich/qwen-vl-kto-custom` v3 failed at step 39 with collapse guard (49.7 nats below ref on `kto_samples.jsonl`). Updated `scripts/kaggle_train_kto/train_kto.ipynb` to `--lr 5e-6` and `--max-logp-drop 55`, then resubmitted.
 - **Why**: Early outlier batch tripped the default 40-nat guard; lower LR reduces logprob swings while a modest threshold bump avoids aborting on a single spike.
+
+## KTO Kaggle Retry v5 (lr 2e-6, max-logp-drop 65)
+- **What**: KTO v4 reached step 80 then failed (56.3 nats below ref, threshold 55). Further reduced LR to `2e-6` and raised `--max-logp-drop` to 65.
+- **Why**: Lower LR slowed collapse progression; v4 got past the step-39 spike but still drifted by step 80.
