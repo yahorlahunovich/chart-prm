@@ -309,3 +309,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## KTO P100 torch install fallback (v11)
 - **What**: KTO v10 was assigned a Tesla P100 and failed installing `torch==2.5.1` because `nvidia-cudnn-cu12==9.1.0.70` is no longer on the indexes. Added a `--no-deps` + `nvidia-cudnn-cu12==9.1.1.17` fallback in `scripts/kaggle_train_kto/train_kto.ipynb`.
 - **Why**: Keep P100-compatible sm_60 training working when Kaggle cannot schedule `gpuT4x2`.
+
+## Full-trajectory retraining complete + holdout relaunch
+- **What**: SFT/DPO/KTO Kaggle kernels all `COMPLETE` on full-trajectory datasets (`sft_samples.jsonl` 210 steps, `dpo_pairs.jsonl` 134 steps/1 epoch, `kto_samples.jsonl` 1274 steps/1 epoch). Synced adapters locally. Updated holdout eval to prefer `kernel_sources` adapters and cleared stale `dataset_sources` so fragment-trained datasets cannot shadow fresh adapters. Pushed `qwen-vl-holdout-eval`.
+- **Why**: Re-measure holdout exact-match after fixing the fragment-training bug.

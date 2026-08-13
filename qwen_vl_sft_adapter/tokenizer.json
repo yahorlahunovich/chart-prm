@@ -3,7 +3,7 @@
   "truncation": null,
   "padding": {
     "strategy": "BatchLongest",
-    "direction": "Left",
+    "direction": "Right",
     "pad_to_multiple_of": null,
     "pad_id": 151643,
     "pad_type_id": 0,
