@@ -62,6 +62,14 @@ def sequence_logprob(
     return seq_logprob
 
 
+def shared_prefix_assistant_text(prefix: str) -> str:
+    """Assistant text through the shared prefix (exclusive of the diverging step)."""
+    prefix = (prefix or "").rstrip()
+    if not prefix:
+        return ""
+    return f"{prefix}\n"
+
+
 def format_qwen_vlm_messages(
     question: str,
     chosen: str,
@@ -204,12 +212,53 @@ def build_qwen_dpo_batch(
     eos_id = processor.tokenizer.eos_token_id
     prompt_lengths = (prompt_inputs["attention_mask"] == 1).sum(dim=1)
 
+    prefix_lengths = torch.zeros(len(items), dtype=torch.long)
+    prefix_indices = [
+        idx
+        for idx, item in enumerate(items)
+        if shared_prefix_assistant_text(item.get("prefix", ""))
+    ]
+    if prefix_indices:
+        shared_images = [images[idx] for idx in prefix_indices]
+        shared_texts = []
+        for idx in prefix_indices:
+            item = items[idx]
+            prompt_text = build_generation_prompt(item["question"])
+            user_content = [
+                {"type": "image"},
+                {"type": "text", "text": prompt_text},
+            ]
+            shared_messages = [
+                {"role": "user", "content": user_content},
+                {"role": "assistant", "content": shared_prefix_assistant_text(item.get("prefix", ""))},
+            ]
+            shared_texts.append(
+                processor.apply_chat_template(
+                    shared_messages,
+                    tokenize=False,
+                    add_generation_prompt=False,
+                )
+            )
+        shared_inputs = processor(
+            images=shared_images,
+            text=shared_texts,
+            padding=True,
+            return_tensors="pt",
+        )
+        shared_seq_lens = (shared_inputs["attention_mask"] == 1).sum(dim=1)
+        for batch_idx, item_idx in enumerate(prefix_indices):
+            prefix_lengths[item_idx] = max(
+                0,
+                int(shared_seq_lens[batch_idx].item()) - int(prompt_lengths[item_idx].item()),
+            )
+
     chosen_inputs["labels"] = mask_response_labels(
         input_ids=chosen_inputs["input_ids"],
         attention_mask=chosen_inputs["attention_mask"],
         prompt_lengths=prompt_lengths,
         pad_token_id=pad_id,
         eos_token_id=eos_id,
+        prefix_lengths=prefix_lengths,
     )
     rejected_inputs["labels"] = mask_response_labels(
         input_ids=rejected_inputs["input_ids"],
@@ -217,6 +266,7 @@ def build_qwen_dpo_batch(
         prompt_lengths=prompt_lengths,
         pad_token_id=pad_id,
         eos_token_id=eos_id,
+        prefix_lengths=prefix_lengths,
     )
 
     if device is not None:

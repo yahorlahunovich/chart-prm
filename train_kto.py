@@ -15,7 +15,7 @@ import torch
 
 from chart_prm.data_guards import collapse_guard, validate_training_dataset
 from chart_prm.kto.trainer import fit_kto
-from chart_prm.kto.utils import load_kto_dataset
+from chart_prm.kto.utils import balance_kto_dataset, load_kto_dataset
 
 
 def parse_args():
@@ -61,6 +61,22 @@ def parse_args():
         action="store_true",
         help="Log collapse-guard warnings without aborting training",
     )
+    parser.add_argument(
+        "--balance-kto",
+        action="store_true",
+        help="Filter hard negatives and subsample to ~1:3 desirable:undesirable ratio",
+    )
+    parser.add_argument(
+        "--max-undesirable-per-desirable",
+        type=float,
+        default=3.0,
+        help="Target undesirable:desirable ratio when --balance-kto is set",
+    )
+    parser.add_argument(
+        "--auto-desirable-weight",
+        action="store_true",
+        help="Set desirable_weight to match the post-balance class ratio",
+    )
     parser.add_argument("--load-in-4bit", action="store_true", default=False, help="Explicitly force 4-bit NF4 QLoRA quantization")
     parser.add_argument("--smoke-only", action="store_true", help="Run a 2-step smoke test")
     parser.add_argument("--no-lora", action="store_true", help="Disable LoRA peft adapter")
@@ -78,6 +94,19 @@ def main():
     print(f"Loading KTO dataset from {data_path}...")
     dataset = load_kto_dataset(data_path, images_dir=args.images_dir, unpack_pairs=True)
     print(f"Loaded {len(dataset)} unpacked KTO training samples.")
+    if args.balance_kto:
+        dataset, balance_stats = balance_kto_dataset(
+            dataset,
+            max_undesirable_per_desirable=args.max_undesirable_per_desirable,
+        )
+        print(
+            "Balanced KTO dataset: "
+            f"{balance_stats['n_desirable']} desirable / {balance_stats['n_undesirable']} undesirable "
+            f"(ratio={balance_stats['ratio_undesirable_to_desirable']:.2f})"
+        )
+        if args.auto_desirable_weight or args.desirable_weight == 1.0:
+            args.desirable_weight = balance_stats["recommended_desirable_weight"]
+            print(f"Auto-set desirable_weight={args.desirable_weight:.3f}")
     stats = validate_training_dataset(dataset, name="KTO")
     print(
         f"KTO data guard OK: mean_chars={stats['mean_chars']:.1f} "

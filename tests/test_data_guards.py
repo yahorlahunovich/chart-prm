@@ -60,6 +60,59 @@ def test_mask_response_labels_right_padded():
     assert labels.tolist() == [[-100, -100, 12, 13, -100]]
 
 
+def test_mask_response_labels_with_prefix():
+    input_ids = torch.tensor([[10, 11, 12, 13, 14, 15]])
+    attention_mask = torch.tensor([[1, 1, 1, 1, 1, 1]])
+    prompt_lengths = torch.tensor([2])
+    prefix_lengths = torch.tensor([2])
+    labels = mask_response_labels(
+        input_ids=input_ids,
+        attention_mask=attention_mask,
+        prompt_lengths=prompt_lengths,
+        prefix_lengths=prefix_lengths,
+        pad_token_id=0,
+        eos_token_id=99,
+    )
+    assert labels.tolist() == [[-100, -100, -100, -100, 14, 15]]
+
+
+def test_balance_kto_dataset_subsamples_negatives(tmp_path):
+    from chart_prm.kto.utils import balance_kto_dataset
+
+    items = []
+    for idx in range(4):
+        items.append({
+            "question_id": str(idx),
+            "response": f"Step 1: A\nStep 2: B\nFinal Answer: {idx}",
+            "kto_label": 1,
+        })
+    for idx in range(20):
+        short = idx % 2 == 0
+        response = (
+            "Step 1: The x-axis represents time."
+            if short
+            else f"Step 1: A\nStep 2: B\nFinal Answer: wrong-{idx}"
+        )
+        items.append({
+            "question_id": f"neg-{idx}",
+            "response": response,
+            "kto_label": -1,
+        })
+
+    balanced, stats = balance_kto_dataset(items, max_undesirable_per_desirable=3.0)
+    assert stats["n_desirable"] == 4
+    assert stats["n_undesirable"] == 10
+    assert len(balanced) == 14
+    assert stats["recommended_desirable_weight"] == pytest.approx(2.5)
+
+
+def test_shared_prefix_assistant_text():
+    from chart_prm.dpo.utils import shared_prefix_assistant_text
+
+    assert shared_prefix_assistant_text("") == ""
+    assert shared_prefix_assistant_text("Step 1: A") == "Step 1: A\n"
+
+
 def test_load_kto_reads_completion_and_bool_label(tmp_path):
     path = tmp_path / "kto.jsonl"
     rows = [

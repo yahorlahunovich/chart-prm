@@ -3,6 +3,7 @@ Utility functions for Qwen2.5-VL KTO dataset loading and batch processing.
 """
 
 import json
+import random
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -243,3 +244,60 @@ def load_kto_dataset(
             })
 
     return items
+
+
+def is_hard_negative_kto_sample(item: Dict[str, Any]) -> bool:
+    """
+    Drop short first-step-only rollouts that dominate KTO negatives but lack useful signal.
+    """
+    response = (item.get("response") or "").strip()
+    if not response:
+        return True
+    if "Final Answer:" not in response:
+        return True
+    if response.lstrip().startswith("Step 1:") and "Step 2:" not in response and len(response) < 220:
+        return True
+    return False
+
+
+def balance_kto_dataset(
+    items: List[Dict[str, Any]],
+    *,
+    max_undesirable_per_desirable: float = 3.0,
+    require_final_answer: bool = True,
+    filter_hard_negatives: bool = True,
+    seed: int = 42,
+) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """
+    Rebalance KTO samples toward ~1:3 desirable:undesirable for stable training.
+
+    Keeps all desirable samples, filters low-signal negatives, and subsamples the rest.
+    """
+    rng = random.Random(seed)
+    desirable = [item for item in items if int(item.get("kto_label", 0)) == 1]
+    undesirable = [item for item in items if int(item.get("kto_label", 0)) == -1]
+
+    if require_final_answer:
+        desirable = [item for item in desirable if "Final Answer:" in item.get("response", "")]
+        undesirable = [item for item in undesirable if "Final Answer:" in item.get("response", "")]
+    if filter_hard_negatives:
+        undesirable = [item for item in undesirable if not is_hard_negative_kto_sample(item)]
+
+    n_desirable = len(desirable)
+    if n_desirable == 0:
+        raise ValueError("balance_kto_dataset: no desirable samples left after filtering")
+
+    max_undesirable = max(1, int(round(n_desirable * max_undesirable_per_desirable)))
+    if len(undesirable) > max_undesirable:
+        undesirable = rng.sample(undesirable, max_undesirable)
+
+    balanced = desirable + undesirable
+    rng.shuffle(balanced)
+    stats = {
+        "n_input": len(items),
+        "n_desirable": n_desirable,
+        "n_undesirable": len(undesirable),
+        "ratio_undesirable_to_desirable": len(undesirable) / n_desirable,
+        "recommended_desirable_weight": len(undesirable) / n_desirable,
+    }
+    return balanced, stats

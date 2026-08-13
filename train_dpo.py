@@ -62,18 +62,36 @@ def parse_args():
         action="store_true",
         help="Allow fragment/step-only targets (not recommended for full-generation eval)",
     )
+    parser.add_argument(
+        "--step-dpo",
+        action="store_true",
+        help="Step-DPO mode: train on step_dpo_pairs.jsonl with prefix masking and relaxed data guard",
+    )
     return parser.parse_args()
 
 
+def _apply_step_dpo_defaults(args: argparse.Namespace) -> argparse.Namespace:
+    default_dataset = "experiments/001_500_reasoning/data/dpo_pairs.jsonl"
+    default_output = "qwen_vl_dpo_adapter"
+    if args.step_dpo:
+        if args.dataset_path == default_dataset:
+            args.dataset_path = "experiments/001_500_reasoning/data/step_dpo_pairs.jsonl"
+        if args.output_dir == default_output:
+            args.output_dir = "qwen_vl_step_dpo_adapter"
+        args.skip_data_guard = True
+    return args
+
+
 def main():
-    args = parse_args()
+    args = _apply_step_dpo_defaults(parse_args())
 
     data_path = Path(args.dataset_path)
     if not data_path.exists():
         print(f"Dataset path {data_path} not found. Exiting.")
         sys.exit(1)
 
-    print(f"Loading Step-DPO dataset from {data_path}...")
+    mode_label = "Step-DPO" if args.step_dpo else "DPO"
+    print(f"Loading {mode_label} dataset from {data_path}...")
     dataset = load_step_dpo_dataset(data_path, images_dir=args.images_dir)
     print(f"Loaded {len(dataset)} preference pairs.")
     if not args.skip_data_guard:
