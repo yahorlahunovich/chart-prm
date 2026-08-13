@@ -313,3 +313,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Full-trajectory retraining complete + holdout relaunch
 - **What**: SFT/DPO/KTO Kaggle kernels all `COMPLETE` on full-trajectory datasets (`sft_samples.jsonl` 210 steps, `dpo_pairs.jsonl` 134 steps/1 epoch, `kto_samples.jsonl` 1274 steps/1 epoch). Synced adapters locally. Updated holdout eval to prefer `kernel_sources` adapters and cleared stale `dataset_sources` so fragment-trained datasets cannot shadow fresh adapters. Pushed `qwen-vl-holdout-eval`.
 - **Why**: Re-measure holdout exact-match after fixing the fragment-training bug.
+
+## Holdout Eval After Full-Trajectory Retrain (results)
+- **What**: Holdout eval v7 completed after P100 torch-install fallback. Loaded adapters from fresh training kernels (`qwen-vl-{sft,step-dpo,kto}-custom`). Exact-match on 100 holdout questions: Base **26%**, SFT **23%**, DPO **29%**, KTO **16%**. Extracted-answer rates: Base/SFT/DPO **100%**, KTO **73%**. No empty generations. Artifacts saved to `experiments/003_holdout_eval_full_traj/`.
+- **Why**: Confirms the prior 0%/0%/3% collapse was from fragment training, not preference methods. DPO now beats base; KTO still under-formats `Final Answer:` on ~27% of examples.
