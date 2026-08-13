@@ -301,3 +301,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## KTO Collapse Guard Warn-Only (v9)
 - **What**: KTO v8 reached step 429/2548 before aborting on a desirable outlier (59.4 nats, threshold 55). Added `--collapse-guard-warn-only` to `train_kto.py` so sporadic collapses log a warning but training continues to completion.
 - **Why**: v8 was otherwise stable for 400+ steps; hard-aborting on single-batch outliers prevents finishing the 2-epoch KTO run.
+
+## KTO Kaggle Retry v10 (1 epoch after session timeout)
+- **What**: KTO v9 reached step 1891/2548 (~epoch 1.5) then Kaggle cancelled at the 7200s session limit with no adapter saved. Reduced notebook to `--epochs 1` (~1274 steps) and resubmitted with `-t 10800`.
+- **Why**: 1 epoch fits in ~1.3h at observed step rate; completes a full pass over `kto_samples.jsonl` without timing out mid-run.
