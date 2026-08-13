@@ -305,3 +305,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## KTO Kaggle Retry v10 (1 epoch after session timeout)
 - **What**: KTO v9 reached step 1891/2548 (~epoch 1.5) then Kaggle cancelled at the 7200s session limit with no adapter saved. Reduced notebook to `--epochs 1` (~1274 steps) and resubmitted with `-t 10800`.
 - **Why**: 1 epoch fits in ~1.3h at observed step rate; completes a full pass over `kto_samples.jsonl` without timing out mid-run.
+
+## KTO P100 torch install fallback (v11)
+- **What**: KTO v10 was assigned a Tesla P100 and failed installing `torch==2.5.1` because `nvidia-cudnn-cu12==9.1.0.70` is no longer on the indexes. Added a `--no-deps` + `nvidia-cudnn-cu12==9.1.1.17` fallback in `scripts/kaggle_train_kto/train_kto.ipynb`.
+- **Why**: Keep P100-compatible sm_60 training working when Kaggle cannot schedule `gpuT4x2`.
