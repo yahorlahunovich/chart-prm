@@ -333,3 +333,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   3. `chart_prm.adapter_resolve` matches exact adapter directory names (`qwen_vl_dpo_adapter` vs `qwen_vl_step_dpo_adapter`) and aborts if two eval systems share a path.
   4. Kaggle KTO retrains at `lr=5e-6`, `beta=0.1`, 2 epochs on the balanced 84/252 set. Step-DPO retrains for 2 epochs on the new suffixes.
 - **Why**: Single-step fragments taught the model to stop after Step 1 (holdout Step-label rate 59%). KTO v12 was too conservative to learn a preference margin. Unique adapter paths are required before another 5-system holdout run.
+
+## Step-DPO Suffix Run Complete + KTO v13 Collapse
+- **What**: Fragment Step-DPO v3 completed 2 epochs on suffix-from-divergence pairs (108 steps). Loss 0.693 → 0.116, preference accuracy 100%, margin +2.09, data guard passed (100% Final Answer). KTO v13 (`lr=5e-6`, `beta=0.1`, desirable_weight=3) learned a strong undesirable margin (~+5.9) then aborted at step 180 on a desirable sample 60.6 nats below ref. Resubmitting KTO v14 at `lr=2e-6` with `--collapse-guard-warn-only` so one outlier cannot discard the run.
+- **Why**: `5e-6` plus 3× desirable weight overshot shared LoRA weights; undesirable down-weighting also collapsed a later desirable completion. Warn-only plus a milder LR lets the balanced 84/252 run finish and save an adapter.
