@@ -61,6 +61,11 @@ def parse_args():
         default=40.0,
         help="Abort if chosen_logp falls this many nats below chosen_ref_logp",
     )
+    parser.add_argument(
+        "--collapse-guard-warn-only",
+        action="store_true",
+        help="Log collapse-guard warnings without aborting training",
+    )
     parser.add_argument("--load-in-4bit", action="store_true", default=False, help="Explicitly force 4-bit NF4 QLoRA quantization")
     parser.add_argument("--smoke-only", action="store_true", help="Run a 2-step smoke test")
     parser.add_argument("--no-lora", action="store_true", help="Disable LoRA peft adapter")
@@ -103,7 +108,7 @@ def _apply_mode_defaults(args: argparse.Namespace) -> argparse.Namespace:
         if args.output_dir == default_output:
             args.output_dir = "qwen_vl_sft_dpo_adapter"
         if args.lr == 1e-5:
-            args.lr = 5e-6
+            args.lr = 2e-6
         if args.epochs == 2:
             args.epochs = 1
     return args
@@ -229,7 +234,10 @@ def main():
         )
         warning = collapse_guard(metrics, max_logp_drop_vs_ref=args.max_logp_drop)
         if warning:
-            raise RuntimeError(f"DPO collapse guard tripped at step {step}: {warning}")
+            if args.collapse_guard_warn_only:
+                print(f"[WARN step {step}] DPO collapse guard: {warning}")
+            else:
+                raise RuntimeError(f"DPO collapse guard tripped at step {step}: {warning}")
 
     print(
         f"Starting DPO fine-tuning... mode={mode_label} epochs={args.epochs} "

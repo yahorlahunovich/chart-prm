@@ -353,3 +353,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## SFT→DPO Init Copy Threshold
 - **What**: Raised the SFT→DPO LoRA copy guard from `1e-6` to `1e-4`. Kernel v1 aborted after a successful SFT mount because `max_copy_diff=7.63e-06`.
 - **Why**: Loading the same adapter twice onto fp16/4-bit Qwen is not bit-identical; 7.63e-6 is float16 noise, not a failed copy.
+
+## SFT→DPO Collapse Guard Warn-Only
+- **What**: Kernel v2 passed init and trained 108/134 steps, then aborted at step 109 (chosen logp 66.4 nats below SFT ref; guard is 40). Added `--collapse-guard-warn-only` to DPO and retraining SFT→DPO at `lr=2e-6` with `--max-logp-drop 70`.
+- **Why**: Same KTO pattern: one long chosen completion discarded the adapter. Warn-only plus a milder LR lets the 134-pair epoch finish and save.

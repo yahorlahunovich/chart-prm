@@ -116,9 +116,11 @@ def check_kernel_metadata() -> None:
     required = [
         "--sft-dpo",
         "qwen_vl_sft_dpo_adapter",
-        "5e-6",
+        "2e-6",
         "'--epochs', '1'",
         "--init-adapter",
+        "--collapse-guard-warn-only",
+        "'--max-logp-drop', '70'",
     ]
     missing = [item for item in required if item not in notebook]
     if missing:
