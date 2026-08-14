@@ -349,3 +349,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## SFT→DPO Training Path
 - **What**: Added `--sft-dpo` / `--init-adapter` so full-trajectory DPO copies the SFT LoRA into a trainable `dpo` adapter and uses frozen SFT as π_ref (not Instruct via `disable_adapter`). New kernel `qwen-vl-sft-dpo` writes `qwen_vl_sft_dpo_adapter` (`lr=5e-6`, 1 epoch, 134 pairs) without overwriting the 29% Instruct→DPO run. Preflight: `scripts/verify_sft_dpo.py`.
 - **Why**: Canonical DPO is SFT then preference. Holdout showed SFT has perfect `Step N:` format and DPO from Instruct has the best exact-match; stacking them needs SFT as the reference policy.
+
+## SFT→DPO Init Copy Threshold
+- **What**: Raised the SFT→DPO LoRA copy guard from `1e-6` to `1e-4`. Kernel v1 aborted after a successful SFT mount because `max_copy_diff=7.63e-06`.
+- **Why**: Loading the same adapter twice onto fp16/4-bit Qwen is not bit-identical; 7.63e-6 is float16 noise, not a failed copy.

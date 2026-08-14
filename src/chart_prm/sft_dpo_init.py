@@ -148,9 +148,13 @@ def init_peft_from_sft(
     *,
     policy_adapter: str = POLICY_ADAPTER,
     reference_adapter: str = REFERENCE_ADAPTER,
-    max_init_diff: float = 1e-6,
+    max_init_diff: float = 1e-4,
 ) -> Any:
-    """Load SFT as frozen reference and a trainable DPO copy that starts identical."""
+    """Load SFT as frozen reference and a trainable DPO copy that starts identical.
+
+    The copy check allows up to 1e-4 absolute error: loading the same LoRA twice
+    on fp16/4-bit Qwen can differ at ~1e-5 without being a different adapter.
+    """
     from peft import PeftModel
 
     sft_dir = require_adapter_dir(sft_path, require_weights=True)

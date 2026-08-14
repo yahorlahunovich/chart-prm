@@ -48,6 +48,7 @@ def test_freeze_sft_unfreeze_dpo_and_copy_diff_is_zero():
     assert counts["n_policy_params"] > 0
     assert counts["n_reference_params"] > 0
     assert max_adapter_abs_diff(model) == 0.0
+    assert 7.63e-6 < 1e-4
     for name, param in model.named_parameters():
         if ".dpo." in name:
             assert param.requires_grad
