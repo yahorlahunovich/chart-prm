@@ -369,3 +369,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## SFT→DPO-only Holdout
 - **What**: Slimmed `qwen-vl-holdout-eval` to generate only `sft_dpo` (mount `qwen-vl-sft-dpo` alone). Base / SFT / Instruct→DPO / Step-DPO / KTO stay at experiment 005. `scripts/merge_sft_dpo_holdout.py` stitches the new jsonl onto 005 after the kernel finishes.
 - **Why**: Re-generating the other five systems is redundant and ~5× slower. Official exact-match for those systems is already fixed.
+
+## SFT→DPO Holdout Complete
+- **What**: Kernel `qwen-vl-holdout-eval` v11 COMPLETE (P100). Loaded `/kaggle/input/qwen-vl-sft-dpo/qwen_vl_sft_dpo_adapter` only. 100/100 questions, extracted-answer 100%, IDs match experiment 005, 0 traces identical to Base/SFT/Instruct→DPO. Official exact-match **22%**. Merged comparison in `experiments/007_sft_dpo_holdout/`.
+- **Why**: Canonical SFT→DPO kept SFT format (`Step 1:` 100%) but did not beat Instruct→DPO (29%) or SFT (23%). Wrong-committed answers rose to 53% (Instruct→DPO 49%, SFT 43%).

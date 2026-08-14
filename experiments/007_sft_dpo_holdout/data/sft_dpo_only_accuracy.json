@@ -1,0 +1,12 @@
+{
+  "n": 100,
+  "exact_match": {
+    "sft_dpo": {
+      "correct": 22,
+      "accuracy": 0.22
+    }
+  },
+  "extracted_answer_rate": {
+    "sft_dpo": 1.0
+  }
+}
