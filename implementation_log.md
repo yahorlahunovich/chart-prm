@@ -357,3 +357,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## SFT→DPO Collapse Guard Warn-Only
 - **What**: Kernel v2 passed init and trained 108/134 steps, then aborted at step 109 (chosen logp 66.4 nats below SFT ref; guard is 40). Added `--collapse-guard-warn-only` to DPO and retraining SFT→DPO at `lr=2e-6` with `--max-logp-drop 70`.
 - **Why**: Same KTO pattern: one long chosen completion discarded the adapter. Warn-only plus a milder LR lets the 134-pair epoch finish and save.
+
+## SFT→DPO v3 Complete
+- **What**: Kernel `qwen-vl-sft-dpo` v3 COMPLETE on P100. 134/134 steps, mean pref acc 97.8%, no collapse warnings, adapter `qwen_vl_sft_dpo_adapter` (149 MB). Artifacts in `experiments/006_sft_then_dpo/`.
+- **Why**: `lr=2e-6` kept chosen log-prob within 1 nat of the SFT reference at the end of the epoch, so the adapter actually saved.
