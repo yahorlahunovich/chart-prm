@@ -321,3 +321,15 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Step-DPO Mode + KTO Rebalance + Holdout v2 Prep
 - **What**: Added `--step-dpo` to `train_dpo.py` (defaults to `step_dpo_pairs.jsonl`, `qwen_vl_step_dpo_adapter`, skips fragment data guard). Implemented prefix masking in `build_qwen_dpo_batch` via `prefix_lengths` so loss applies only to diverging step tokens when a shared prefix exists. Added `balance_kto_dataset()` with hard-negative filtering and 1:3 subsampling; `train_kto.py` flags `--balance-kto` and `--auto-desirable-weight`. New Kaggle kernel `qwen-vl-fragment-step-dpo` for fragment Step-DPO (separate from full DPO). Updated holdout eval for a fifth `step_dpo` adapter and broader answer extraction (`Therefore, the answer is`, `**Final Answer**:`). SFT notebook reduced to 1-epoch warm-up (`lr=1e-5`); KTO notebook uses balanced dataset without warn-only collapse guard.
 - **Why**: User-approved plan to run Step-DPO as its own experiment (not replacing full DPO) and fix KTO's 1:14 class imbalance that dominated training with undesirable-only gradient signal.
+
+## Holdout v8 Adapter Collision + KTO Underfit
+- **What**: Holdout eval v8 finished: Base **26%**, SFT **23%**, DPO **25%**, Step-DPO **25%**, KTO **25%**. DPO and Step-DPO generations are identical because `resolve_adapter("dpo")` substring-matched `qwen-vl-fragment-step-dpo`. KTO format recovered (extracted-answer 73% → 97%) but rewards barely moved at `lr=1e-6`. Saved to `experiments/004_holdout_eval_step_dpo_kto_v12/`.
+- **Why**: `"dpo" in path` is true for every Step-DPO mount. The 25% DPO number is not comparable to experiment 003's 29% full-trajectory DPO.
+
+## Step-DPO Suffix Targets + Unique Adapter Resolve + Stronger KTO
+- **What**:
+  1. `format_step_dpo.py` now writes the suffix from the first divergent step through remaining steps and `Final Answer:` (54 pairs, 100% FA, mean chosen 382 chars). Prefix masking still zeros the shared prefix.
+  2. `--step-dpo` no longer skips the fragment data guard.
+  3. `chart_prm.adapter_resolve` matches exact adapter directory names (`qwen_vl_dpo_adapter` vs `qwen_vl_step_dpo_adapter`) and aborts if two eval systems share a path.
+  4. Kaggle KTO retrains at `lr=5e-6`, `beta=0.1`, 2 epochs on the balanced 84/252 set. Step-DPO retrains for 2 epochs on the new suffixes.
+- **Why**: Single-step fragments taught the model to stop after Step 1 (holdout Step-label rate 59%). KTO v12 was too conservative to learn a preference margin. Unique adapter paths are required before another 5-system holdout run.

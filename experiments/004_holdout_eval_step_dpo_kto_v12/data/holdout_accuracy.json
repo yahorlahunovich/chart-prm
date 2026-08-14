@@ -1,0 +1,32 @@
+{
+  "n": 100,
+  "exact_match": {
+    "base": {
+      "correct": 26,
+      "accuracy": 0.26
+    },
+    "sft": {
+      "correct": 23,
+      "accuracy": 0.23
+    },
+    "dpo": {
+      "correct": 25,
+      "accuracy": 0.25
+    },
+    "step_dpo": {
+      "correct": 25,
+      "accuracy": 0.25
+    },
+    "kto": {
+      "correct": 25,
+      "accuracy": 0.25
+    }
+  },
+  "extracted_answer_rate": {
+    "base": 1.0,
+    "sft": 1.0,
+    "dpo": 0.9,
+    "step_dpo": 0.9,
+    "kto": 0.97
+  }
+}

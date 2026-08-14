@@ -30,3 +30,25 @@ def test_malformed_steps_are_rejected():
     assert valid_step("Step 1: Compare the two values.")
     assert not valid_step("Step Step analysis repeats malformed output.")
     assert not valid_step("   ")
+
+
+def test_completion_suffix_appends_final_answer():
+    from format_step_dpo import completion_suffix
+
+    text = completion_suffix(
+        ["Step 1: Read x.", "Step 2: Compare bars."],
+        "12",
+        start_idx=0,
+    )
+    assert text.startswith("Step 1:")
+    assert "Step 2: Compare bars." in text
+    assert text.endswith("Final Answer: 12")
+
+    later = completion_suffix(
+        ["Step 1: Read x.", "Step 2: Compare bars."],
+        "12",
+        start_idx=1,
+    )
+    assert later.startswith("Step 2:")
+    assert "Step 1:" not in later
+    assert "Final Answer: 12" in later

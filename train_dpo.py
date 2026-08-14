@@ -65,7 +65,7 @@ def parse_args():
     parser.add_argument(
         "--step-dpo",
         action="store_true",
-        help="Step-DPO mode: train on step_dpo_pairs.jsonl with prefix masking and relaxed data guard",
+        help="Step-DPO mode: train on step_dpo_pairs.jsonl with prefix masking",
     )
     return parser.parse_args()
 
@@ -78,7 +78,7 @@ def _apply_step_dpo_defaults(args: argparse.Namespace) -> argparse.Namespace:
             args.dataset_path = "experiments/001_500_reasoning/data/step_dpo_pairs.jsonl"
         if args.output_dir == default_output:
             args.output_dir = "qwen_vl_step_dpo_adapter"
-        args.skip_data_guard = True
+        # Suffix-from-divergence pairs include Final Answer; keep the fragment guard on.
     return args
 
 

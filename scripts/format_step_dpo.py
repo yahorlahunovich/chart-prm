@@ -56,6 +56,16 @@ def shared_prefix_length(chosen_steps, rejected_steps):
         length += 1
     return length
 
+
+def completion_suffix(steps, final_answer, start_idx):
+    """Reasoning from the first divergent step through Final Answer."""
+    parts = [str(step).strip() for step in steps[start_idx:] if str(step).strip()]
+    text = "\n".join(parts)
+    answer = str(final_answer or "").strip()
+    if answer and "Final Answer:" not in text:
+        text = f"{text}\nFinal Answer: {answer}" if text else f"Final Answer: {answer}"
+    return text
+
 def main():
     base_dir = Path(__file__).resolve().parent.parent
     cleaned_path = base_dir / 'experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl'
@@ -146,6 +156,17 @@ def main():
             if normalize_text(normalize_step(chosen_step)) == normalize_text(normalize_step(rejected_step)):
                 continue
 
+            chosen_suffix = completion_suffix(
+                c_steps, c_meta.get("model_final_answer", ""), divergence_idx
+            )
+            rejected_suffix = completion_suffix(
+                r_steps, r_meta.get("model_final_answer", ""), divergence_idx
+            )
+            if "Final Answer:" not in chosen_suffix:
+                continue
+            if normalize_text(chosen_suffix) == normalize_text(rejected_suffix):
+                continue
+
             prefix_steps = [str(step).strip() for step in c_steps[:divergence_idx]]
             prefix = "\n".join(prefix_steps)
             if prefix:
@@ -156,8 +177,8 @@ def main():
                 'image_path': f'data/CharXiv/images/{qid}.jpg',
                 'question': c_meta.get('question', ''),
                 'prefix': prefix,
-                'chosen': chosen_step,
-                'rejected': rejected_step,
+                'chosen': chosen_suffix,
+                'rejected': rejected_suffix,
                 'metadata': {
                     'pair_type': 'step_dpo',
                     'chosen_rollout_index': c[0],
