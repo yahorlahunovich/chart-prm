@@ -384,3 +384,4 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   2. `data/test_predictions/all_models_test_answers.csv` (tabular spreadsheet for fast inspection).
   3. `data/test_predictions/by_model/{base,sft,dpo,step_dpo,kto,sft_dpo}_test_answers.jsonl` (isolated per-system generation traces).
 - **Why**: Ensure easy downstream access, error analysis, and evaluation portability across all 6 benchmarked systems without navigating experiment subfolders.
+- **Prompt Update**: Synchronized `REFACTOR_AGENT_PROMPT.md` to incorporate the preservation, layout, and documentation of `data/test_predictions/`.

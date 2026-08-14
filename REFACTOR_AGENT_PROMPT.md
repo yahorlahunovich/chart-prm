@@ -3,7 +3,7 @@
 ## 1. Context & Objective
 You are tasked with refactoring and cleaning the **ChartPRM** repository. The repository has evolved from an initial exploration of LLM-as-a-Judge for multimodal reasoning on CharXiv into a full alignment research framework containing **SFT**, **Full-Trajectory DPO**, **Suffix Step-DPO**, **KTO**, and **Sequential SFT→DPO**.
 
-Your objective is to systematically reorganize the codebase, clean up root-level clutter, categorize operational scripts, update documentation to research-grade standards, ensure all unit tests pass, document your changes in `implementation_log.md`, and commit/push all modifications to GitHub.
+Your objective is to systematically reorganize the codebase, clean up root-level clutter, categorize operational scripts, preserve structured model answer exports in `data/test_predictions/`, update documentation to research-grade standards, ensure all unit tests pass, document your changes in `implementation_log.md`, and commit/push all modifications to GitHub.
 
 ---
 
@@ -30,13 +30,23 @@ chart-prm/
 │   ├── qwen_vl_kto_adapter/
 │   └── qwen_vl_sft_dpo_adapter/
 │
-├── data/                               # Dataset splits, raw JSON, and chart images
+├── data/                               # Dataset splits, raw JSON, chart images, and test model answers
 │   ├── CharXiv/
 │   │   ├── CharXiv.json
 │   │   └── images/
-│   └── splits/
-│       ├── main_reasoning_ids.json     # 500 balanced reasoning train IDs
-│       └── eval_reasoning_ids.json     # 100 holdout reasoning eval IDs
+│   ├── splits/
+│   │   ├── main_reasoning_ids.json     # 500 balanced reasoning train IDs
+│   │   └── eval_reasoning_ids.json     # 100 holdout reasoning eval IDs
+│   └── test_predictions/              # Clean export of 100 holdout test predictions
+│       ├── all_models_test_answers.jsonl
+│       ├── all_models_test_answers.csv
+│       └── by_model/
+│           ├── base_test_answers.jsonl
+│           ├── sft_test_answers.jsonl
+│           ├── dpo_test_answers.jsonl
+│           ├── step_dpo_test_answers.jsonl
+│           ├── kto_test_answers.jsonl
+│           └── sft_dpo_test_answers.jsonl
 │
 ├── experiments/                        # Frozen benchmark runs and artifacts
 │   ├── 001_500_reasoning/
@@ -139,7 +149,7 @@ chart-prm/
    - `logs/`
    - `*.log`
 
-### Step 2: Reorganize Files
+### Step 2: Reorganize Files & Preserve Test Predictions
 1. **Move Root Log Files**:
    - Move `qwen-vl-*.log` into `logs/`.
 2. **Move Root Adapter Directories**:
@@ -165,7 +175,11 @@ chart-prm/
    - `scripts/create_notebook.py` → `scripts/tools/create_notebook.py`
    - `scripts/create_kto_notebook.py` → `scripts/tools/create_kto_notebook.py`
    - Move all `scripts/kaggle_*` folders into `scripts/kaggle/`.
-5. **Delete Obsolete Files**:
+5. **Preserve `data/test_predictions/`**:
+   - Ensure the structured exports (`all_models_test_answers.jsonl`, `all_models_test_answers.csv`, and `by_model/*.jsonl`) remain present and intact in `data/test_predictions/`.
+6. **Fix Minor Script Directory Bug in `analyze_holdout_quality.py`**:
+   - In `scripts/analyze_holdout_quality.py` (around line 328), ensure `(out_dir / "data").mkdir(parents=True, exist_ok=True)` is called alongside `(out_dir / "figures").mkdir(parents=True, exist_ok=True)` so passing a fresh output directory never fails.
+7. **Delete Obsolete Files**:
    - Remove `scripts/prepare_dpo.py` (deprecated exploration code superseded by `format_full_dpo.py`).
 
 ### Step 3: Check & Fix Internal Imports and File Paths
@@ -177,6 +191,7 @@ chart-prm/
 Overwrite `README.md` with the publication-grade research documentation including:
 - Project title, badges, and abstract.
 - Complete Benchmark Results Table comparing **Base, SFT, Full DPO, Suffix Step-DPO, KTO, and SFT→DPO** on 100 holdout reasoning questions.
+- Direct pointer to `data/test_predictions/` for accessing raw predictions and responses across all 6 models.
 - Key findings on format adherence vs. preference alignment vs. hallucination proxy.
 - ASCII/Mermaid Pipeline Architecture diagram.
 - Step-by-step reproduction instructions with the new `scripts/` paths.
@@ -191,7 +206,7 @@ Ensure 49 tests pass. If any test fails due to path assumptions, fix the test or
 
 ### Step 6: Documentation & Git Commit / Push
 1. Append an entry to `implementation_log.md` detailing:
-   - **What**: Directory reorganization, script modularization, log/adapter cleanup, README overhaul.
+   - **What**: Directory reorganization, script modularization, log/adapter cleanup, README overhaul, preservation of `data/test_predictions/`.
    - **Why**: Transition codebase to a clean, professional research structure with clear separation of data prep, training, evaluation, and tooling.
 2. Stage and commit all changes:
    ```bash
@@ -205,8 +220,9 @@ Ensure 49 tests pass. If any test fails due to path assumptions, fix the test or
 ## 5. Success Criteria
 - [ ] All root log files and adapter folders are properly relocated and gitignored.
 - [ ] Scripts are cleanly partitioned in `scripts/{data_prep,train,evaluation,tools,kaggle}`.
+- [ ] `data/test_predictions/` contains complete model predictions (`all_models_test_answers.jsonl`, `all_models_test_answers.csv`, and `by_model/`).
 - [ ] Obsolete script `scripts/prepare_dpo.py` is removed.
-- [ ] `README.md` is comprehensive, accurate, and reflects the full 6-model research pipeline.
+- [ ] `README.md` is comprehensive, accurate, references test predictions, and reflects the full 6-model research pipeline.
 - [ ] `uv run pytest` passes 100% (49/49 tests).
 - [ ] Changes are logged in `implementation_log.md`.
 - [ ] Git commit and push completed cleanly.
