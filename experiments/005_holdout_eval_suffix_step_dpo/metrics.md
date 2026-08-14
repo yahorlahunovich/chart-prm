@@ -22,3 +22,5 @@ DPO vs Step-DPO generations differ on **100/100** questions.
 | KTO v14 | 26% | 90% | 84% | 15% |
 
 Full DPO matches experiment 003 (29%) and is the only method that beats base. Suffix Step-DPO recovered format vs the fragment-only v2 run (extract 90% → 99%, Step labels 59% → 78%) but did not improve accuracy. KTO v14 ties base on exact-match while dropping step-by-step formatting (v12 had 96% FA / 79% Step labels at 25%).
+
+See `quality_metrics.md` for structure, token-match, and wrong-committed-answer breakdowns beyond official exact-match.

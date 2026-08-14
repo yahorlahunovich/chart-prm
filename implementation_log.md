@@ -341,3 +341,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Holdout v9 After Suffix Step-DPO + KTO v14 (valid 5-way)
 - **What**: Holdout eval v9 completed with unique adapter directories. Exact-match on 100 questions: Base **26%**, SFT **23%**, full DPO **29%**, suffix Step-DPO **25%**, KTO v14 **26%**. Extracted-answer rates: Base/SFT/DPO **100%**, Step-DPO **99%**, KTO **90%**. DPO vs Step-DPO generations differ on all 100 items. Artifacts saved to `experiments/005_holdout_eval_suffix_step_dpo/`.
 - **Why**: Confirms the v8 DPO=Step-DPO tie was an adapter collision. Full-trajectory DPO is the only method that beats base. Suffix Step-DPO restored `Final Answer:` (90% → 99%) but did not lift accuracy. Balanced KTO v14 ties base while mostly dropping `Step N:` formatting.
+
+## Holdout Quality Beyond Exact-Match
+- **What**: Added `chart_prm.holdout_metrics` and `scripts/analyze_holdout_quality.py` to score experiment 005 generations on structure (`Step N:` + `Final Answer:`), extracted-answer match that allows units/labels/markdown, GT mentioned in the full text, and a wrong-committed-answer hallucination proxy. Wrote `experiments/005_holdout_eval_suffix_step_dpo/quality_metrics.md` plus `figures/{answer_tiers,structure,error_breakdown}.png`.
+- **Why**: Official exact-match hides models that are right but unstructured (KTO markdown, SFT `S = 25`) and does not show who follows the prompt contract or who commits a wrong final value without ever naming the GT.

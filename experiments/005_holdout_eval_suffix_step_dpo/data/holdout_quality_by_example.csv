@@ -1,0 +1,501 @@
+question_id,model,ground_truth,starts_step1,has_step2,n_steps,has_final_answer_plain,has_final_answer_markdown,has_final_answer_any,has_preamble,has_repetition,n_chars,official_pred,robust_pred,pred,exact_official,token_official,token_pred,token_body,token_conclusion,numeric_pred,structure_score,structured_correct,error_type
+1857,base,Reverse,True,True,3,True,False,True,False,False,666,Convolve,Convolve,Convolve,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1857,sft,Reverse,True,True,3,True,False,True,False,False,279,Magnify,Magnify,Magnify,False,False,False,False,False,False,1.0,False,wrong_committed
+1857,dpo,Reverse,True,True,3,True,False,True,False,False,200,Convolve,Convolve,Convolve,False,False,False,False,False,False,1.0,False,wrong_committed
+1857,step_dpo,Reverse,False,False,0,True,False,True,True,False,979,Not Applicable,Not Applicable,Not Applicable,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1857,kto,Reverse,False,False,0,False,False,True,True,False,606,** Reverse,Reverse,** Reverse,False,True,True,True,True,False,0.0,False,correct_extracted
+646,base,UP,True,True,4,True,False,True,False,False,671,UP,UP,UP,True,True,True,True,True,False,1.0,True,correct_extracted
+646,sft,UP,True,True,5,True,False,True,False,False,553,UP,UP,UP,True,True,True,True,True,False,1.0,True,correct_extracted
+646,dpo,UP,True,True,4,True,False,True,False,False,437,UP,UP,UP,True,True,True,True,True,False,1.0,True,correct_extracted
+646,step_dpo,UP,True,True,4,True,False,True,False,False,490,UP,UP,UP,True,True,True,True,True,False,1.0,True,correct_extracted
+646,kto,UP,False,False,0,True,False,True,True,False,817,MV,MV,MV,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1386,base,2,False,True,2,True,False,True,True,False,1104,15,15,15,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+1386,sft,2,True,True,2,True,False,True,False,False,140,1,1,1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1386,dpo,2,False,True,3,True,False,True,True,False,323,2,2,2,True,True,True,True,True,True,0.6,False,correct_extracted
+1386,step_dpo,2,False,False,0,True,False,True,True,False,379,0,0,0,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1386,kto,2,False,False,0,True,False,True,True,False,594,3,3,3,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1533,base,(j),False,True,4,True,False,True,True,False,1054,c,c,c,False,False,False,False,False,False,0.6,False,wrong_committed
+1533,sft,(j),True,True,3,True,False,True,False,False,428,d,d,d,False,False,False,False,False,False,1.0,False,wrong_committed
+1533,dpo,(j),True,True,2,True,False,True,False,False,239,f,f,f,False,False,False,False,False,False,1.0,False,wrong_committed
+1533,step_dpo,(j),False,False,0,True,False,True,True,False,1233,f,f,f,False,False,False,False,False,False,0.2,False,wrong_committed
+1533,kto,(j),False,False,0,False,False,True,True,False,1020,(c)**,(c),(c)**,False,False,False,False,False,False,0.0,False,wrong_committed
+1863,base,Italy,True,True,4,True,False,True,False,False,761,China,China,China,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1863,sft,Italy,True,True,9,True,False,True,False,False,694,China,China,China,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+1863,dpo,Italy,True,True,3,True,False,True,False,False,463,US,US,US,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1863,step_dpo,Italy,True,True,3,True,False,True,False,False,504,China,China,China,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1863,kto,Italy,False,False,0,True,False,True,True,False,566,Iran,Iran,Iran,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+587,base,0,True,True,4,True,False,True,False,False,584,8,8,8,False,False,False,False,False,False,1.0,False,wrong_committed
+587,sft,0,True,True,5,True,False,True,False,False,716,3,3,3,False,False,False,False,False,False,1.0,False,wrong_committed
+587,dpo,0,True,True,3,True,False,True,False,False,663,1,1,1,False,False,False,False,False,False,1.0,False,wrong_committed
+587,step_dpo,0,False,False,0,True,False,True,True,False,843,1,1,1,False,False,False,False,False,False,0.2,False,wrong_committed
+587,kto,0,False,False,0,False,False,True,True,False,673,1.,1.,1.,False,False,False,False,False,False,0.0,False,wrong_committed
+1696,base,0.6,True,True,4,True,False,True,False,False,338,0.6,0.6,0.6,True,True,True,True,True,True,1.0,True,correct_extracted
+1696,sft,0.6,True,True,4,True,False,True,False,False,410,0.6,0.6,0.6,True,True,True,True,True,True,1.0,True,correct_extracted
+1696,dpo,0.6,True,True,5,True,False,True,False,False,585,0.6,0.6,0.6,True,True,True,True,True,True,1.0,True,correct_extracted
+1696,step_dpo,0.6,True,True,3,True,False,True,False,False,296,0.6,0.6,0.6,True,True,True,True,True,True,1.0,True,correct_extracted
+1696,kto,0.6,False,False,0,True,False,True,True,False,743,0.6,0.6,0.6,True,True,True,True,True,True,0.2,False,correct_extracted
+2224,base,8,True,True,3,True,False,True,False,False,940,9,9,9,False,False,False,False,False,False,1.0,False,wrong_committed
+2224,sft,8,True,True,3,True,False,True,False,False,219,4,4,4,False,False,False,False,False,False,1.0,False,wrong_committed
+2224,dpo,8,True,True,3,True,False,True,False,False,268,4,4,4,False,False,False,False,False,False,1.0,False,wrong_committed
+2224,step_dpo,8,False,False,0,True,False,True,True,False,692,5,5,5,False,False,False,False,False,False,0.2,False,wrong_committed
+2224,kto,8,False,False,0,True,False,True,True,False,829,5,5,5,False,False,False,False,False,False,0.2,False,wrong_committed
+1474,base,23,True,True,4,True,False,True,False,False,331,3,3,3,False,False,False,False,False,False,1.0,False,wrong_committed
+1474,sft,23,True,True,3,True,False,True,False,False,216,3,3,3,False,False,False,False,False,False,1.0,False,wrong_committed
+1474,dpo,23,True,True,3,True,False,True,False,False,180,3,3,3,False,False,False,False,False,False,1.0,False,wrong_committed
+1474,step_dpo,23,False,True,3,True,False,True,True,False,1044,1,1,1,False,False,False,False,False,False,0.6,False,wrong_committed
+1474,kto,23,False,True,3,True,False,True,True,False,874,1,1,1,False,False,False,False,False,False,0.6,False,wrong_committed
+813,base,"[35, 40]",True,True,3,True,False,True,False,False,826,All intervals have the same increase.,All intervals have the same increase.,All intervals have the same increase.,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+813,sft,"[35, 40]",True,True,7,True,False,True,False,False,725,"[15, 20]","[15, 20]","[15, 20]",False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+813,dpo,"[35, 40]",True,True,3,True,False,True,False,False,244,"[20, 25]","[20, 25]","[20, 25]",False,False,False,False,False,False,1.0,False,wrong_committed
+813,step_dpo,"[35, 40]",True,True,3,True,False,True,False,False,909,"[20, 25]","[20, 25]","[20, 25]",False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+813,kto,"[35, 40]",False,False,0,True,False,True,True,False,1014,"[15, 20]","[15, 20]","[15, 20]",False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+2082,base,GPT-3.5,True,True,5,True,False,True,False,False,569,GPT-3.5,GPT-3.5,GPT-3.5,True,True,True,True,True,True,1.0,True,correct_extracted
+2082,sft,GPT-3.5,True,True,5,True,False,True,False,False,355,GPT-3.5,GPT-3.5,GPT-3.5,True,True,True,True,True,True,1.0,True,correct_extracted
+2082,dpo,GPT-3.5,True,True,5,True,False,True,False,False,367,GPT-4,GPT-4,GPT-4,False,False,False,False,False,False,1.0,False,wrong_committed
+2082,step_dpo,GPT-3.5,True,True,5,True,False,True,False,False,535,GPT-4,GPT-4,GPT-4,False,False,False,False,False,False,1.0,False,wrong_committed
+2082,kto,GPT-3.5,False,False,0,False,False,False,True,False,518,,,,False,False,False,True,True,False,0.0,False,correct_unextracted
+1489,base,197,True,True,3,True,False,True,False,False,393,197,197,197,True,True,True,True,True,True,1.0,True,correct_extracted
+1489,sft,197,True,True,5,True,False,True,False,False,476,264,264,264,False,False,False,False,False,False,1.0,False,wrong_committed
+1489,dpo,197,True,True,3,True,False,True,False,False,420,197,197,197,True,True,True,True,True,True,1.0,True,correct_extracted
+1489,step_dpo,197,True,True,3,True,False,True,False,False,448,197,197,197,True,True,True,True,True,True,1.0,True,correct_extracted
+1489,kto,197,False,False,0,True,False,True,True,False,678,197,197,197,True,True,True,True,True,True,0.2,False,correct_extracted
+1895,base,3,True,True,3,True,False,True,False,False,479,2,2,2,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1895,sft,3,True,True,3,True,False,True,False,False,197,3,3,3,True,True,True,True,True,True,1.0,True,correct_extracted
+1895,dpo,3,True,True,2,True,False,True,False,False,180,2,2,2,False,False,False,False,False,False,1.0,False,wrong_committed
+1895,step_dpo,3,True,True,2,True,False,True,False,False,437,2,2,2,False,False,False,False,False,False,1.0,False,wrong_committed
+1895,kto,3,False,False,0,True,False,True,True,False,604,3,3,3,True,True,True,True,True,True,0.2,False,correct_extracted
+991,base,"ρ1(3,.)",True,True,4,True,False,True,False,False,326,"ρ1(3,·)","ρ1(3,·)","ρ1(3,·)",False,True,True,True,True,True,1.0,True,correct_extracted
+991,sft,"ρ1(3,.)",True,True,3,True,False,True,False,False,205,"ρ1(3,·)","ρ1(3,·)","ρ1(3,·)",False,True,True,True,True,True,1.0,True,correct_extracted
+991,dpo,"ρ1(3,.)",True,True,3,True,False,True,False,False,204,"ρ1(3,·)","ρ1(3,·)","ρ1(3,·)",False,True,True,True,True,True,1.0,True,correct_extracted
+991,step_dpo,"ρ1(3,.)",False,False,0,True,False,True,True,False,769,"ρ1(3,·) and ρ2(3,·)","ρ1(3,·) and ρ2(3,·)","ρ1(3,·) and ρ2(3,·)",False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+991,kto,"ρ1(3,.)",False,False,0,False,False,True,True,False,643,"** ρ₁(3, ·)","ρ₁(3, ·)","** ρ₁(3, ·)",False,True,True,True,True,True,0.0,False,correct_extracted
+662,base,1,True,True,6,True,False,True,False,False,382,0,0,0,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+662,sft,1,True,True,3,True,False,True,False,False,383,All datasets surpass Average AUC of 0.70 at ε=0.14.,All datasets surpass Average AUC of 0.70 at ε=0.14.,All datasets surpass Average AUC of 0.70 at ε=0.14.,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+662,dpo,1,True,True,4,True,False,True,False,False,249,2,2,2,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+662,step_dpo,1,False,False,0,True,False,True,True,False,514,2,2,2,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+662,kto,1,False,False,0,True,False,True,True,False,715,1,1,1,True,True,True,True,True,True,0.2,False,correct_extracted
+1544,base,Sep,True,True,4,True,False,True,False,False,331,Sep,Sep,Sep,True,True,True,True,True,False,1.0,True,correct_extracted
+1544,sft,Sep,True,True,5,True,False,True,False,False,481,August,August,August,False,False,False,False,False,False,1.0,False,wrong_committed
+1544,dpo,Sep,True,True,4,True,False,True,False,False,285,July,July,July,False,False,False,False,False,False,1.0,False,wrong_committed
+1544,step_dpo,Sep,True,True,4,True,False,True,False,False,330,Sep,Sep,Sep,True,True,True,True,True,False,1.0,True,correct_extracted
+1544,kto,Sep,False,False,0,True,False,True,True,False,794,July,July,July,False,False,False,False,False,False,0.2,False,wrong_committed
+1600,base,Dimension Zero,True,True,4,True,False,True,False,False,287,Dimension Zero,Dimension Zero,Dimension Zero,True,True,True,True,True,False,1.0,True,correct_extracted
+1600,sft,Dimension Zero,True,True,3,True,False,True,False,False,364,Dimension Zero,Dimension Zero,Dimension Zero,True,True,True,True,True,False,1.0,True,correct_extracted
+1600,dpo,Dimension Zero,True,True,4,True,False,True,False,False,338,Zero,Zero,Zero,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1600,step_dpo,Dimension Zero,False,True,4,True,False,True,True,False,1050,Zero,Zero,Zero,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+1600,kto,Dimension Zero,False,False,0,True,False,True,True,False,881,Dimension Two,Dimension Two,Dimension Two,False,False,False,False,False,False,0.2,False,wrong_committed
+1773,base,2,True,True,4,True,False,True,False,False,502,1,1,1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1773,sft,2,True,True,6,True,False,True,False,False,549,Yellow-green,Yellow-green,Yellow-green,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+1773,dpo,2,True,True,3,True,False,True,False,False,271,1,1,1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1773,step_dpo,2,False,True,2,True,False,True,True,False,565,1,1,1,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+1773,kto,2,False,True,3,True,False,True,True,False,810,2,2,2,True,True,True,True,True,True,0.6,False,correct_extracted
+814,base,4,True,True,4,True,False,True,False,False,303,2,2,2,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+814,sft,4,True,True,2,True,False,True,False,False,156,3,3,3,False,False,False,False,False,False,1.0,False,wrong_committed
+814,dpo,4,True,True,2,True,False,True,False,False,128,3,3,3,False,False,False,False,False,False,1.0,False,wrong_committed
+814,step_dpo,4,False,True,3,True,False,True,True,False,889,6,6,6,False,False,False,False,False,False,0.6,False,wrong_committed
+814,kto,4,False,False,0,True,False,True,True,False,825,1,1,1,False,False,False,False,False,False,0.2,False,wrong_committed
+1634,base,Random Forest,True,True,4,True,False,True,False,False,332,Random Forest,Random Forest,Random Forest,True,True,True,True,True,False,1.0,True,correct_extracted
+1634,sft,Random Forest,True,True,4,True,False,True,False,False,388,Naïve Bayes,Naïve Bayes,Naïve Bayes,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1634,dpo,Random Forest,True,True,4,True,False,True,False,False,320,Random Forest,Random Forest,Random Forest,True,True,True,True,True,False,1.0,True,correct_extracted
+1634,step_dpo,Random Forest,True,True,4,True,False,True,False,False,559,Random Forest,Random Forest,Random Forest,True,True,True,True,True,False,1.0,True,correct_extracted
+1634,kto,Random Forest,False,False,0,True,False,True,True,False,941,Random Forest,Random Forest,Random Forest,True,True,True,True,True,False,0.2,False,correct_extracted
+523,base,4,False,False,0,True,False,True,True,False,1094,8,8,8,False,False,False,True,False,False,0.2,False,mentions_gt_wrong_commit
+523,sft,4,True,True,2,True,False,True,False,False,154,3,3,3,False,False,False,False,False,False,1.0,False,wrong_committed
+523,dpo,4,False,False,0,True,False,True,True,False,966,8,8,8,False,False,False,True,False,False,0.2,False,mentions_gt_wrong_commit
+523,step_dpo,4,False,False,0,True,False,True,True,False,1497,8,8,8,False,False,False,True,False,False,0.2,False,mentions_gt_wrong_commit
+523,kto,4,False,False,0,False,False,True,True,False,1362,** 8,8,** 8,False,False,False,True,False,False,0.0,False,mentions_gt_wrong_commit
+1953,base,25,True,True,4,True,False,True,False,False,399,10,10,10,False,False,False,False,False,False,1.0,False,wrong_committed
+1953,sft,25,True,True,8,True,False,True,False,False,823,S = 25,S = 25,S = 25,False,True,True,True,True,True,1.0,True,correct_extracted
+1953,dpo,25,True,True,4,True,False,True,False,False,463,10,10,10,False,False,False,False,False,False,1.0,False,wrong_committed
+1953,step_dpo,25,True,True,3,True,False,True,False,False,343,10,10,10,False,False,False,False,False,False,1.0,False,wrong_committed
+1953,kto,25,False,False,0,True,False,True,True,False,1003,10,10,10,False,False,False,False,False,False,0.2,False,wrong_committed
+2330,base,Gamma,True,True,4,True,False,True,False,False,382,Gamma,Gamma,Gamma,True,True,True,True,True,False,1.0,True,correct_extracted
+2330,sft,Gamma,True,True,5,True,False,True,False,False,572,Bootstrap,Bootstrap,Bootstrap,False,False,False,False,False,False,1.0,False,wrong_committed
+2330,dpo,Gamma,True,True,3,True,False,True,False,False,468,Bootstrap,Bootstrap,Bootstrap,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+2330,step_dpo,Gamma,False,True,5,True,False,True,True,False,1257,Gamma,Gamma,Gamma,True,True,True,True,True,False,0.6,False,correct_extracted
+2330,kto,Gamma,False,False,0,False,False,False,True,False,1331,,,,False,False,False,True,True,False,0.0,False,correct_unextracted
+1469,base,decrease,True,True,4,True,False,True,False,False,523,Decrease,Decrease,Decrease,True,True,True,True,True,False,1.0,True,correct_extracted
+1469,sft,decrease,True,True,3,True,False,True,False,False,212,Decrease,Decrease,Decrease,True,True,True,True,True,False,1.0,True,correct_extracted
+1469,dpo,decrease,True,True,4,True,False,True,False,False,266,Decrease,Decrease,Decrease,True,True,True,True,True,False,1.0,True,correct_extracted
+1469,step_dpo,decrease,True,True,4,True,False,True,False,False,546,Decrease,Decrease,Decrease,True,True,True,True,True,False,1.0,True,correct_extracted
+1469,kto,decrease,False,False,0,True,False,True,True,False,476,Decrease,Decrease,Decrease,True,True,True,True,True,False,0.2,False,correct_extracted
+1306,base,dE/dx (keV/cm),False,True,3,True,False,True,True,False,804,dE/dx (keV/cm),dE/dx (keV/cm),dE/dx (keV/cm),True,True,True,True,True,False,0.6,False,correct_extracted
+1306,sft,dE/dx (keV/cm),True,True,2,True,False,True,False,False,182,dE/dx (keV/cm),dE/dx (keV/cm),dE/dx (keV/cm),True,True,True,True,True,False,1.0,True,correct_extracted
+1306,dpo,dE/dx (keV/cm),True,True,3,True,False,True,False,False,223,dE/dx (keV/cm),dE/dx (keV/cm),dE/dx (keV/cm),True,True,True,True,True,False,1.0,True,correct_extracted
+1306,step_dpo,dE/dx (keV/cm),True,True,2,True,False,True,False,False,352,dE/dx (keV/cm),dE/dx (keV/cm),dE/dx (keV/cm),True,True,True,True,True,False,1.0,True,correct_extracted
+1306,kto,dE/dx (keV/cm),False,False,0,True,False,True,True,False,910,dE/dx (keV/cm),dE/dx (keV/cm),dE/dx (keV/cm),True,True,True,True,True,False,0.2,False,correct_extracted
+1536,base,A,True,True,4,True,False,True,False,False,524,B,B,B,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1536,sft,A,True,True,2,True,False,True,False,False,192,A,A,A,True,True,True,True,True,False,1.0,True,correct_extracted
+1536,dpo,A,True,True,3,True,False,True,False,False,270,A,A,A,True,True,True,True,True,False,1.0,True,correct_extracted
+1536,step_dpo,A,True,True,4,True,False,True,False,False,422,B,B,B,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1536,kto,A,False,False,0,True,False,True,True,False,663,B,B,B,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1026,base,First subplot,True,True,5,True,False,True,False,False,615,Leftmost subplot,Leftmost subplot,Leftmost subplot,False,False,False,False,False,False,1.0,False,wrong_committed
+1026,sft,First subplot,True,True,5,True,False,True,False,False,669,All three subplots show the earliest β where the empirical αx and αy lines start to converge.,All three subplots show the earliest β where the empirical αx and αy lines start to converge.,All three subplots show the earliest β where the empirical αx and αy lines start to converge.,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+1026,dpo,First subplot,True,True,3,True,False,True,False,False,241,Leftmost subplot,Leftmost subplot,Leftmost subplot,False,False,False,False,False,False,1.0,False,wrong_committed
+1026,step_dpo,First subplot,True,True,3,True,False,True,False,False,373,Leftmost,Leftmost,Leftmost,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1026,kto,First subplot,False,False,0,True,False,True,True,False,854,Leftmost subplot,Leftmost subplot,Leftmost subplot,False,False,False,False,False,False,0.2,False,wrong_committed
+1974,base,10^-1,True,True,5,True,False,True,False,False,403,0.000001,0.000001,0.000001,False,False,False,False,False,False,1.0,False,wrong_committed
+1974,sft,10^-1,True,True,3,True,False,True,False,False,290,10^-2,10^-2,10^-2,False,False,False,False,False,False,1.0,False,wrong_committed
+1974,dpo,10^-1,True,True,4,True,False,True,False,False,318,0.001,0.001,0.001,False,False,False,False,False,False,1.0,False,wrong_committed
+1974,step_dpo,10^-1,False,True,3,True,False,True,True,False,827,0.00001,0.00001,0.00001,False,False,False,False,False,False,0.6,False,wrong_committed
+1974,kto,10^-1,False,False,0,False,False,False,True,False,351,,,,False,False,False,False,False,False,0.0,False,no_answer
+1503,base,S02,True,True,4,True,False,True,False,False,306,S08,S08,S08,False,False,False,False,False,False,1.0,False,wrong_committed
+1503,sft,S02,True,True,4,True,False,True,False,False,337,S08,S08,S08,False,False,False,False,False,False,1.0,False,wrong_committed
+1503,dpo,S02,True,True,5,True,False,True,False,False,298,S08,S08,S08,False,False,False,False,False,False,1.0,False,wrong_committed
+1503,step_dpo,S02,False,True,4,True,False,True,True,False,764,S08,S08,S08,False,False,False,False,False,False,0.6,False,wrong_committed
+1503,kto,S02,False,False,0,False,False,False,True,False,418,,,,False,False,False,False,False,False,0.0,False,no_answer
+223,base,Block 7 Conv 2,True,True,5,True,False,True,False,False,382,Block 4 Conv 1,Block 4 Conv 1,Block 4 Conv 1,False,False,False,False,False,False,1.0,False,wrong_committed
+223,sft,Block 7 Conv 2,True,True,3,True,False,True,False,False,362,Block 3 Conv 2,Block 3 Conv 2,Block 3 Conv 2,False,False,False,False,False,False,1.0,False,wrong_committed
+223,dpo,Block 7 Conv 2,True,True,4,True,False,True,False,False,343,Block 3 Conv 2,Block 3 Conv 2,Block 3 Conv 2,False,False,False,False,False,False,1.0,False,wrong_committed
+223,step_dpo,Block 7 Conv 2,False,True,4,True,False,True,True,False,1137,Block 4 Conv 1,Block 4 Conv 1,Block 4 Conv 1,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+223,kto,Block 7 Conv 2,False,True,4,True,False,True,True,False,891,Block 4 Conv 1,Block 4 Conv 1,Block 4 Conv 1,False,False,False,False,False,False,0.6,False,wrong_committed
+1999,base,G-VaR_{99%},True,True,5,True,False,True,False,False,349,Historical,Historical,Historical,False,False,False,False,False,False,1.0,False,wrong_committed
+1999,sft,G-VaR_{99%},True,True,3,True,False,True,False,False,482,Historical,Historical,Historical,False,False,False,False,False,False,1.0,False,wrong_committed
+1999,dpo,G-VaR_{99%},True,True,4,True,False,True,False,False,256,G-VaR99%,G-VaR99%,G-VaR99%,False,False,False,False,False,False,1.0,False,wrong_committed
+1999,step_dpo,G-VaR_{99%},True,True,3,True,False,True,False,False,496,Not Applicable,Not Applicable,Not Applicable,False,False,False,False,False,False,1.0,False,wrong_committed
+1999,kto,G-VaR_{99%},False,True,3,True,False,True,True,False,1028,Historical,Historical,Historical,False,False,False,False,False,False,0.6,False,wrong_committed
+1246,base,0.3,True,True,4,True,False,True,False,False,610,0.1,0.1,0.1,False,False,False,False,False,False,1.0,False,wrong_committed
+1246,sft,0.3,True,True,6,True,False,True,False,False,451,0.1,0.1,0.1,False,False,False,False,False,False,1.0,False,wrong_committed
+1246,dpo,0.3,True,True,4,True,False,True,False,False,465,0.1,0.1,0.1,False,False,False,False,False,False,1.0,False,wrong_committed
+1246,step_dpo,0.3,False,False,0,False,False,True,True,False,903,0.05**,0.05,0.05**,False,False,False,False,False,False,0.0,False,wrong_committed
+1246,kto,0.3,False,False,0,True,False,True,True,False,1092,0.1,0.1,0.1,False,False,False,False,False,False,0.2,False,wrong_committed
+379,base,Total Crime Rate,True,True,5,True,False,True,False,False,766,Total Crime Rate,Total Crime Rate,Total Crime Rate,True,True,True,True,True,False,1.0,True,correct_extracted
+379,sft,Total Crime Rate,True,True,4,True,False,True,False,False,410,Total Crime Rate,Total Crime Rate,Total Crime Rate,True,True,True,True,True,False,1.0,True,correct_extracted
+379,dpo,Total Crime Rate,True,True,3,True,False,True,False,False,544,Total Crime Rate,Total Crime Rate,Total Crime Rate,True,True,True,True,True,False,1.0,True,correct_extracted
+379,step_dpo,Total Crime Rate,True,True,3,True,False,True,False,False,589,Total Crime Rate,Total Crime Rate,Total Crime Rate,True,True,True,True,True,False,1.0,True,correct_extracted
+379,kto,Total Crime Rate,False,False,0,True,False,True,True,False,998,Total Crime Rate,Total Crime Rate,Total Crime Rate,True,True,True,True,True,False,0.2,False,correct_extracted
+193,base,14,True,True,5,True,False,True,False,False,418,14,14,14,True,True,True,True,True,True,1.0,True,correct_extracted
+193,sft,14,True,True,4,True,False,True,False,False,412,14,14,14,True,True,True,True,True,True,1.0,True,correct_extracted
+193,dpo,14,True,True,3,True,False,True,False,False,224,14,14,14,True,True,True,True,True,True,1.0,True,correct_extracted
+193,step_dpo,14,True,True,4,True,False,True,False,False,347,14,14,14,True,True,True,True,True,True,1.0,True,correct_extracted
+193,kto,14,False,False,0,True,False,True,True,False,643,14,14,14,True,True,True,True,True,True,0.2,False,correct_extracted
+252,base,e,True,True,3,True,False,True,False,False,223,c,c,c,False,False,False,False,False,False,1.0,False,wrong_committed
+252,sft,e,True,True,3,True,False,True,False,False,441,e,e,e,True,True,True,True,True,False,1.0,True,correct_extracted
+252,dpo,e,True,True,4,True,False,True,False,False,242,e,e,e,True,True,True,True,True,False,1.0,True,correct_extracted
+252,step_dpo,e,False,True,3,True,False,True,True,False,746,e,e,e,True,True,True,True,True,False,0.6,False,correct_extracted
+252,kto,e,False,True,4,True,False,True,True,False,681,e,e,e,True,True,True,True,True,False,0.6,False,correct_extracted
+2313,base,SHUTTLE,True,True,4,True,False,True,False,False,600,USPS,USPS,USPS,False,False,False,False,False,False,1.0,False,wrong_committed
+2313,sft,SHUTTLE,True,True,4,True,False,True,False,False,344,CONNECT-4,CONNECT-4,CONNECT-4,False,False,False,False,False,False,1.0,False,wrong_committed
+2313,dpo,SHUTTLE,True,True,4,True,False,True,False,False,276,LETTER,LETTER,LETTER,False,False,False,False,False,False,1.0,False,wrong_committed
+2313,step_dpo,SHUTTLE,True,True,3,True,False,True,False,False,579,PENDIGITS,PENDIGITS,PENDIGITS,False,False,False,False,False,False,1.0,False,wrong_committed
+2313,kto,SHUTTLE,False,False,0,False,False,True,True,False,976,** Connect-4,Connect-4,** Connect-4,False,False,False,True,True,False,0.0,False,mentions_gt_wrong_commit
+777,base,1.89,True,True,3,True,False,True,False,False,367,1,1,1,False,False,False,False,False,False,1.0,False,wrong_committed
+777,sft,1.89,True,True,3,True,False,True,False,False,267,1.89,1.89,1.89,True,True,True,True,True,True,1.0,True,correct_extracted
+777,dpo,1.89,True,True,4,True,False,True,False,False,429,0.5291,0.5291,0.5291,False,False,False,False,False,False,1.0,False,wrong_committed
+777,step_dpo,1.89,False,False,0,True,False,True,True,False,568,1,1,1,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+777,kto,1.89,False,False,0,True,False,True,True,False,811,1,1,1,False,False,False,False,False,False,0.2,False,wrong_committed
+1842,base,(III) a=-3.,False,True,4,True,False,True,True,False,1049,Plot (I),Plot (I),Plot (I),False,False,False,True,False,False,0.6,False,mentions_gt_wrong_commit
+1842,sft,(III) a=-3.,True,True,4,True,False,True,False,False,530,Plot (I),Plot (I),Plot (I),False,False,False,False,False,False,1.0,False,wrong_committed
+1842,dpo,(III) a=-3.,True,True,4,True,False,True,False,False,426,(III),(III),(III),False,False,False,False,False,False,1.0,False,wrong_committed
+1842,step_dpo,(III) a=-3.,False,True,3,True,False,True,True,False,851,(I),(I),(I),False,False,False,False,False,False,0.6,False,wrong_committed
+1842,kto,(III) a=-3.,False,False,0,False,False,True,True,False,1181,Plot (III)**,Plot (III),Plot (III)**,False,False,False,True,True,False,0.0,False,mentions_gt_wrong_commit
+1918,base,news,True,True,6,True,False,True,False,False,449,News,News,News,True,True,True,True,True,False,1.0,True,correct_extracted
+1918,sft,news,True,True,4,True,False,True,False,False,470,No News,No News,No News,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1918,dpo,news,True,True,5,True,False,True,False,False,278,News,News,News,True,True,True,True,True,False,1.0,True,correct_extracted
+1918,step_dpo,news,False,True,3,True,False,True,True,False,449,no news,no news,no news,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+1918,kto,news,False,True,3,True,False,True,True,False,448,News,News,News,True,True,True,True,True,False,0.6,False,correct_extracted
+872,base,1,True,True,4,True,False,True,False,False,525,Not Applicable,Not Applicable,Not Applicable,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+872,sft,1,True,True,4,True,False,True,False,False,621,0,0,0,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+872,dpo,1,True,True,5,True,False,True,False,False,376,1,1,1,True,True,True,True,True,True,1.0,True,correct_extracted
+872,step_dpo,1,False,True,3,True,False,True,True,False,644,0,0,0,False,False,False,True,False,False,0.6,False,mentions_gt_wrong_commit
+872,kto,1,False,False,0,True,False,True,True,False,720,3,3,3,False,False,False,True,False,False,0.2,False,mentions_gt_wrong_commit
+2067,base,Fluctuating,True,True,4,True,False,True,False,False,759,Fluctuating,Fluctuating,Fluctuating,True,True,True,True,True,False,1.0,True,correct_extracted
+2067,sft,Fluctuating,True,True,4,True,False,True,False,False,286,Decreasing,Decreasing,Decreasing,False,False,False,False,False,False,1.0,False,wrong_committed
+2067,dpo,Fluctuating,True,True,4,True,False,True,False,False,624,Fluctuating,Fluctuating,Fluctuating,True,True,True,True,True,False,1.0,True,correct_extracted
+2067,step_dpo,Fluctuating,False,True,3,True,False,True,False,False,624,Increasing,Increasing,Increasing,False,False,False,False,False,False,0.8,False,wrong_committed
+2067,kto,Fluctuating,False,False,0,True,False,True,False,False,634,Top,Top,Top,False,False,False,False,False,False,0.4,False,wrong_committed
+1182,base,Decreases,True,True,3,True,False,True,False,False,695,Decreasing,Decreasing,Decreasing,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1182,sft,Decreases,True,True,5,True,False,True,False,False,568,ρ* decreases as SCV increases.,ρ* decreases as SCV increases.,ρ* decreases as SCV increases.,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1182,dpo,Decreases,True,True,4,True,False,True,False,False,268,Decreases,Decreases,Decreases,True,True,True,True,True,False,1.0,True,correct_extracted
+1182,step_dpo,Decreases,True,True,3,True,False,True,False,False,634,Decreases then increases,Decreases then increases,Decreases then increases,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1182,kto,Decreases,False,False,0,True,False,True,True,False,790,The Pearson correlation coefficient (ρ*) decreases as the standard deviation of the control variates (SCV) increases.,The Pearson correlation coefficient (ρ*) decreases as the standard deviation of the control variates (SCV) increases.,The Pearson correlation coefficient (ρ*) decreases as the standard deviation of the control variates (SCV) increases.,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+198,base,200,True,True,5,True,False,True,False,False,317,100,100,100,False,False,False,False,False,False,1.0,False,wrong_committed
+198,sft,200,True,True,5,True,False,True,False,False,408,Not applicable,Not applicable,Not applicable,False,False,False,False,False,False,1.0,False,wrong_committed
+198,dpo,200,True,True,2,True,False,True,False,False,158,10,10,10,False,False,False,False,False,False,1.0,False,wrong_committed
+198,step_dpo,200,True,True,4,True,False,True,False,False,249,10,10,10,False,False,False,False,False,False,1.0,False,wrong_committed
+198,kto,200,False,False,0,True,False,True,True,False,655,10,10,10,False,False,False,False,False,False,0.2,False,wrong_committed
+1401,base,2,True,True,4,True,False,True,False,False,604,0,0,0,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1401,sft,2,True,True,4,True,False,True,False,False,412,2,2,2,True,True,True,True,True,True,1.0,True,correct_extracted
+1401,dpo,2,True,True,3,True,False,True,False,False,263,1,1,1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1401,step_dpo,2,False,True,4,True,False,True,True,False,565,0,0,0,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+1401,kto,2,False,False,0,True,False,True,True,False,458,0,0,0,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1437,base,1,False,True,3,True,False,True,True,False,601,1,1,1,True,True,True,True,True,True,0.6,False,correct_extracted
+1437,sft,1,True,True,4,True,False,True,False,False,376,2,2,2,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1437,dpo,1,False,True,3,True,False,True,True,False,662,2,2,2,False,False,False,True,False,False,0.6,False,mentions_gt_wrong_commit
+1437,step_dpo,1,False,True,3,True,False,True,True,False,484,2,2,2,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+1437,kto,1,False,False,0,False,False,True,True,False,448,2.,2.,2.,False,False,False,True,True,False,0.0,False,mentions_gt_wrong_commit
+1619,base,4,True,True,4,True,False,True,False,False,359,3,3,3,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1619,sft,4,True,True,5,True,False,True,False,False,492,NI (G = 75),NI (G = 75),NI (G = 75),False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1619,dpo,4,True,True,5,True,False,True,False,False,356,3,3,3,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1619,step_dpo,4,False,True,4,True,False,True,True,False,1144,3,3,3,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+1619,kto,4,False,False,0,True,False,True,True,False,1162,Not Applicable,Not Applicable,Not Applicable,False,False,False,True,False,False,0.2,False,mentions_gt_wrong_commit
+409,base,2,True,True,3,True,False,True,False,False,866,3,3,3,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+409,sft,2,True,True,4,True,False,True,False,False,340,3,3,3,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+409,dpo,2,True,True,2,True,False,True,False,False,164,3,3,3,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+409,step_dpo,2,False,False,0,True,False,True,True,False,1241,2,2,2,True,True,True,True,True,True,0.2,False,correct_extracted
+409,kto,2,False,False,0,True,False,True,True,False,1139,0,0,0,False,False,False,True,False,False,0.2,False,mentions_gt_wrong_commit
+147,base,"Aug 22, 12:00",True,True,4,True,False,True,False,False,626,"Aug 22, 12:00","Aug 22, 12:00","Aug 22, 12:00",True,True,True,True,True,True,1.0,True,correct_extracted
+147,sft,"Aug 22, 12:00",True,True,3,True,False,True,False,False,357,"Aug 23, 12:00","Aug 23, 12:00","Aug 23, 12:00",False,False,False,False,False,False,1.0,False,wrong_committed
+147,dpo,"Aug 22, 12:00",True,True,3,True,False,True,False,False,274,"Aug 23, 12:00","Aug 23, 12:00","Aug 23, 12:00",False,False,False,False,False,False,1.0,False,wrong_committed
+147,step_dpo,"Aug 22, 12:00",True,True,3,True,False,True,False,False,531,"Aug 23, 12:00","Aug 23, 12:00","Aug 23, 12:00",False,False,False,False,False,False,1.0,False,wrong_committed
+147,kto,"Aug 22, 12:00",False,False,0,True,False,True,True,False,502,"Aug 23, 2022, 12:00","Aug 23, 2022, 12:00","Aug 23, 2022, 12:00",False,False,False,False,False,False,0.2,False,wrong_committed
+638,base,2,True,True,5,True,False,True,False,False,362,3,3,3,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+638,sft,2,True,True,4,True,False,True,False,False,449,3-bit,3-bit,3-bit,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+638,dpo,2,True,True,3,True,False,True,False,False,240,4,4,4,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+638,step_dpo,2,False,False,0,True,False,True,True,False,746,6,6,6,False,False,False,True,False,False,0.2,False,mentions_gt_wrong_commit
+638,kto,2,False,False,0,True,False,True,True,False,1034,5,5,5,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1320,base,4,True,True,3,True,False,True,False,False,466,7,7,7,False,False,False,False,False,False,1.0,False,wrong_committed
+1320,sft,4,True,True,3,True,False,True,False,False,200,3,3,3,False,False,False,False,False,False,1.0,False,wrong_committed
+1320,dpo,4,True,True,2,True,False,True,False,False,119,3,3,3,False,False,False,False,False,False,1.0,False,wrong_committed
+1320,step_dpo,4,True,True,2,True,False,True,False,False,458,5,5,5,False,False,False,False,False,False,1.0,False,wrong_committed
+1320,kto,4,False,False,0,True,False,True,True,False,725,4,4,4,True,True,True,True,True,True,0.2,False,correct_extracted
+177,base,max,True,True,5,True,False,True,False,False,739,min,min,min,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+177,sft,max,True,True,5,True,False,True,False,False,637,max,max,max,True,True,True,True,True,False,1.0,True,correct_extracted
+177,dpo,max,True,True,3,True,False,True,False,False,789,max+max,max+max,max+max,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+177,step_dpo,max,True,True,5,True,False,True,False,False,872,min,min,min,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+177,kto,max,False,False,0,True,False,True,True,False,1161,Unknown Vals,Unknown Vals,Unknown Vals,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1060,base,12,True,True,3,True,False,True,False,False,402,6,6,6,False,False,False,False,False,False,1.0,False,wrong_committed
+1060,sft,12,True,True,2,True,False,True,False,False,144,3,3,3,False,False,False,False,False,False,1.0,False,wrong_committed
+1060,dpo,12,False,True,2,True,False,True,True,False,340,4,4,4,False,False,False,False,False,False,0.6,False,wrong_committed
+1060,step_dpo,12,False,True,5,True,False,True,True,False,881,6,6,6,False,False,False,False,False,False,0.6,False,wrong_committed
+1060,kto,12,False,False,0,True,False,True,True,False,449,4,4,4,False,False,False,False,False,False,0.2,False,wrong_committed
+236,base,1,True,True,5,True,False,True,False,False,449,Layer_1,Layer_1,Layer_1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+236,sft,1,True,True,5,True,False,True,False,False,563,"Layer 1, Layer 2, Layer 3","Layer 1, Layer 2, Layer 3","Layer 1, Layer 2, Layer 3",False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+236,dpo,1,True,True,4,True,False,True,False,False,233,Layer_1,Layer_1,Layer_1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+236,step_dpo,1,False,True,3,True,False,True,True,False,1271,Not Applicable,Not Applicable,Not Applicable,False,False,False,True,False,False,0.6,False,mentions_gt_wrong_commit
+236,kto,1,False,False,0,True,False,True,True,False,726,1,1,1,True,True,True,True,True,True,0.2,False,correct_extracted
+1130,base,-15%,True,True,4,True,False,True,False,False,305,-2%,-2%,-2%,False,False,False,False,False,False,1.0,False,wrong_committed
+1130,sft,-15%,True,True,5,True,False,True,False,False,349,3%,3%,3%,False,False,False,False,False,False,1.0,False,wrong_committed
+1130,dpo,-15%,True,True,5,True,False,True,False,False,305,-27%,-27%,-27%,False,False,False,False,False,False,1.0,False,wrong_committed
+1130,step_dpo,-15%,False,True,3,True,False,True,True,False,779,-15%,-15%,-15%,True,True,True,True,True,True,0.6,False,correct_extracted
+1130,kto,-15%,False,True,3,False,False,False,True,False,693,,,,False,False,False,False,False,False,0.4,False,no_answer
+1124,base,"p \in [0.9, 0.999]",True,True,3,True,False,True,False,False,538,Green,Green,Green,False,False,False,False,False,False,1.0,False,wrong_committed
+1124,sft,"p \in [0.9, 0.999]",True,True,2,True,False,True,False,False,514,Yellow,Yellow,Yellow,False,False,False,False,False,False,1.0,False,wrong_committed
+1124,dpo,"p \in [0.9, 0.999]",True,True,3,True,False,True,False,False,482,Yellow,Yellow,Yellow,False,False,False,False,False,False,1.0,False,wrong_committed
+1124,step_dpo,"p \in [0.9, 0.999]",False,False,0,True,False,True,True,False,572,Yellow,Yellow,Yellow,False,False,False,False,False,False,0.2,False,wrong_committed
+1124,kto,"p \in [0.9, 0.999]",False,False,0,True,False,True,True,False,864,Yellow,Yellow,Yellow,False,False,False,False,False,False,0.2,False,wrong_committed
+2050,base,3,True,True,5,True,False,True,False,False,461,3,3,3,True,True,True,True,True,True,1.0,True,correct_extracted
+2050,sft,3,True,True,3,True,False,True,False,False,315,Network Distance 1,Network Distance 1,Network Distance 1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+2050,dpo,3,True,True,4,True,False,True,False,False,385,3,3,3,True,True,True,True,True,True,1.0,True,correct_extracted
+2050,step_dpo,3,False,True,4,True,False,True,True,False,842,2,2,2,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+2050,kto,3,False,True,4,True,False,True,True,False,934,3,3,3,True,True,True,True,True,True,0.6,False,correct_extracted
+2193,base,front pocket,True,True,4,True,False,True,False,False,401,Swing arm,Swing arm,Swing arm,False,False,False,False,False,False,1.0,False,wrong_committed
+2193,sft,front pocket,True,True,3,True,False,True,False,False,297,Swing arm,Swing arm,Swing arm,False,False,False,False,False,False,1.0,False,wrong_committed
+2193,dpo,front pocket,True,True,4,True,False,True,False,False,362,Swing arm,Swing arm,Swing arm,False,False,False,False,False,False,1.0,False,wrong_committed
+2193,step_dpo,front pocket,True,True,4,True,False,True,False,False,622,Swing arm,Swing arm,Swing arm,False,False,False,False,False,False,1.0,False,wrong_committed
+2193,kto,front pocket,False,False,0,False,False,True,True,False,1094,** Bag,Bag,** Bag,False,False,False,True,False,False,0.0,False,mentions_gt_wrong_commit
+451,base,Argentina,True,True,4,True,False,True,False,False,1001,Denmark,Denmark,Denmark,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+451,sft,Argentina,True,True,4,True,False,True,False,False,645,Denmark,Denmark,Denmark,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+451,dpo,Argentina,True,True,4,True,False,True,False,False,291,Poland,Poland,Poland,False,False,False,False,False,False,1.0,False,wrong_committed
+451,step_dpo,Argentina,False,False,0,True,False,True,True,False,803,Denmark,Denmark,Denmark,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+451,kto,Argentina,False,True,6,True,False,True,True,False,992,Denmark,Denmark,Denmark,False,False,False,False,False,False,0.6,False,wrong_committed
+1630,base,FMTL globally dominates SELFISH,True,True,5,True,False,True,False,False,448,Between 10^2 and 10^3,Between 10^2 and 10^3,Between 10^2 and 10^3,False,False,False,False,False,False,1.0,False,wrong_committed
+1630,sft,FMTL globally dominates SELFISH,True,True,3,True,False,True,False,False,242,Large number of learning steps,Large number of learning steps,Large number of learning steps,False,False,False,False,False,False,1.0,False,wrong_committed
+1630,dpo,FMTL globally dominates SELFISH,True,True,3,True,False,True,False,False,244,100,100,100,False,False,False,False,False,False,1.0,False,wrong_committed
+1630,step_dpo,FMTL globally dominates SELFISH,False,True,5,True,False,True,True,False,580,Less than 10^2,Less than 10^2,Less than 10^2,False,False,False,False,False,False,0.6,False,wrong_committed
+1630,kto,FMTL globally dominates SELFISH,False,False,0,False,False,True,True,False,549,100.,100.,100.,False,False,False,False,False,False,0.0,False,wrong_committed
+530,base,55,True,True,5,True,False,True,False,False,502,75,75,75,False,False,False,False,False,False,1.0,False,wrong_committed
+530,sft,55,True,True,5,True,False,True,False,False,518,75,75,75,False,False,False,False,False,False,1.0,False,wrong_committed
+530,dpo,55,True,True,3,True,False,True,False,False,236,75,75,75,False,False,False,False,False,False,1.0,False,wrong_committed
+530,step_dpo,55,True,True,4,True,False,True,False,False,761,75,75,75,False,False,False,False,False,False,1.0,False,wrong_committed
+530,kto,55,False,False,0,True,False,True,True,False,1025,55,55,55,True,True,True,True,True,True,0.2,False,correct_extracted
+513,base,"(CR, SVI, GI)",True,True,5,True,False,True,False,False,531,"(CR, SVI, GI)","(CR, SVI, GI)","(CR, SVI, GI)",True,True,True,True,True,False,1.0,True,correct_extracted
+513,sft,"(CR, SVI, GI)",True,True,3,True,False,True,False,False,470,"(CR, SVI, GI)","(CR, SVI, GI)","(CR, SVI, GI)",True,True,True,True,True,False,1.0,True,correct_extracted
+513,dpo,"(CR, SVI, GI)",True,True,4,True,False,True,False,False,344,"(CR, SVI, GI)","(CR, SVI, GI)","(CR, SVI, GI)",True,True,True,True,True,False,1.0,True,correct_extracted
+513,step_dpo,"(CR, SVI, GI)",False,True,3,True,False,True,True,False,532,"(CR, SVI, GI)","(CR, SVI, GI)","(CR, SVI, GI)",True,True,True,True,True,False,0.6,False,correct_extracted
+513,kto,"(CR, SVI, GI)",False,False,0,True,False,True,True,False,1121,CR,CR,CR,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+2198,base,Tecator,True,True,4,True,False,True,False,False,370,Tecator,Tecator,Tecator,True,True,True,True,True,False,1.0,True,correct_extracted
+2198,sft,Tecator,True,True,3,True,False,True,False,False,357,Concrete,Concrete,Concrete,False,False,False,False,False,False,1.0,False,wrong_committed
+2198,dpo,Tecator,True,True,3,True,False,True,False,False,596,Tecator,Tecator,Tecator,True,True,True,True,True,False,1.0,True,correct_extracted
+2198,step_dpo,Tecator,True,True,4,True,False,True,False,False,682,Tecator,Tecator,Tecator,True,True,True,True,True,False,1.0,True,correct_extracted
+2198,kto,Tecator,False,False,0,False,False,False,True,False,820,,,,False,False,False,True,True,False,0.0,False,correct_unextracted
+1043,base,0.5,True,True,4,True,False,True,False,False,327,0.5,0.5,0.5,True,True,True,True,True,True,1.0,True,correct_extracted
+1043,sft,0.5,True,True,3,True,False,True,False,False,267,0.5,0.5,0.5,True,True,True,True,True,True,1.0,True,correct_extracted
+1043,dpo,0.5,True,True,3,True,False,True,False,False,209,0.5,0.5,0.5,True,True,True,True,True,True,1.0,True,correct_extracted
+1043,step_dpo,0.5,True,True,4,True,False,True,False,False,383,0.5,0.5,0.5,True,True,True,True,True,True,1.0,True,correct_extracted
+1043,kto,0.5,False,False,0,False,False,False,True,False,356,,,,False,False,False,True,True,False,0.0,False,correct_unextracted
+894,base,(c),False,True,3,True,False,True,True,False,709,b,b,b,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+894,sft,(c),True,True,5,True,False,True,False,False,411,c,c,c,False,True,True,True,True,False,1.0,True,correct_extracted
+894,dpo,(c),True,True,3,True,False,True,False,False,643,a,a,a,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+894,step_dpo,(c),False,True,3,True,False,True,True,False,747,b,b,b,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+894,kto,(c),False,False,0,False,True,True,True,False,766,c,c,c,False,True,True,True,True,False,0.0,False,correct_extracted
+905,base,1,True,True,5,True,False,True,False,False,393,3,3,3,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+905,sft,1,True,True,5,True,False,True,False,False,594,All three models,All three models,All three models,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+905,dpo,1,True,True,3,True,False,True,False,False,217,3,3,3,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+905,step_dpo,1,False,True,5,True,False,True,True,False,1273,3,3,3,False,False,False,True,False,False,0.6,False,mentions_gt_wrong_commit
+905,kto,1,False,False,0,True,False,True,True,False,802,1,1,1,True,True,True,True,True,True,0.2,False,correct_extracted
+1686,base,15,True,True,5,True,False,True,False,False,416,l = 60,l = 60,l = 60,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1686,sft,15,True,True,5,True,False,True,False,False,429,l = 15,l = 15,l = 15,False,True,True,True,True,True,1.0,True,correct_extracted
+1686,dpo,15,True,True,3,True,False,True,False,False,497,45,45,45,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1686,step_dpo,15,False,True,5,True,False,True,True,False,796,15,15,15,True,True,True,True,True,True,0.6,False,correct_extracted
+1686,kto,15,False,False,0,True,False,True,True,False,849,15,15,15,True,True,True,True,True,True,0.2,False,correct_extracted
+1886,base,7,True,True,4,True,False,True,False,False,520,2,2,2,False,False,False,False,False,False,1.0,False,wrong_committed
+1886,sft,7,True,True,3,True,False,True,False,False,235,1,1,1,False,False,False,False,False,False,1.0,False,wrong_committed
+1886,dpo,7,True,True,3,True,False,True,False,False,194,2,2,2,False,False,False,False,False,False,1.0,False,wrong_committed
+1886,step_dpo,7,False,True,5,True,False,True,True,False,497,2,2,2,False,False,False,False,False,False,0.6,False,wrong_committed
+1886,kto,7,False,False,0,True,False,True,True,False,859,1,1,1,False,False,False,False,False,False,0.2,False,wrong_committed
+1262,base,Yes,True,True,5,True,False,True,False,False,427,Yes,Yes,Yes,True,True,True,True,True,False,1.0,True,correct_extracted
+1262,sft,Yes,True,True,3,True,False,True,False,False,257,Yes,Yes,Yes,True,True,True,True,True,False,1.0,True,correct_extracted
+1262,dpo,Yes,True,True,4,True,False,True,False,False,740,Yes,Yes,Yes,True,True,True,True,True,False,1.0,True,correct_extracted
+1262,step_dpo,Yes,False,False,0,True,False,True,True,False,412,Yes,Yes,Yes,True,True,True,True,True,False,0.2,False,correct_extracted
+1262,kto,Yes,False,False,0,True,False,True,True,False,427,Yes,Yes,Yes,True,True,True,True,True,False,0.2,False,correct_extracted
+1726,base,"row 4, column 3",True,True,2,True,False,True,False,False,363,"1, 1","1, 1","1, 1",False,False,False,False,False,False,1.0,False,wrong_committed
+1726,sft,"row 4, column 3",True,True,2,True,False,True,False,False,184,"Row 4, Column 1","Row 4, Column 1","Row 4, Column 1",False,False,False,False,False,False,1.0,False,wrong_committed
+1726,dpo,"row 4, column 3",True,True,3,True,False,True,False,False,271,"Row 4, Column 4","Row 4, Column 4","Row 4, Column 4",False,False,False,False,False,False,1.0,False,wrong_committed
+1726,step_dpo,"row 4, column 3",False,False,0,True,False,True,True,False,1084,"4, 4","4, 4","4, 4",False,False,False,False,False,False,0.2,False,wrong_committed
+1726,kto,"row 4, column 3",False,False,0,False,False,True,True,False,828,Row: 2,Row: 2,Row: 2,False,False,False,False,False,False,0.0,False,wrong_committed
+1261,base,2,True,True,5,True,False,True,False,False,456,Model 4,Model 4,Model 4,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1261,sft,2,True,True,3,True,False,True,False,False,460,Model 4,Model 4,Model 4,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1261,dpo,2,True,True,5,True,False,True,False,False,451,4,4,4,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1261,step_dpo,2,False,False,0,True,False,True,True,False,691,4,4,4,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1261,kto,2,False,False,0,True,False,True,True,False,765,4,4,4,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1007,base,0.4,True,True,4,True,False,True,False,False,300,0.5,0.5,0.5,False,False,False,False,False,False,1.0,False,wrong_committed
+1007,sft,0.4,True,True,6,True,False,True,False,False,454,0.5,0.5,0.5,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1007,dpo,0.4,True,True,4,True,False,True,False,False,198,0.5,0.5,0.5,False,False,False,False,False,False,1.0,False,wrong_committed
+1007,step_dpo,0.4,False,True,5,True,False,True,True,False,381,0.5,0.5,0.5,False,False,False,False,False,False,0.6,False,wrong_committed
+1007,kto,0.4,False,False,0,False,False,False,True,False,384,,,,False,False,False,True,True,False,0.0,False,correct_unextracted
+154,base,2,True,True,3,True,False,True,False,False,697,8,8,8,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+154,sft,2,True,True,4,True,False,True,False,False,687,8,8,8,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+154,dpo,2,True,True,2,True,False,True,False,False,213,5,5,5,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+154,step_dpo,2,False,False,0,True,False,True,True,False,581,0,0,0,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+154,kto,2,False,False,0,True,False,True,True,False,583,0,0,0,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+86,base,1.0,True,True,5,True,False,True,False,False,443,0.5,0.5,0.5,False,False,False,False,False,False,1.0,False,wrong_committed
+86,sft,1.0,True,True,3,True,False,True,False,False,385,0.5,0.5,0.5,False,False,False,False,False,False,1.0,False,wrong_committed
+86,dpo,1.0,True,True,3,True,False,True,False,False,185,1.0,1.0,1.0,True,True,True,True,True,True,1.0,True,correct_extracted
+86,step_dpo,1.0,True,True,3,True,False,True,False,False,226,0.5,0.5,0.5,False,False,False,False,False,False,1.0,False,wrong_committed
+86,kto,1.0,False,True,4,True,False,True,True,False,574,0.5,0.5,0.5,False,False,False,False,False,False,0.6,False,wrong_committed
+167,base,INSTA-BNN^+,True,True,4,True,False,True,False,False,754,Real-to-Binary,Real-to-Binary,Real-to-Binary,False,False,False,False,False,False,1.0,False,wrong_committed
+167,sft,INSTA-BNN^+,True,True,4,True,False,True,False,False,387,INSTA-BNN,INSTA-BNN,INSTA-BNN,False,False,False,False,False,False,1.0,False,wrong_committed
+167,dpo,INSTA-BNN^+,True,True,5,True,False,True,False,False,372,INSTA-BNN,INSTA-BNN,INSTA-BNN,False,False,False,False,False,False,1.0,False,wrong_committed
+167,step_dpo,INSTA-BNN^+,True,True,4,True,False,True,False,False,757,INSTA-BNN,INSTA-BNN,INSTA-BNN,False,False,False,False,False,False,1.0,False,wrong_committed
+167,kto,INSTA-BNN^+,False,False,0,True,False,True,True,False,589,INSTA-BNN,INSTA-BNN,INSTA-BNN,False,False,False,False,False,False,0.2,False,wrong_committed
+1722,base,3,True,True,4,True,False,True,False,False,287,9,9,9,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1722,sft,3,True,True,3,True,False,True,False,False,384,4,4,4,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1722,dpo,3,True,True,4,True,False,True,False,False,259,3,3,3,True,True,True,True,True,True,1.0,True,correct_extracted
+1722,step_dpo,3,False,True,3,True,False,True,True,False,736,8,8,8,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+1722,kto,3,False,False,0,True,False,True,True,False,894,4,4,4,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1039,base,Increasing,True,True,5,True,False,True,False,False,448,Increasing,Increasing,Increasing,True,True,True,True,True,False,1.0,True,correct_extracted
+1039,sft,Increasing,True,True,3,True,False,True,False,False,318,Increasing,Increasing,Increasing,True,True,True,True,True,False,1.0,True,correct_extracted
+1039,dpo,Increasing,True,True,3,True,False,True,False,False,291,Increasing,Increasing,Increasing,True,True,True,True,True,False,1.0,True,correct_extracted
+1039,step_dpo,Increasing,True,True,3,True,False,True,False,False,325,Increasing,Increasing,Increasing,True,True,True,True,True,False,1.0,True,correct_extracted
+1039,kto,Increasing,False,False,0,True,False,True,True,False,593,Increasing,Increasing,Increasing,True,True,True,True,True,False,0.2,False,correct_extracted
+1010,base,2.8,True,True,5,True,False,True,False,False,981,All times t have the same significant y-axis value drop.,All times t have the same significant y-axis value drop.,All times t have the same significant y-axis value drop.,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1010,sft,2.8,True,True,4,True,False,True,False,False,445,t=0.4,t=0.4,t=0.4,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1010,dpo,2.8,True,True,4,True,False,True,False,False,285,t=0.01,t=0.01,t=0.01,False,False,False,False,False,False,1.0,False,wrong_committed
+1010,step_dpo,2.8,True,True,4,True,False,True,False,False,1232,Not Applicable,Not Applicable,Not Applicable,False,False,False,True,False,False,1.0,False,mentions_gt_wrong_commit
+1010,kto,2.8,False,False,0,True,False,True,True,False,1037,2.8,2.8,2.8,True,True,True,True,True,True,0.2,False,correct_extracted
+2136,base,"for Rho = 0, value is 0.9. For Rho = 1, value is 0.4.",True,True,4,True,False,True,False,False,314,"0.00, 0.90","0.00, 0.90","0.00, 0.90",False,False,False,False,False,False,1.0,False,wrong_committed
+2136,sft,"for Rho = 0, value is 0.9. For Rho = 1, value is 0.4.",True,True,3,True,False,True,False,False,268,"0.9, 0.3","0.9, 0.3","0.9, 0.3",False,False,False,False,False,False,1.0,False,wrong_committed
+2136,dpo,"for Rho = 0, value is 0.9. For Rho = 1, value is 0.4.",True,True,5,True,False,True,False,False,369,"0.90, 0.70","0.90, 0.70","0.90, 0.70",False,False,False,False,False,False,1.0,False,wrong_committed
+2136,step_dpo,"for Rho = 0, value is 0.9. For Rho = 1, value is 0.4.",True,True,5,True,False,True,False,False,327,"0.00, 0.90","0.00, 0.90","0.00, 0.90",False,False,False,False,False,False,1.0,False,wrong_committed
+2136,kto,"for Rho = 0, value is 0.9. For Rho = 1, value is 0.4.",False,True,5,True,False,True,True,False,878,"0.9, 0.3","0.9, 0.3","0.9, 0.3",False,False,False,False,False,False,0.6,False,wrong_committed
+1818,base,Train,True,True,4,True,False,True,False,False,692,Test,Test,Test,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1818,sft,Train,True,True,3,True,False,True,False,False,348,Train,Train,Train,True,True,True,True,True,False,1.0,True,correct_extracted
+1818,dpo,Train,True,True,3,True,False,True,False,False,413,Train,Train,Train,True,True,True,True,True,False,1.0,True,correct_extracted
+1818,step_dpo,Train,True,True,3,True,False,True,False,False,526,Train,Train,Train,True,True,True,True,True,False,1.0,True,correct_extracted
+1818,kto,Train,False,False,0,True,False,True,True,False,569,Orange,Orange,Orange,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+83,base,LH2 C.B. Ext. Motion,True,True,5,True,False,True,False,False,433,LH1,LH1,LH1,False,False,False,False,False,False,1.0,False,wrong_committed
+83,sft,LH2 C.B. Ext. Motion,True,True,4,True,False,True,False,False,562,Ext. Motion,Ext. Motion,Ext. Motion,False,False,False,False,False,False,1.0,False,wrong_committed
+83,dpo,LH2 C.B. Ext. Motion,True,False,1,True,False,True,False,False,235,LH1 C.B. Flight,LH1 C.B. Flight,LH1 C.B. Flight,False,False,False,False,False,False,0.6,False,wrong_committed
+83,step_dpo,LH2 C.B. Ext. Motion,True,True,4,True,False,True,False,False,839,LH1 C.B.,LH1 C.B.,LH1 C.B.,False,False,False,False,False,False,1.0,False,wrong_committed
+83,kto,LH2 C.B. Ext. Motion,False,False,0,True,False,True,True,False,931,LH2 (C.B.),LH2 (C.B.),LH2 (C.B.),False,False,False,False,False,False,0.2,False,wrong_committed
+1117,base,Ackley 2D,True,True,3,True,False,True,False,False,668,Not Applicable,Not Applicable,Not Applicable,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1117,sft,Ackley 2D,True,True,3,True,False,True,False,False,327,Shubert 2D,Shubert 2D,Shubert 2D,False,False,False,False,False,False,1.0,False,wrong_committed
+1117,dpo,Ackley 2D,True,True,3,True,False,True,False,False,220,Shubert 2D,Shubert 2D,Shubert 2D,False,False,False,False,False,False,1.0,False,wrong_committed
+1117,step_dpo,Ackley 2D,False,False,0,False,False,True,True,False,1130,** Shubert 2D,Shubert 2D,** Shubert 2D,False,False,False,True,False,False,0.0,False,mentions_gt_wrong_commit
+1117,kto,Ackley 2D,False,False,0,True,False,True,True,False,937,Shubert 2D,Shubert 2D,Shubert 2D,False,False,False,True,False,False,0.2,False,mentions_gt_wrong_commit
+1774,base,Decreasing,True,True,4,True,False,True,False,False,676,Increasing,Increasing,Increasing,False,False,False,False,False,False,1.0,False,wrong_committed
+1774,sft,Decreasing,True,True,4,True,False,True,False,False,297,Decreasing,Decreasing,Decreasing,True,True,True,True,True,False,1.0,True,correct_extracted
+1774,dpo,Decreasing,True,True,3,True,False,True,False,False,278,Decreasing,Decreasing,Decreasing,True,True,True,True,True,False,1.0,True,correct_extracted
+1774,step_dpo,Decreasing,False,True,4,True,False,True,True,False,528,Decreasing,Decreasing,Decreasing,True,True,True,True,True,False,0.6,False,correct_extracted
+1774,kto,Decreasing,False,True,3,True,False,True,True,False,623,Increasing,Increasing,Increasing,False,False,False,True,False,False,0.6,False,mentions_gt_wrong_commit
+349,base,2,True,True,4,True,False,True,False,False,310,1.5,1.5,1.5,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+349,sft,2,True,True,3,True,False,True,False,False,180,1,1,1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+349,dpo,2,True,True,3,True,False,True,False,False,210,1,1,1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+349,step_dpo,2,True,True,3,True,False,True,False,False,247,1.5,1.5,1.5,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+349,kto,2,False,False,0,True,False,True,True,False,440,1.5,1.5,1.5,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+339,base,3,True,True,5,True,False,True,False,False,490,2,2,2,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+339,sft,3,True,True,4,True,False,True,False,False,319,0,0,0,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+339,dpo,3,True,True,3,True,False,True,False,False,203,0,0,0,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+339,step_dpo,3,False,False,0,True,False,True,True,False,683,0,0,0,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+339,kto,3,False,False,0,True,False,True,True,False,616,0,0,0,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+1903,base,hbdm_BTC_CQ,True,True,4,True,False,True,False,False,381,binancecmftut_BTC/USD,binancecmftut_BTC/USD,binancecmftut_BTC/USD,False,False,False,False,False,False,1.0,False,wrong_committed
+1903,sft,hbdm_BTC_CQ,True,True,3,True,False,True,False,False,307,tbybit_BTC/USDT,tbybit_BTC/USDT,tbybit_BTC/USDT,False,False,False,False,False,False,1.0,False,wrong_committed
+1903,dpo,hbdm_BTC_CQ,True,True,4,True,False,True,False,False,308,binancecmftut_BTC/USD,binancecmftut_BTC/USD,binancecmftut_BTC/USD,False,False,False,False,False,False,1.0,False,wrong_committed
+1903,step_dpo,hbdm_BTC_CQ,True,True,4,True,False,True,False,False,651,tbybit_BTC/USDT,tbybit_BTC/USDT,tbybit_BTC/USDT,False,False,False,False,False,False,1.0,False,wrong_committed
+1903,kto,hbdm_BTC_CQ,False,False,0,True,False,True,True,False,983,binancecmfut_BTC/USD,binancecmfut_BTC/USD,binancecmfut_BTC/USD,False,False,False,False,False,False,0.2,False,wrong_committed
+2245,base,Executive function,True,True,4,True,False,True,False,False,589,Executive function,Executive function,Executive function,True,True,True,True,True,False,1.0,True,correct_extracted
+2245,sft,Executive function,True,True,5,True,False,True,False,False,655,Episodic memory,Episodic memory,Episodic memory,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+2245,dpo,Executive function,True,True,4,True,False,True,False,False,353,Working memory,Working memory,Working memory,False,False,False,False,False,False,1.0,False,wrong_committed
+2245,step_dpo,Executive function,True,True,4,True,False,True,False,False,763,Executive function,Executive function,Executive function,True,True,True,True,True,False,1.0,True,correct_extracted
+2245,kto,Executive function,False,False,0,True,False,True,True,False,1182,Episodic memory,Episodic memory,Episodic memory,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+516,base,NW-LLSW,True,True,5,True,False,True,False,False,545,NW-KV,NW-KV,NW-KV,False,False,False,False,False,False,1.0,False,wrong_committed
+516,sft,NW-LLSW,True,True,3,True,False,True,False,False,546,OLS,OLS,OLS,False,False,False,False,False,False,1.0,False,wrong_committed
+516,dpo,NW-LLSW,True,True,3,True,False,True,False,False,403,NW-A,NW-A,NW-A,False,False,False,False,False,False,1.0,False,wrong_committed
+516,step_dpo,NW-LLSW,False,False,0,True,False,True,True,False,878,NW-A,NW-A,NW-A,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+516,kto,NW-LLSW,False,False,0,True,False,True,True,False,1304,NW-LLSW,NW-LLSW,NW-LLSW,True,True,True,True,True,False,0.2,False,correct_extracted
+1521,base,0.0100,True,True,3,True,False,True,False,False,208,0.35,0.35,0.35,False,False,False,False,False,False,1.0,False,wrong_committed
+1521,sft,0.0100,True,True,3,True,False,True,False,False,283,0.01,0.01,0.01,False,False,False,False,False,False,1.0,False,wrong_committed
+1521,dpo,0.0100,True,True,3,True,False,True,False,False,242,0.0100,0.0100,0.0100,True,True,True,True,True,True,1.0,True,correct_extracted
+1521,step_dpo,0.0100,False,True,3,False,False,False,True,False,746,,,,False,False,False,True,True,False,0.4,False,correct_unextracted
+1521,kto,0.0100,False,False,0,False,False,False,True,False,598,,,,False,False,False,True,True,False,0.0,False,correct_unextracted
+144,base,PyTorch,True,True,4,True,False,True,False,False,870,TensorFlow,TensorFlow,TensorFlow,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+144,sft,PyTorch,True,True,5,True,False,True,False,False,569,TensorFlow,TensorFlow,TensorFlow,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+144,dpo,PyTorch,True,True,3,True,False,True,False,False,238,TensorFlow,TensorFlow,TensorFlow,False,False,False,False,False,False,1.0,False,wrong_committed
+144,step_dpo,PyTorch,False,True,3,True,False,True,True,False,886,TensorFlow,TensorFlow,TensorFlow,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+144,kto,PyTorch,False,False,0,True,False,True,True,False,1115,TensorFlow,TensorFlow,TensorFlow,False,False,False,True,True,False,0.2,False,mentions_gt_wrong_commit
+537,base,2020,True,True,4,True,False,True,False,False,646,2020,2020,2020,True,True,True,True,True,True,1.0,True,correct_extracted
+537,sft,2020,True,True,4,True,False,True,False,False,414,2020,2020,2020,True,True,True,True,True,True,1.0,True,correct_extracted
+537,dpo,2020,True,True,4,True,False,True,False,False,425,2020,2020,2020,True,True,True,True,True,True,1.0,True,correct_extracted
+537,step_dpo,2020,True,True,3,True,False,True,False,False,430,2020,2020,2020,True,True,True,True,True,True,1.0,True,correct_extracted
+537,kto,2020,False,True,4,True,False,True,True,False,801,2020,2020,2020,True,True,True,True,True,True,0.6,False,correct_extracted
+2399,base,Cox Boosting,True,True,4,True,False,True,False,False,719,Random Forest,Random Forest,Random Forest,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+2399,sft,Cox Boosting,True,True,4,True,False,True,False,False,497,SCAD spline,SCAD spline,SCAD spline,False,False,False,False,False,False,1.0,False,wrong_committed
+2399,dpo,Cox Boosting,True,True,3,True,False,True,False,False,211,SCAD spline,SCAD spline,SCAD spline,False,False,False,False,False,False,1.0,False,wrong_committed
+2399,step_dpo,Cox Boosting,True,True,3,True,False,True,False,False,560,Cox Boosting,Cox Boosting,Cox Boosting,True,True,True,True,True,False,1.0,True,correct_extracted
+2399,kto,Cox Boosting,False,True,2,True,False,True,True,False,682,Deep Survival,Deep Survival,Deep Survival,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+547,base,Household demand shock: Consumer facing,True,True,3,True,False,True,False,False,740,Exogenous demand shock,Exogenous demand shock,Exogenous demand shock,False,False,False,False,False,False,1.0,False,wrong_committed
+547,sft,Household demand shock: Consumer facing,True,True,3,True,False,True,False,False,206,Exogenous demand shock,Exogenous demand shock,Exogenous demand shock,False,False,False,False,False,False,1.0,False,wrong_committed
+547,dpo,Household demand shock: Consumer facing,True,True,4,True,False,True,False,False,319,Exogenous demand shock,Exogenous demand shock,Exogenous demand shock,False,False,False,False,False,False,1.0,False,wrong_committed
+547,step_dpo,Household demand shock: Consumer facing,True,True,4,True,False,True,False,False,851,Exogenous demand shock,Exogenous demand shock,Exogenous demand shock,False,False,False,False,False,False,1.0,False,wrong_committed
+547,kto,Household demand shock: Consumer facing,False,False,0,False,False,True,True,False,1575,** Bottom-right plot,Bottom-right plot,** Bottom-right plot,False,False,False,False,False,False,0.0,False,wrong_committed
+1618,base,e,True,True,5,True,False,True,False,False,501,f,f,f,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1618,sft,e,True,True,4,True,False,True,False,False,287,f,f,f,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1618,dpo,e,True,True,4,True,False,True,False,False,267,f,f,f,False,False,False,False,False,False,1.0,False,wrong_committed
+1618,step_dpo,e,False,True,3,True,False,True,True,False,788,e,e,e,True,True,True,True,True,False,0.6,False,correct_extracted
+1618,kto,e,False,False,0,True,False,True,True,False,655,e,e,e,True,True,True,True,True,False,0.2,False,correct_extracted
+1387,base,400.00,True,True,3,True,False,True,False,False,260,1200,1200,1200,False,False,False,False,False,False,1.0,False,wrong_committed
+1387,sft,400.00,True,True,4,True,False,True,False,False,383,1400,1400,1400,False,False,False,False,False,False,1.0,False,wrong_committed
+1387,dpo,400.00,True,True,3,True,False,True,False,False,252,1200.00,1200.00,1200.00,False,False,False,False,False,False,1.0,False,wrong_committed
+1387,step_dpo,400.00,False,True,3,True,False,True,True,False,495,440.00,440.00,440.00,False,False,False,False,False,False,0.6,False,wrong_committed
+1387,kto,400.00,False,False,0,False,False,False,True,False,618,,,,False,False,False,False,False,False,0.0,False,no_answer
+1229,base,14.0,True,True,5,True,False,True,False,False,625,15,15,15,False,False,False,False,False,False,1.0,False,wrong_committed
+1229,sft,14.0,True,True,4,True,False,True,False,False,478,15 Vega mag,15 Vega mag,15 Vega mag,False,False,False,False,False,False,1.0,False,wrong_committed
+1229,dpo,14.0,True,True,3,True,False,True,False,False,284,15,15,15,False,False,False,False,False,False,1.0,False,wrong_committed
+1229,step_dpo,14.0,True,True,3,True,False,True,False,False,344,15,15,15,False,False,False,False,False,False,1.0,False,wrong_committed
+1229,kto,14.0,False,False,0,False,False,True,True,False,618,15 Vega mag.,15 Vega mag.,15 Vega mag.,False,False,False,False,False,False,0.0,False,wrong_committed
+671,base,Theory NU N=64,True,True,3,True,False,True,False,False,1188,All lines show the same performance at SNR = -10 dB.,All lines show the same performance at SNR = -10 dB.,All lines show the same performance at SNR = -10 dB.,False,False,False,False,False,False,1.0,False,wrong_committed
+671,sft,Theory NU N=64,True,True,4,True,False,True,False,False,352,Theory NU N = 64,Theory NU N = 64,Theory NU N = 64,False,True,True,True,True,True,1.0,True,correct_extracted
+671,dpo,Theory NU N=64,True,True,3,True,False,True,False,False,250,Simu NU BER N = 64,Simu NU BER N = 64,Simu NU BER N = 64,False,False,False,False,False,False,1.0,False,wrong_committed
+671,step_dpo,Theory NU N=64,False,True,3,True,False,True,True,False,799,Not Applicable,Not Applicable,Not Applicable,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+671,kto,Theory NU N=64,False,True,3,True,False,True,True,False,898,Simu FU N = 32,Simu FU N = 32,Simu FU N = 32,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+1472,base,10,True,True,5,True,False,True,False,False,484,10 µA,10 µA,10 µA,False,True,True,True,True,True,1.0,True,correct_extracted
+1472,sft,10,True,True,4,True,False,True,False,False,376,Around the middle of the y-axis,Around the middle of the y-axis,Around the middle of the y-axis,False,False,False,False,False,False,1.0,False,wrong_committed
+1472,dpo,10,False,True,5,True,False,True,True,False,586,30,30,30,False,False,False,False,False,False,0.6,False,wrong_committed
+1472,step_dpo,10,False,True,6,True,False,True,True,False,610,30,30,30,False,False,False,False,False,False,0.6,False,wrong_committed
+1472,kto,10,False,False,0,True,False,True,True,False,690,40,40,40,False,False,False,False,False,False,0.2,False,wrong_committed
+1259,base,0.05,True,True,3,True,False,True,False,False,512,0.05,0.05,0.05,True,True,True,True,True,True,1.0,True,correct_extracted
+1259,sft,0.05,True,True,3,True,False,True,False,False,273,0.05,0.05,0.05,True,True,True,True,True,True,1.0,True,correct_extracted
+1259,dpo,0.05,True,True,3,True,False,True,False,False,472,0.05,0.05,0.05,True,True,True,True,True,True,1.0,True,correct_extracted
+1259,step_dpo,0.05,False,False,0,True,False,True,True,False,763,0.10,0.10,0.10,False,False,False,False,False,False,0.2,False,wrong_committed
+1259,kto,0.05,False,False,0,True,False,True,True,False,892,0.05,0.05,0.05,True,True,True,True,True,True,0.2,False,correct_extracted
+1307,base,CASE3,True,True,5,True,False,True,False,False,445,CASE3,CASE3,CASE3,True,True,True,True,True,True,1.0,True,correct_extracted
+1307,sft,CASE3,True,True,3,True,False,True,False,False,302,CASE3,CASE3,CASE3,True,True,True,True,True,True,1.0,True,correct_extracted
+1307,dpo,CASE3,True,True,4,True,False,True,False,False,286,CASE3,CASE3,CASE3,True,True,True,True,True,True,1.0,True,correct_extracted
+1307,step_dpo,CASE3,True,True,5,True,False,True,False,False,604,CASE2,CASE2,CASE2,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1307,kto,CASE3,False,False,0,True,False,True,True,False,794,CASE3,CASE3,CASE3,True,True,True,True,True,True,0.2,False,correct_extracted
+1490,base,3,True,True,3,True,False,True,False,False,586,2,2,2,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1490,sft,3,True,True,3,True,False,True,False,False,349,1,1,1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1490,dpo,3,True,True,4,True,False,True,False,False,358,1,1,1,False,False,False,True,True,False,1.0,False,mentions_gt_wrong_commit
+1490,step_dpo,3,False,True,4,True,False,True,True,False,516,1,1,1,False,False,False,True,True,False,0.6,False,mentions_gt_wrong_commit
+1490,kto,3,False,False,0,False,False,True,True,False,656,** 0,0,** 0,False,False,False,True,True,False,0.0,False,mentions_gt_wrong_commit
