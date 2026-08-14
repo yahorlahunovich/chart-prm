@@ -365,3 +365,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## 6-system Holdout including SFT→DPO
 - **What**: Holdout eval now loads `qwen_vl_sft_dpo_adapter` as a sixth system. Kernel sources include `qwen-vl-sft-dpo`. Adapter resolve uses exact dir `qwen_vl_sft_dpo_adapter` so it cannot collide with `qwen_vl_dpo_adapter`.
 - **Why**: Measure whether stacking DPO on SFT beats Instruct→DPO (29%) while keeping SFT's `Step N:` format.
+
+## SFT→DPO-only Holdout
+- **What**: Slimmed `qwen-vl-holdout-eval` to generate only `sft_dpo` (mount `qwen-vl-sft-dpo` alone). Base / SFT / Instruct→DPO / Step-DPO / KTO stay at experiment 005. `scripts/merge_sft_dpo_holdout.py` stitches the new jsonl onto 005 after the kernel finishes.
+- **Why**: Re-generating the other five systems is redundant and ~5× slower. Official exact-match for those systems is already fixed.
