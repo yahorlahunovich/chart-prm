@@ -377,3 +377,10 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Codebase Restructuring & Refactoring Agent Prompt
 - **What**: Created `REFACTOR_AGENT_PROMPT.md` specifying a step-by-step directive for an autonomous coding agent to reorganize the codebase into a clean research layout (`adapters/`, `logs/`, `scripts/{data_prep,train,evaluation,tools,kaggle}`), remove obsolete scripts, update `README.md` with complete 6-model benchmarks, and verify pytest coverage.
 - **Why**: Prepare the project for full research-grade cleanliness, reproducibility, and structured documentation across all training algorithms and evaluation benchmarks.
+
+## Test Dataset Model Answers Storage
+- **What**: Formatted, validated, and stored all test dataset ($n=100$) model answers into `data/test_predictions/`:
+  1. `data/test_predictions/all_models_test_answers.jsonl` (full multi-model responses, extracted answers, exact-match booleans, ground truths).
+  2. `data/test_predictions/all_models_test_answers.csv` (tabular spreadsheet for fast inspection).
+  3. `data/test_predictions/by_model/{base,sft,dpo,step_dpo,kto,sft_dpo}_test_answers.jsonl` (isolated per-system generation traces).
+- **Why**: Ensure easy downstream access, error analysis, and evaluation portability across all 6 benchmarked systems without navigating experiment subfolders.
