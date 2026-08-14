@@ -397,3 +397,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   7. Left `data/test_predictions/` intact (`all_models_test_answers.{jsonl,csv}` + `by_model/*.jsonl`).
   8. Overwrote `README.md` with the 6-model holdout table, a pointer to `data/test_predictions/`, pipeline diagrams, and reproduction commands using the new script paths.
 - **Why**: The repo had grown from a PRM-judge prototype into a six-method alignment framework with root-level adapters, logs, and a flat `scripts/` dump. Separating data prep / train / evaluation / tooling, gitignoring checkpoints, and documenting the actual holdout numbers makes the project navigable and reproducible.
+
+## GitHub Rename: prm_project → chart-prm
+- **What**: Pointed `origin` and all live clone URLs at `yahorlahunovich/chart-prm`. Kaggle/local notebooks now clone into `/tmp/chart-prm` (or `%cd chart-prm`). Left frozen `experiments/001_500_reasoning/inference_snapshot.ipynb` and historical log entries unchanged.
+- **Why**: After the GitHub rename, default `git clone` creates `chart-prm/`, so old `%cd prm_project` would fail on the next kernel run.

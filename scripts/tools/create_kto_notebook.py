@@ -34,9 +34,9 @@ except Exception:
     print('Kaggle secrets unavailable, skipping HF_TOKEN.')
 
 # Clone project repo to /tmp to keep /kaggle/working clean
-repo_dir = '/tmp/prm_project'
+repo_dir = '/tmp/chart-prm'
 if not os.path.exists(repo_dir):
-    !git clone https://github.com/yahorlahunovich/prm_project.git {repo_dir}
+    !git clone https://github.com/yahorlahunovich/chart-prm.git {repo_dir}
 else:
     !git -C {repo_dir} pull --ff-only
 
