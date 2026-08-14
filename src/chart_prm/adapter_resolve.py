@@ -91,7 +91,7 @@ def resolve_adapter(name: str, input_root: Path | str = "/kaggle/input") -> Path
 
 
 def resolve_all_adapters(
-    names: Sequence[str] = ("sft", "dpo", "step_dpo", "kto"),
+    names: Sequence[str] = ("sft", "dpo", "step_dpo", "kto", "sft_dpo"),
     input_root: Path | str = "/kaggle/input",
 ) -> Dict[str, Path]:
     """Resolve every requested adapter and fail if two names share a path."""

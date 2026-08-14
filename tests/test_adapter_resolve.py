@@ -31,6 +31,7 @@ def test_resolve_uses_exact_adapter_dir_not_dpo_substring(tmp_path: Path):
     assert paths["sft_dpo"].name == "qwen_vl_sft_dpo_adapter"
     assert paths["dpo"] != paths["step_dpo"]
     assert paths["dpo"] != paths["sft_dpo"]
+    assert paths["sft"] != paths["sft_dpo"]
 
 
 def test_resolve_refuses_adapter_path_collision(tmp_path: Path):

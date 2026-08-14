@@ -361,3 +361,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## SFT→DPO v3 Complete
 - **What**: Kernel `qwen-vl-sft-dpo` v3 COMPLETE on P100. 134/134 steps, mean pref acc 97.8%, no collapse warnings, adapter `qwen_vl_sft_dpo_adapter` (149 MB). Artifacts in `experiments/006_sft_then_dpo/`.
 - **Why**: `lr=2e-6` kept chosen log-prob within 1 nat of the SFT reference at the end of the epoch, so the adapter actually saved.
+
+## 6-system Holdout including SFT→DPO
+- **What**: Holdout eval now loads `qwen_vl_sft_dpo_adapter` as a sixth system. Kernel sources include `qwen-vl-sft-dpo`. Adapter resolve uses exact dir `qwen_vl_sft_dpo_adapter` so it cannot collide with `qwen_vl_dpo_adapter`.
+- **Why**: Measure whether stacking DPO on SFT beats Instruct→DPO (29%) while keeping SFT's `Step N:` format.

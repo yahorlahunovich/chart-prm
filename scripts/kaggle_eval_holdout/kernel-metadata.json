@@ -15,6 +15,7 @@
     "egorlagunovich/qwen-vl-sft-custom",
     "egorlagunovich/qwen-vl-step-dpo-custom",
     "egorlagunovich/qwen-vl-fragment-step-dpo",
-    "egorlagunovich/qwen-vl-kto-custom"
+    "egorlagunovich/qwen-vl-kto-custom",
+    "egorlagunovich/qwen-vl-sft-dpo"
   ]
 }

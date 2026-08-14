@@ -25,13 +25,14 @@ sys.path.insert(0, str(ROOT / "src"))
 from chart_prm.holdout_metrics import score_generation
 from src.visualization.style import setup_plot_style
 
-MODELS = ["base", "sft", "dpo", "step_dpo", "kto"]
+MODELS = ["base", "sft", "dpo", "step_dpo", "kto", "sft_dpo"]
 DISPLAY = {
     "base": "Base",
     "sft": "SFT",
     "dpo": "Full DPO",
     "step_dpo": "Step-DPO",
     "kto": "KTO",
+    "sft_dpo": "SFT→DPO",
 }
 ERROR_ORDER = [
     "correct_extracted",
