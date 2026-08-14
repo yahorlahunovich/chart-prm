@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).resolve().parents[1] / "scripts"))
+sys.path.append(str(Path(__file__).resolve().parents[1] / "scripts" / "data_prep"))
 
 from format_step_dpo import (
     answers_match,

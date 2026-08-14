@@ -227,3 +227,11 @@ kaggle_out/
 *.pt
 *.onnx
 *.pth
+
+# Local LoRA adapter checkpoints (keep directory via .gitkeep)
+adapters/*
+!adapters/.gitkeep
+
+# Execution and training logs (keep directory via .gitkeep)
+logs/*
+!logs/.gitkeep

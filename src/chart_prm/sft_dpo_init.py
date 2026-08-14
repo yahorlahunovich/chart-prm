@@ -59,6 +59,7 @@ def resolve_sft_init_adapter(explicit: Optional[str] = None) -> Path:
         pass
     candidates.extend(
         [
+            Path("adapters/qwen_vl_sft_adapter"),
             Path("qwen_vl_sft_adapter"),
             Path("/kaggle/working/qwen_vl_sft_adapter"),
         ]

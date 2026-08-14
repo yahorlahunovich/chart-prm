@@ -385,3 +385,15 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   3. `data/test_predictions/by_model/{base,sft,dpo,step_dpo,kto,sft_dpo}_test_answers.jsonl` (isolated per-system generation traces).
 - **Why**: Ensure easy downstream access, error analysis, and evaluation portability across all 6 benchmarked systems without navigating experiment subfolders.
 - **Prompt Update**: Synchronized `REFACTOR_AGENT_PROMPT.md` to incorporate the preservation, layout, and documentation of `data/test_predictions/`.
+
+## Codebase Restructuring: Scripts, Adapters, Logs, README
+- **What**: Reorganized the repository into a research layout:
+  1. Created `adapters/`, `logs/`, and `scripts/{data_prep,train,evaluation,tools,kaggle}/`. Gitignored `adapters/*` and `logs/*` (directories kept via `.gitkeep`). `*.log` was already ignored.
+  2. Moved root `qwen-vl-*.log` into `logs/` and LoRA dirs (`qwen_vl_{sft,dpo,kto,sft_dpo}_adapter/`) into `adapters/`. `qwen_vl_step_dpo_adapter/` did not exist locally; created the empty placeholder under `adapters/`.
+  3. Moved `train_{sft,dpo,kto}.py` → `scripts/train/`; partitioned remaining scripts into `data_prep/`, `evaluation/`, `tools/`; moved `scripts/kaggle_*` kernels under `scripts/kaggle/`.
+  4. Deleted obsolete `scripts/prepare_dpo.py` (superseded by `format_full_dpo.py`).
+  5. Fixed path resolution (`parents[2]` from nested scripts), test imports, Kaggle/local notebook CLI paths, default adapter output dirs, and `sft_dpo_init` candidate `adapters/qwen_vl_sft_adapter`.
+  6. Fixed `analyze_holdout_quality.py` so `(out_dir / "data").mkdir(...)` runs alongside the figures mkdir (fresh `--out-dir` no longer fails).
+  7. Left `data/test_predictions/` intact (`all_models_test_answers.{jsonl,csv}` + `by_model/*.jsonl`).
+  8. Overwrote `README.md` with the 6-model holdout table, a pointer to `data/test_predictions/`, pipeline diagrams, and reproduction commands using the new script paths.
+- **Why**: The repo had grown from a PRM-judge prototype into a six-method alignment framework with root-level adapters, logs, and a flat `scripts/` dump. Separating data prep / train / evaluation / tooling, gitignoring checkpoints, and documenting the actual holdout numbers makes the project navigable and reproducible.

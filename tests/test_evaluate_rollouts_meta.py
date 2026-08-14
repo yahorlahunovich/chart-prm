@@ -15,7 +15,7 @@ import sys
 import shutil
 
 # Add scripts directory to path to import the module
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "scripts"))
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "scripts", "evaluation"))
 from evaluate_rollouts_meta import main_async, extract_json_array_from_response, encode_image
 
 class TestEvaluateRolloutsMeta(unittest.IsolatedAsyncioTestCase):
