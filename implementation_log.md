@@ -373,3 +373,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## SFT→DPO Holdout Complete
 - **What**: Kernel `qwen-vl-holdout-eval` v11 COMPLETE (P100). Loaded `/kaggle/input/qwen-vl-sft-dpo/qwen_vl_sft_dpo_adapter` only. 100/100 questions, extracted-answer 100%, IDs match experiment 005, 0 traces identical to Base/SFT/Instruct→DPO. Official exact-match **22%**. Merged comparison in `experiments/007_sft_dpo_holdout/`.
 - **Why**: Canonical SFT→DPO kept SFT format (`Step 1:` 100%) but did not beat Instruct→DPO (29%) or SFT (23%). Wrong-committed answers rose to 53% (Instruct→DPO 49%, SFT 43%).
+
+## Codebase Restructuring & Refactoring Agent Prompt
+- **What**: Created `REFACTOR_AGENT_PROMPT.md` specifying a step-by-step directive for an autonomous coding agent to reorganize the codebase into a clean research layout (`adapters/`, `logs/`, `scripts/{data_prep,train,evaluation,tools,kaggle}`), remove obsolete scripts, update `README.md` with complete 6-model benchmarks, and verify pytest coverage.
+- **Why**: Prepare the project for full research-grade cleanliness, reproducibility, and structured documentation across all training algorithms and evaluation benchmarks.
