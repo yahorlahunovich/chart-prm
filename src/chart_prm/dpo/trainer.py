@@ -8,40 +8,47 @@ import torch
 
 from chart_prm.dpo.loss import dpo_loss
 from chart_prm.dpo.utils import build_qwen_dpo_batch
+from chart_prm.sft_dpo_init import active_adapter_name
 
 
 def compute_sequence_logprobs(
     model: Any,
     batch: Dict[str, torch.Tensor],
     is_reference: bool = False,
+    reference_adapter: Optional[str] = None,
 ) -> torch.Tensor:
     """
     Computes sequence log-probabilities for a given model and batch.
 
-    Args:
-        model: Trainable policy model (or base model with disabled adapters)
-        batch: Formatted Qwen2.5-VL batch containing input_ids, labels, attention_mask, etc.
-        is_reference: If True, evaluates in reference mode (using model.disable_adapter() if PEFT model)
-
-    Returns:
-        seq_logprobs: (batch_size,) tensor of sequence log-probabilities
+    If `reference_adapter` is set, reference forwards use that named PEFT
+    adapter (SFT) and then restore the policy adapter. Otherwise reference
+    mode disables adapters (Instruct backbone).
     """
     from chart_prm.dpo.utils import sequence_logprob
 
-    # Construct model forward inputs excluding labels
     model_inputs = {k: v for k, v in batch.items() if k != "labels"}
 
-    if is_reference and hasattr(model, "disable_adapter"):
-        with model.disable_adapter():
-            outputs = model(**model_inputs)
-    else:
+    def _forward() -> torch.Tensor:
         outputs = model(**model_inputs)
+        logits = outputs.logits if hasattr(outputs, "logits") else outputs
+        return sequence_logprob(logits, batch["labels"])
 
-    logits = outputs.logits if hasattr(outputs, "logits") else outputs
-    labels = batch["labels"]
+    if not is_reference:
+        return _forward()
 
-    seq_logps = sequence_logprob(logits, labels)
-    return seq_logps
+    if reference_adapter is not None and hasattr(model, "set_adapter"):
+        previous = active_adapter_name(model)
+        model.set_adapter(reference_adapter)
+        try:
+            return _forward()
+        finally:
+            if previous is not None:
+                model.set_adapter(previous)
+
+    if hasattr(model, "disable_adapter"):
+        with model.disable_adapter():
+            return _forward()
+    return _forward()
 
 
 def train_dpo_step(
@@ -52,6 +59,7 @@ def train_dpo_step(
     ref_model: Optional[Any] = None,
     beta: float = 0.1,
     max_grad_norm: Optional[float] = 1.0,
+    reference_adapter: Optional[str] = None,
 ) -> Tuple[torch.Tensor, Dict[str, float]]:
     """
     Executes a single minimal DPO training step with memory efficient cache clearing.
@@ -70,7 +78,9 @@ def train_dpo_step(
             chosen_ref_logp = compute_sequence_logprobs(ref_model, chosen_batch, is_reference=False)
     else:
         with torch.no_grad():
-            chosen_ref_logp = compute_sequence_logprobs(model, chosen_batch, is_reference=True)
+            chosen_ref_logp = compute_sequence_logprobs(
+                model, chosen_batch, is_reference=True, reference_adapter=reference_adapter
+            )
 
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
@@ -87,7 +97,9 @@ def train_dpo_step(
             rejected_ref_logp = compute_sequence_logprobs(ref_model, rejected_batch, is_reference=False)
     else:
         with torch.no_grad():
-            rejected_ref_logp = compute_sequence_logprobs(model, rejected_batch, is_reference=True)
+            rejected_ref_logp = compute_sequence_logprobs(
+                model, rejected_batch, is_reference=True, reference_adapter=reference_adapter
+            )
 
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
@@ -125,6 +137,7 @@ def fit_dpo(
     batch_size: int = 1,
     device: Optional[torch.device] = None,
     on_step_end: Optional[Callable[[int, Dict[str, float]], None]] = None,
+    reference_adapter: Optional[str] = None,
 ) -> List[Dict[str, float]]:
     """
     Fits policy model on preference dataset using DPO.
@@ -156,6 +169,7 @@ def fit_dpo(
                 rejected_batch=rejected_batch,
                 ref_model=ref_model,
                 beta=beta,
+                reference_adapter=reference_adapter,
             )
 
             global_step += 1

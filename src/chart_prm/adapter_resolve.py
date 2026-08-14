@@ -17,6 +17,7 @@ ADAPTER_DIR_NAMES: Dict[str, str] = {
     "dpo": "qwen_vl_dpo_adapter",
     "step_dpo": "qwen_vl_step_dpo_adapter",
     "kto": "qwen_vl_kto_adapter",
+    "sft_dpo": "qwen_vl_sft_dpo_adapter",
 }
 
 KERNEL_SLUGS: Dict[str, Sequence[str]] = {
@@ -24,6 +25,7 @@ KERNEL_SLUGS: Dict[str, Sequence[str]] = {
     "dpo": ("qwen-vl-step-dpo-custom", "qwen-vl-dpo-adapter"),
     "step_dpo": ("qwen-vl-fragment-step-dpo", "qwen-vl-step-dpo-adapter"),
     "kto": ("qwen-vl-kto-custom", "qwen-vl-kto-adapter"),
+    "sft_dpo": ("qwen-vl-sft-dpo",),
 }
 
 

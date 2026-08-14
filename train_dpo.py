@@ -14,8 +14,15 @@ import sys
 import torch
 
 from chart_prm.data_guards import collapse_guard, validate_training_dataset
-from chart_prm.dpo.trainer import fit_dpo, train_dpo_step
+from chart_prm.dpo.trainer import fit_dpo
 from chart_prm.dpo.utils import load_step_dpo_dataset
+from chart_prm.sft_dpo_init import (
+    POLICY_ADAPTER,
+    REFERENCE_ADAPTER,
+    init_peft_from_sft,
+    resolve_sft_init_adapter,
+    save_policy_adapter,
+)
 
 
 def parse_args():
@@ -67,30 +74,50 @@ def parse_args():
         action="store_true",
         help="Step-DPO mode: train on step_dpo_pairs.jsonl with prefix masking",
     )
+    parser.add_argument(
+        "--sft-dpo",
+        action="store_true",
+        help="Full-trajectory DPO initialized from the SFT adapter (SFT is the DPO reference)",
+    )
+    parser.add_argument(
+        "--init-adapter",
+        type=str,
+        default="",
+        help="Path to the SFT LoRA directory used when --sft-dpo is set",
+    )
     return parser.parse_args()
 
 
-def _apply_step_dpo_defaults(args: argparse.Namespace) -> argparse.Namespace:
+def _apply_mode_defaults(args: argparse.Namespace) -> argparse.Namespace:
     default_dataset = "experiments/001_500_reasoning/data/dpo_pairs.jsonl"
     default_output = "qwen_vl_dpo_adapter"
+    if args.step_dpo and args.sft_dpo:
+        raise SystemExit("Use either --step-dpo or --sft-dpo, not both.")
     if args.step_dpo:
         if args.dataset_path == default_dataset:
             args.dataset_path = "experiments/001_500_reasoning/data/step_dpo_pairs.jsonl"
         if args.output_dir == default_output:
             args.output_dir = "qwen_vl_step_dpo_adapter"
         # Suffix-from-divergence pairs include Final Answer; keep the fragment guard on.
+    if args.sft_dpo:
+        if args.output_dir == default_output:
+            args.output_dir = "qwen_vl_sft_dpo_adapter"
+        if args.lr == 1e-5:
+            args.lr = 5e-6
+        if args.epochs == 2:
+            args.epochs = 1
     return args
 
 
 def main():
-    args = _apply_step_dpo_defaults(parse_args())
+    args = _apply_mode_defaults(parse_args())
 
     data_path = Path(args.dataset_path)
     if not data_path.exists():
         print(f"Dataset path {data_path} not found. Exiting.")
         sys.exit(1)
 
-    mode_label = "Step-DPO" if args.step_dpo else "DPO"
+    mode_label = "Step-DPO" if args.step_dpo else ("SFT→DPO" if args.sft_dpo else "DPO")
     print(f"Loading {mode_label} dataset from {data_path}...")
     dataset = load_step_dpo_dataset(data_path, images_dir=args.images_dir)
     print(f"Loaded {len(dataset)} preference pairs.")
@@ -167,7 +194,19 @@ def main():
         print("Enabling gradient checkpointing for VRAM optimization...")
         model.gradient_checkpointing_enable()
 
-    if not args.no_lora:
+    reference_adapter = None
+    if args.sft_dpo or args.init_adapter:
+        if args.no_lora:
+            raise SystemExit("SFT→DPO requires LoRA (--no-lora is incompatible).")
+        sft_dir = resolve_sft_init_adapter(args.init_adapter or None)
+        print(f"SFT init adapter: {sft_dir}")
+        model = init_peft_from_sft(model, sft_dir)
+        reference_adapter = REFERENCE_ADAPTER
+        print(
+            f"DPO reference is frozen SFT adapter {REFERENCE_ADAPTER!r}; "
+            f"training adapter {POLICY_ADAPTER!r}."
+        )
+    elif not args.no_lora:
         print("Applying PEFT LoRA adapter...")
         from peft import LoraConfig, get_peft_model
         peft_config = LoraConfig(
@@ -192,24 +231,31 @@ def main():
         if warning:
             raise RuntimeError(f"DPO collapse guard tripped at step {step}: {warning}")
 
-    print("Starting DPO fine-tuning...")
+    print(
+        f"Starting DPO fine-tuning... mode={mode_label} epochs={args.epochs} "
+        f"lr={args.lr} beta={args.beta} output={args.output_dir}"
+    )
     history = fit_dpo(
         model=model,
         dataset=dataset,
         processor=processor,
-        ref_model=None,  # Using in-line model.disable_adapter()
+        ref_model=None,
         lr=args.lr,
         beta=args.beta,
         epochs=args.epochs,
         batch_size=args.batch_size,
         device=device,
         on_step_end=print_step_log,
+        reference_adapter=reference_adapter,
     )
 
     out_dir = Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     print(f"Saving trained model and processor to {out_dir}...")
-    model.save_pretrained(str(out_dir))
+    if reference_adapter is not None:
+        save_policy_adapter(model, out_dir, adapter_name=POLICY_ADAPTER)
+    else:
+        model.save_pretrained(str(out_dir))
     processor.save_pretrained(str(out_dir))
 
     history_path = out_dir / "training_history.json"

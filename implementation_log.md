@@ -345,3 +345,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Holdout Quality Beyond Exact-Match
 - **What**: Added `chart_prm.holdout_metrics` and `scripts/analyze_holdout_quality.py` to score experiment 005 generations on structure (`Step N:` + `Final Answer:`), extracted-answer match that allows units/labels/markdown, GT mentioned in the full text, and a wrong-committed-answer hallucination proxy. Wrote `experiments/005_holdout_eval_suffix_step_dpo/quality_metrics.md` plus `figures/{answer_tiers,structure,error_breakdown}.png`.
 - **Why**: Official exact-match hides models that are right but unstructured (KTO markdown, SFT `S = 25`) and does not show who follows the prompt contract or who commits a wrong final value without ever naming the GT.
+
+## SFT→DPO Training Path
+- **What**: Added `--sft-dpo` / `--init-adapter` so full-trajectory DPO copies the SFT LoRA into a trainable `dpo` adapter and uses frozen SFT as π_ref (not Instruct via `disable_adapter`). New kernel `qwen-vl-sft-dpo` writes `qwen_vl_sft_dpo_adapter` (`lr=5e-6`, 1 epoch, 134 pairs) without overwriting the 29% Instruct→DPO run. Preflight: `scripts/verify_sft_dpo.py`.
+- **Why**: Canonical DPO is SFT then preference. Holdout showed SFT has perfect `Step N:` format and DPO from Instruct has the best exact-match; stacking them needs SFT as the reference policy.

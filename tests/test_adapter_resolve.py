@@ -18,13 +18,19 @@ def test_resolve_uses_exact_adapter_dir_not_dpo_substring(tmp_path: Path):
     _write_adapter(input_root / "notebooks" / "egorlagunovich" / "qwen-vl-step-dpo-custom" / "qwen_vl_dpo_adapter")
     _write_adapter(input_root / "notebooks" / "egorlagunovich" / "qwen-vl-sft-custom" / "qwen_vl_sft_adapter")
     _write_adapter(input_root / "notebooks" / "egorlagunovich" / "qwen-vl-kto-custom" / "qwen_vl_kto_adapter")
+    _write_adapter(input_root / "qwen-vl-sft-dpo" / "qwen_vl_sft_dpo_adapter")
 
-    paths = resolve_all_adapters(input_root=input_root)
+    paths = resolve_all_adapters(
+        names=("sft", "dpo", "step_dpo", "kto", "sft_dpo"),
+        input_root=input_root,
+    )
     assert paths["dpo"].name == "qwen_vl_dpo_adapter"
     assert paths["step_dpo"].name == "qwen_vl_step_dpo_adapter"
     assert paths["sft"].name == "qwen_vl_sft_adapter"
     assert paths["kto"].name == "qwen_vl_kto_adapter"
+    assert paths["sft_dpo"].name == "qwen_vl_sft_dpo_adapter"
     assert paths["dpo"] != paths["step_dpo"]
+    assert paths["dpo"] != paths["sft_dpo"]
 
 
 def test_resolve_refuses_adapter_path_collision(tmp_path: Path):
