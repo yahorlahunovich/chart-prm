@@ -45,7 +45,7 @@ from src.visualization.style import setup_plot_style, PALETTE
 setup_plot_style()
 
 # Ensure charts directory exists
-os.makedirs('charts', exist_ok=True)"""
+os.makedirs('../charts', exist_ok=True)"""
 )
 
 add_md(
@@ -118,7 +118,7 @@ for bar in bars:
                 xytext=(0, 4), textcoords='offset points',
                 ha='center', va='bottom', fontsize=9, fontweight='bold')
 
-plt.savefig('charts/01_overall_accuracy.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/01_overall_accuracy.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -151,7 +151,7 @@ ax.set_ylabel('Mean Accuracy')
 ax.set_ylim(0.0, 1.0)
 ax.set_xticks(sorted(valid_steps))
 
-plt.savefig('charts/02_score_progression.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/02_score_progression.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -181,7 +181,7 @@ for bar in bars:
                 xytext=(0, 4), textcoords='offset points',
                 ha='center', va='bottom', fontsize=9, fontweight='bold')
 
-plt.savefig('charts/03_rollout_success.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/03_rollout_success.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -209,7 +209,7 @@ for bar in bars:
                 xytext=(0, 4), textcoords='offset points',
                 ha='center', va='bottom', fontsize=9)
 
-plt.savefig('charts/04_first_error_position.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/04_first_error_position.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -237,7 +237,7 @@ ax.set_xlabel('Mean Accuracy per Question')
 ax.set_ylabel('Number of Questions')
 ax.set_xlim(0.0, 1.0)
 
-plt.savefig('charts/05_question_difficulty.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/05_question_difficulty.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -268,7 +268,7 @@ ax.set_xlabel('Total Steps in Rollout')
 ax.set_ylabel('Mean Step Score')
 ax.set_ylim(-0.05, 1.05)
 
-plt.savefig('charts/06_length_vs_accuracy.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/06_length_vs_accuracy.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -294,7 +294,7 @@ ax.set_title('Step Score Variance per Question', loc='left', pad=10)
 ax.set_xlabel('Score Variance')
 ax.set_ylabel('Number of Questions')
 
-plt.savefig('charts/07_score_variance.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/07_score_variance.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -328,7 +328,7 @@ leg = ax.legend(title='Score at N+1', loc='upper right', frameon=False)
 for text, label in zip(leg.get_texts(), ['0 (Incorrect)', '1 (Correct)']):
     text.set_text(label)
 
-plt.savefig('charts/08_error_cascade.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/08_error_cascade.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -359,7 +359,7 @@ ax.set_ylabel('Analysis Length (characters)')
 ax.set_xticks([0, 1])
 ax.set_xticklabels(['0 (Incorrect)', '1 (Correct)'])
 
-plt.savefig('charts/09_analysis_length.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/09_analysis_length.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -389,7 +389,7 @@ for bar in bars:
                 xytext=(0, 4), textcoords='offset points',
                 ha='center', va='bottom', fontsize=9, fontweight='bold')
 
-plt.savefig('charts/10_terminal_accuracy.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/10_terminal_accuracy.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -409,7 +409,7 @@ ax.set_ylabel('Mean Step Score')
 ax.set_ylim(0.0, 1.0)
 plt.xticks(rotation=35, ha='right')
 
-plt.savefig('charts/11_domain_accuracy.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/11_domain_accuracy.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -431,7 +431,7 @@ ax.set_ylabel('Mean Step Score')
 ax.set_ylim(0.0, 1.0)
 plt.xticks(rotation=40, ha='right')
 
-plt.savefig('charts/12_chart_type_accuracy.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/12_chart_type_accuracy.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 
@@ -461,7 +461,7 @@ if len(recovery_cases) > 0:
 else:
     ax.text(0.5, 0.5, "No recovery cases found", ha='center', va='center')
 
-plt.savefig('charts/13_hallucinated_correctness.png', dpi=300, bbox_inches='tight')
+plt.savefig('../charts/13_hallucinated_correctness.png', dpi=300, bbox_inches='tight')
 plt.show()"""
 )
 

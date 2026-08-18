@@ -401,3 +401,21 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## GitHub Rename: prm_project → chart-prm
 - **What**: Pointed `origin` and all live clone URLs at `yahorlahunovich/chart-prm`. Kaggle/local notebooks now clone into `/tmp/chart-prm` (or `%cd chart-prm`). Left frozen `experiments/001_500_reasoning/inference_snapshot.ipynb` and historical log entries unchanged.
 - **Why**: After the GitHub rename, default `git clone` creates `chart-prm/`, so old `%cd prm_project` would fail on the next kernel run.
+
+## Charts Folder Restructuring & Meta PRM Judge Text Analysis
+- **What**: 
+  1. Moved `notebooks/charts/` to the repository root (`charts/`) via `git mv`.
+  2. Updated `scripts/tools/create_notebook.py` and `notebooks/evaluate_rollouts.ipynb` to save figures directly to `../charts/` at root.
+  3. Added `umap-learn` package via `uv add umap-learn`.
+  4. Created `scripts/evaluation/generate_judge_text_charts.py` using `src/visualization/style.py` aesthetics to comprehensively analyze the textual critique responses from Meta's PRM Judge (`muse-spark-1.1`).
+  5. Generated 8 publication-ready figures under `charts/`:
+     - `judge_01_error_taxonomy.png`: Pareto/distribution horizontal bar chart of the 10 failure categories across 2,920 failed steps.
+     - `judge_02_error_by_step_depth.png`: Dual-panel stacked bar chart tracking absolute counts and proportional error composition from Step 0 to Step 4+.
+     - `judge_03_critique_length_distribution.png`: Dual-panel KDE density and boxplot comparing explanation length between valid steps (mean 167.6 chars) and refuted steps (mean 188.6 chars).
+     - `judge_04_top_keywords_per_category.png`: 6-panel faceted TF-IDF diagnostic vocabulary across top failure categories.
+     - `judge_05_error_taxonomy_by_domain.png`: Cross-domain heatmap of error categories across the 8 CharXiv scientific disciplines.
+     - `judge_06_error_taxonomy_by_chart_type.png`: Cross-chart-type heatmap analyzing failure mode distribution across 7 common visual chart types.
+     - `judge_07_multilabel_cooccurrence.png`: Heatmap of multi-label compound error co-occurrences in judge critique texts with masked diagonal.
+     - `judge_08_umap_embeddings.png`: 2D UMAP projection of sentence embeddings for all 2,920 failure texts with annotated, non-overlapping cluster centroids.
+- **Why**: To prepare all visual assets, empirical taxonomy findings, and diagnostic charts for report writing, specifically detailing how the Meta LLM-as-a-judge model evaluates visual reasoning steps, where reasoning fails in chart QA, and why visual grounding errors dominate pure arithmetic.
+
