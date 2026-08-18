@@ -419,3 +419,16 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
      - `judge_08_umap_embeddings.png`: 2D UMAP projection of sentence embeddings for all 2,920 failure texts with annotated, non-overlapping cluster centroids.
 - **Why**: To prepare all visual assets, empirical taxonomy findings, and diagnostic charts for report writing, specifically detailing how the Meta LLM-as-a-judge model evaluates visual reasoning steps, where reasoning fails in chart QA, and why visual grounding errors dominate pure arithmetic.
 
+## Final Fine-Tuning Results & Benchmark Visualizations
+- **What**: Created `scripts/evaluation/generate_finetuning_result_charts.py` to synthesize all fine-tuning methods (Base, SFT, Full DPO, Step-DPO, KTO, SFT→DPO) on the 100-question holdout evaluation set. Generated 8 publication-ready figures in `charts/`:
+  1. `results_01_overall_model_comparison.png`: Grouped 4-metric benchmark comparison (Official Exact-Match, Robust Token Match, Structured + Correct, GT Mentioned in Text). Highlights that Full DPO achieves highest accuracy (29% exact, 30% token match) while SFT achieves highest structured correctness (28%).
+  2. `results_02_structure_instruction_following.png`: Instruction following & structure compliance breakdown (Structure Score, `Step 1:`, `Step 2:`, plain `Final Answer:`, Conversational Preamble penalty). Shows SFT reaching 100% compliance while KTO experiences formatting collapse (0% `Step 1:`, 99% preamble).
+  3. `results_03_error_mode_hallucination_breakdown.png`: 100% stacked horizontal bar chart partitioning each model's output space into Correct Extracted, Correct unextracted, Mentions GT but commits wrong, and Wrong Committed (hallucination proxy).
+  4. `results_04_training_dynamics_loss_rewards.png`: 4-panel training dynamics grid tracking SFT cross-entropy loss decay, DPO loss trajectories, implicit reward margin growth ($\Delta r \to +10.8$), and KTO loss/margin stability.
+  5. `results_05_domain_performance_heatmap.png`: Heatmap of accuracy per model across the 8 CharXiv scientific disciplines (CS, Math, Physics, Econ, Q-Fin, Q-Bio, EESS, Stat).
+  6. `results_06_chart_type_performance.png`: Heatmap of model accuracy across all 7 visual chart types on holdout with per-type sample sizes.
+  7. `results_07_pairwise_model_head_to_head.png`: Pairwise Net Win matrix ($6 \times 6$) showing Full DPO strictly outperforming all other 5 alignment methods on identical questions (+3 vs Base, +6 vs SFT, +4 vs Step-DPO, +3 vs KTO, +7 vs SFT→DPO).
+  8. `results_08_accuracy_vs_structure_tradeoff.png`: 2D Pareto frontier mapping Instruction Following Score vs. Official Exact-Match Accuracy with bubble sizes scaled to GT mention recall.
+- **Why**: To produce all final empirical figures and comparative analysis needed for the research report Sections 5, 6, and 7 (Experimental Results, Alignment Comparison, and Error Analysis).
+
+
