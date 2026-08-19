@@ -434,7 +434,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Report LaTeX Structure Setup (ACL Format)
 - **What**: 
   1. Updated `report/custom.bib` with official bibliographic citations for CharXiv, Qwen2.5-VL, DPO, Step-DPO, KTO, PRM (Lightman et al.), LLM-as-a-Judge, and LoRA/QLoRA.
-  2. Populated `report/acl_latex.tex` with the complete academic paper structure including authors (Yahor Lahunovich, Ertugrul Taparci; University of Heidelberg):
+  2. Populated `report/acl_latex.tex` with the complete academic paper structure including authors (Yahor Lahunovich: University of Heidelberg, Warsaw University of Technology; Ertugrul Taparci: University of Heidelberg):
      - \S Abstract
      - \S 1 Introduction
      - \S 2 Related Work (Multimodal Chart Reasoning, Process Reward Models, Preference Optimization)
@@ -448,5 +448,5 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
      - \S 10 Conclusions and Limitations
      - \S 11 References (`custom.bib`)
   3. Formatted strictly as clean layout scaffolding with guidance comments for Overleaf composition.
-- **Why**: To conform to standard *ACL conference structure by explicitly including `Introduction` and `Related Work` before the experimental methodology and findings.
+- **Why**: To conform to standard *ACL conference structure by explicitly including `Introduction` and `Related Work` before the experimental methodology and findings, and reflecting dual affiliation for Yahor Lahunovich.
 
