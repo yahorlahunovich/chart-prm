@@ -450,3 +450,18 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   3. Formatted strictly as clean layout scaffolding with guidance comments for Overleaf composition.
 - **Why**: To conform to standard *ACL conference structure by explicitly including `Introduction` and `Related Work` before the experimental methodology and findings, and reflecting dual affiliation for Yahor Lahunovich.
 
+## Selected Report Figures Directory Setup
+- **What**: Created `charts/report_selected/` containing the 10 highest-impact, publication-grade figures for the main body and primary appendix of the research report, along with `charts/report_selected/README.md`:
+  - `results_01_overall_model_comparison.png` (Main benchmark exact-match & recall comparison across 6 models)
+  - `results_08_accuracy_vs_structure_tradeoff.png` (2D Pareto frontier: accuracy vs. instruction-following compliance)
+  - `results_03_error_mode_hallucination_breakdown.png` (100% stacked error composition & hallucination breakdown)
+  - `results_04_training_dynamics_loss_rewards.png` (2x2 training loss and margin curves)
+  - `judge_01_error_taxonomy.png` (9-category failure taxonomy from 2,920 PRM judge critiques)
+  - `judge_02_error_by_step_depth.png` (Evolution of error types across reasoning step depth)
+  - `judge_08_umap_embeddings.png` (2D UMAP projection of judge critique sentence embeddings)
+  - `judge_04_top_keywords_per_category.png` (TF-IDF diagnostic keywords across failure categories)
+  - `08_error_cascade.png` (Conditional error cascade transition probabilities)
+  - `04_first_error_position.png` (Position of first error across failed rollouts)
+- **Why**: Allows immediate, frictionless selection of the top figures when composing the final paper in LaTeX/Overleaf without sorting through exploratory intermediate plots.
+
+
