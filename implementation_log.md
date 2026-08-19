@@ -464,4 +464,9 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   - `04_first_error_position.png` (Position of first error across failed rollouts)
 - **Why**: Allows immediate, frictionless selection of the top figures when composing the final paper in LaTeX/Overleaf without sorting through exploratory intermediate plots.
 
+## Abstract Revision (Variant 2 Integration)
+- **What**: Updated the abstract in `report/acl_latex.tex` with the question-driven, concrete Variant 2 text and successfully compiled the PDF via `pdflatex`.
+- **Why**: User selected Variant 2 for its punchy problem formulation ("Can a compact 3B vision-language model solve multi-step reasoning questions over complex scientific charts?"), explicit grounding in the 500 CharXiv subset, 2,920 PRM critiques, and exact 6-model alignment benchmark metrics.
+
+
 
