@@ -431,4 +431,19 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   8. `results_08_accuracy_vs_structure_tradeoff.png`: 2D Pareto frontier mapping Instruction Following Score vs. Official Exact-Match Accuracy with bubble sizes scaled to GT mention recall.
 - **Why**: To produce all final empirical figures and comparative analysis needed for the research report Sections 5, 6, and 7 (Experimental Results, Alignment Comparison, and Error Analysis).
 
-
+## Report LaTeX Structure Setup (ACL Format)
+- **What**: 
+  1. Updated `report/custom.bib` with official bibliographic citations for CharXiv, Qwen2.5-VL, DPO, Step-DPO, KTO, PRM (Lightman et al.), LLM-as-a-Judge, and LoRA/QLoRA.
+  2. Populated `report/acl_latex.tex` with the complete 10-part project structure:
+     - \S 1 Abstract: Idea and core findings.
+     - \S 2 Benchmark, Vision Model, and Algorithms (CharXiv 500 reasoning subset, Qwen2.5-VL-3B, Step-DPO, KTO, SFT).
+     - \S 3 Models and Multimodal LLM-as-a-Judge (`muse-spark-1.1` via Meta API).
+     - \S 4 Step-Level Rollout and Reasoning Trajectory Analysis.
+     - \S 5 PRM Judge Score Analysis and Distributions.
+     - \S 6 Text Critique Error Taxonomy Analysis (2,920 critiques across 9 categories).
+     - \S 7 Alignment Methods Comparison (Step-DPO, KTO, SFT, DPO).
+     - \S 8 Holdout Evaluation and Experimental Results (100 holdout questions).
+     - \S 9 Conclusions and Limitations.
+     - \S 10 References (`custom.bib`).
+  3. Verified clean end-to-end compilation with `pdflatex` and `bibtex`.
+- **Why**: To establish the formal academic paper structure in the ACL LaTeX template corresponding to the agreed project outline in `report_plan.md`.

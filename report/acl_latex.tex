@@ -1,0 +1,123 @@
+\documentclass[11pt]{article}
+
+% Use the final option to display author and affiliation information
+\usepackage{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+% \usepackage{inconsolata}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+\title{ChartPRM: Process Reward Modeling and Step-Level Preference Optimization for Complex Multimodal Chart Reasoning}
+
+\author{
+  Yahor Lahunovich \\
+  University of Heidelberg \\
+  \texttt{yahor.lahunovich@stud.uni-heidelberg.de} \\\And
+  Ertugrul Taparci \\
+  University of Heidelberg \\
+  \texttt{ertugrul.taparci@stud.uni-heidelberg.de}
+}
+
+\begin{document}
+\maketitle
+
+% 1. Abstract (explain your idea)
+\begin{abstract}
+Multimodal Large Language Models (MLLMs) frequently struggle with fine-grained chart reasoning due to compounded visual perception errors, misaligned axis readings, and flawed intermediate arithmetic. Standard outcome-based supervision provides sparse feedback that fails to locate where a reasoning chain diverges. In this work, we investigate Process Reward Models (PRMs) and step-level preference optimization techniques for chart question answering. Using a stratified reasoning subset of 500 scientific charts from the CharXiv benchmark, we generate multi-step reasoning rollouts using \texttt{Qwen2.5-VL-3B-Instruct} and grade each step using a multimodal LLM-as-a-judge (\texttt{muse-spark-1.1}). We analyze step-level error propagation, categorize judge text critiques into a 9-category error taxonomy, and benchmark three alignment methods under strict compute constraints: Step-DPO, KTO, and SFT.
+\end{abstract}
+
+% 2. explain benchmark, vision model, algorithms
+\section{Benchmark, Vision Model, and Algorithms}
+\label{sec:benchmark_model_algorithms}
+
+\subsection{CharXiv Reasoning Benchmark}
+% Description of the CharXiv benchmark, stratified sampling of 500 reasoning questions (62 chart types), filtering out descriptive questions.
+
+\subsection{Base Vision Model (Qwen2.5-VL-3B)}
+% Architecture, 4-bit NF4 quantization, LoRA adapter configuration, compute constraints (T4 GPU).
+
+\subsection{Alignment Algorithms}
+% Formulations for SFT, Sequence-level DPO, Step-DPO (divergence suffix masking), and KTO (unpaired prospect theory alignment).
+
+% 3. which models were used, llm-as-a-judge
+\section{Models and LLM-as-a-Judge}
+\label{sec:models_and_judge}
+
+\subsection{Generator and PRM Judge Setup}
+% Overview of generator model (Qwen2.5-VL-3B-Instruct) and judge model (muse-spark-1.1 via Meta API).
+
+\subsection{Step-Level Verification Protocol}
+% Rollout batching, scoring criteria (binary 0/1 grounding), natural language critique generation.
+
+% 4. analysis of reasoning steps, some plots
+\section{Analysis of Reasoning Steps}
+\label{sec:reasoning_analysis}
+
+\subsection{Reasoning Trajectory Dynamics}
+% Error cascade probabilities, reasoning length vs. accuracy, step-by-step failure progression.
+
+\subsection{Visualizations of Reasoning Dynamics}
+% Include plots from charts/ (e.g., 01_overall_accuracy.png, 04_first_error_position.png, 08_error_cascade.png).
+
+% 5. analysis of judge scores, charts from folder
+\section{Analysis of Judge Scores}
+\label{sec:judge_scores}
+
+\subsection{Score Distributions and Pass Rates}
+% Aggregate statistics across 1,287 rollouts and 4,947 steps (41.0% pass rate, 59.0% fail rate).
+
+\subsection{Visualizing Judge Score Distributions}
+% Include charts from charts/ (e.g., judge_01_error_taxonomy.png, judge_02_error_by_step_depth.png, 03_rollout_success.png).
+
+% 6. use text responses for analysis errors
+\section{Error Analysis from Judge Text Responses}
+\label{sec:text_error_analysis}
+
+\subsection{9-Category Error Taxonomy}
+% Detailed breakdown: Axis misreads (24.0%), Legend/color confusion (19.5%), Hallucinations (15.2%), Ranking errors (10.9%), etc.
+
+\subsection{Clustering and Keyword Critique Insights}
+% MiniLM sentence embedding clustering, UMAP projections, vocabulary diagnostics (judge_04, judge_08).
+
+% 7. compare 3 methods: step dpo, kto, sft
+\section{Comparison of Methods: Step-DPO, KTO, and SFT}
+\label{sec:method_comparison}
+
+\subsection{Data Efficiency and Pairing Constraints}
+% Paired DPO (187 pairs) vs. unpaired KTO (1,287 rollouts) vs. positive SFT filtering.
+
+\subsection{Step-Level vs. Sequence-Level Credit Assignment}
+% Contrastive negative signal at the divergence point vs. whole-sequence supervision.
+
+% 8. results
+\section{Results}
+\label{sec:results}
+
+\subsection{Holdout Evaluation Benchmark}
+% Exact-match accuracy table across 100 holdout questions: Base (26%), SFT (23%), Full DPO (29%), Step-DPO (25%), KTO (26%), SFT->DPO (22%).
+
+\subsection{Formatting Compliance vs. Reasoning Trade-offs}
+% Adherence to Step 1 formatting, preamble collapse in KTO, hallucination/wrong commitment rates.
+
+% 9. conclusions
+\section{Conclusions}
+\label{sec:conclusions}
+% Summary of core insights, limitations under single T4 GPU compute, and future directions for multimodal PRMs.
+
+\section*{Limitations}
+% Resource constraints (4-bit 3B models, single T4 GPU) and scope of evaluation.
+
+% 10. references
+\nocite{*}
+\bibliography{custom}
+
+\end{document}
