@@ -472,6 +472,11 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Added `\setlength\titlebox{4.8cm}` and `\raggedbottom` to `report/acl_latex.tex` preamble.
 - **Why**: In ACL style, `\flushbottom` is enabled by default, which causes LaTeX to aggressively stretch vertical whitespace between the `\begin{center}` Abstract title and the abstract paragraph when the document has few body paragraphs (Underfull `\vbox (badness 10000)`). `\raggedbottom` prevents unnatural vertical stretching, and `\titlebox{4.8cm}` tightens the two-author header.
 
+## Introduction Section Variants Documentation
+- **What**: Created `report/introduction_variants.md` documenting three publication-ready Introduction section variants designed to integrate background literature (PRMs, CharXiv 500 reasoning subset, Qwen2.5-VL-3B, alignment methods) directly into the introduction.
+- **Why**: Preserves all 3 senior-scientist-crafted variants (Classical ML Narrative, Diagnostic/Problem-First, and Algorithmic/Systems) in the repository for immediate future reference and Overleaf report assembly.
+
+
 
 
 
