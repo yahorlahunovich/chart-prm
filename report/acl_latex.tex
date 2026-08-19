@@ -30,17 +30,37 @@
 \begin{document}
 \maketitle
 
-% 1. Abstract (explain your idea)
+% 1. Abstract
 \begin{abstract}
 Multimodal Large Language Models (MLLMs) frequently struggle with fine-grained chart reasoning due to compounded visual perception errors, misaligned axis readings, and flawed intermediate arithmetic. Standard outcome-based supervision provides sparse feedback that fails to locate where a reasoning chain diverges. In this work, we investigate Process Reward Models (PRMs) and step-level preference optimization techniques for chart question answering. Using a stratified reasoning subset of 500 scientific charts from the CharXiv benchmark, we generate multi-step reasoning rollouts using \texttt{Qwen2.5-VL-3B-Instruct} and grade each step using a multimodal LLM-as-a-judge (\texttt{muse-spark-1.1}). We analyze step-level error propagation, categorize judge text critiques into a 9-category error taxonomy, and benchmark three alignment methods under strict compute constraints: Step-DPO, KTO, and SFT.
 \end{abstract}
 
-% 2. explain benchmark, vision model, algorithms
+% 2. Introduction
+\section{Introduction}
+\label{sec:introduction}
+% Motivation: Importance of visual chart comprehension in scientific literature; challenges of multi-step visual reasoning and hallucinations in compact MLLMs.
+% Problem Statement: Outcome-based evaluation (ORM) vs. Process-based evaluation (PRM); why dense step supervision is critical for multimodal reasoning.
+% Key Contributions & Paper Organization.
+
+% 3. Related Work
+\section{Related Work}
+\label{sec:related_work}
+
+\subsection{Multimodal Chart Reasoning Benchmarks}
+% Overview of chart QA datasets, focus on CharXiv (Wang et al., 2024), difference between descriptive retrieval vs. complex reasoning questions.
+
+\subsection{Process Reward Models and Step-Level Verification}
+% Outcome vs. process supervision (Lightman et al., 2023; Uesato et al., 2022), LLM-as-a-judge paradigms (Zheng et al., 2023) applied to multimodal vision-language chains.
+
+\subsection{Preference Optimization for Visual Reasoning}
+% Evolution of alignment from RLHF to Direct Preference Optimization (DPO; Rafailov et al., 2023), Step-DPO (Lai et al., 2024), and Kahneman-Tversky Optimization (KTO; Ethayarajh et al., 2024).
+
+% 4. Benchmark, Vision Model, and Algorithms
 \section{Benchmark, Vision Model, and Algorithms}
 \label{sec:benchmark_model_algorithms}
 
-\subsection{CharXiv Reasoning Benchmark}
-% Description of the CharXiv benchmark, stratified sampling of 500 reasoning questions (62 chart types), filtering out descriptive questions.
+\subsection{The CharXiv Reasoning Benchmark}
+% Description of the CharXiv benchmark, stratified sampling of 500 reasoning questions across 62 chart types, filtering out descriptive questions.
 
 \subsection{Base Vision Model (Qwen2.5-VL-3B)}
 % Architecture, 4-bit NF4 quantization, LoRA adapter configuration, compute constraints (T4 GPU).
@@ -48,7 +68,7 @@ Multimodal Large Language Models (MLLMs) frequently struggle with fine-grained c
 \subsection{Alignment Algorithms}
 % Formulations for SFT, Sequence-level DPO, Step-DPO (divergence suffix masking), and KTO (unpaired prospect theory alignment).
 
-% 3. which models were used, llm-as-a-judge
+% 5. Models and LLM-as-a-Judge
 \section{Models and LLM-as-a-Judge}
 \label{sec:models_and_judge}
 
@@ -58,7 +78,7 @@ Multimodal Large Language Models (MLLMs) frequently struggle with fine-grained c
 \subsection{Step-Level Verification Protocol}
 % Rollout batching, scoring criteria (binary 0/1 grounding), natural language critique generation.
 
-% 4. analysis of reasoning steps, some plots
+% 6. Analysis of Reasoning Steps
 \section{Analysis of Reasoning Steps}
 \label{sec:reasoning_analysis}
 
@@ -68,7 +88,7 @@ Multimodal Large Language Models (MLLMs) frequently struggle with fine-grained c
 \subsection{Visualizations of Reasoning Dynamics}
 % Include plots from charts/ (e.g., 01_overall_accuracy.png, 04_first_error_position.png, 08_error_cascade.png).
 
-% 5. analysis of judge scores, charts from folder
+% 7. Analysis of Judge Scores
 \section{Analysis of Judge Scores}
 \label{sec:judge_scores}
 
@@ -78,7 +98,7 @@ Multimodal Large Language Models (MLLMs) frequently struggle with fine-grained c
 \subsection{Visualizing Judge Score Distributions}
 % Include charts from charts/ (e.g., judge_01_error_taxonomy.png, judge_02_error_by_step_depth.png, 03_rollout_success.png).
 
-% 6. use text responses for analysis errors
+% 8. Error Analysis from Judge Text Responses
 \section{Error Analysis from Judge Text Responses}
 \label{sec:text_error_analysis}
 
@@ -88,7 +108,7 @@ Multimodal Large Language Models (MLLMs) frequently struggle with fine-grained c
 \subsection{Clustering and Keyword Critique Insights}
 % MiniLM sentence embedding clustering, UMAP projections, vocabulary diagnostics (judge_04, judge_08).
 
-% 7. compare 3 methods: step dpo, kto, sft
+% 9. Comparison of Methods: Step-DPO, KTO, and SFT
 \section{Comparison of Methods: Step-DPO, KTO, and SFT}
 \label{sec:method_comparison}
 
@@ -98,8 +118,8 @@ Multimodal Large Language Models (MLLMs) frequently struggle with fine-grained c
 \subsection{Step-Level vs. Sequence-Level Credit Assignment}
 % Contrastive negative signal at the divergence point vs. whole-sequence supervision.
 
-% 8. results
-\section{Results}
+% 10. Results and Discussion
+\section{Results and Discussion}
 \label{sec:results}
 
 \subsection{Holdout Evaluation Benchmark}
@@ -108,7 +128,7 @@ Multimodal Large Language Models (MLLMs) frequently struggle with fine-grained c
 \subsection{Formatting Compliance vs. Reasoning Trade-offs}
 % Adherence to Step 1 formatting, preamble collapse in KTO, hallucination/wrong commitment rates.
 
-% 9. conclusions
+% 11. Conclusions
 \section{Conclusions}
 \label{sec:conclusions}
 % Summary of core insights, limitations under single T4 GPU compute, and future directions for multimodal PRMs.
@@ -116,7 +136,7 @@ Multimodal Large Language Models (MLLMs) frequently struggle with fine-grained c
 \section*{Limitations}
 % Resource constraints (4-bit 3B models, single T4 GPU) and scope of evaluation.
 
-% 10. references
+% 12. References
 \nocite{*}
 \bibliography{custom}
 
