@@ -468,5 +468,10 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Updated the abstract in `report/acl_latex.tex` with the question-driven, concrete Variant 2 text and successfully compiled the PDF via `pdflatex`.
 - **Why**: User selected Variant 2 for its punchy problem formulation ("Can a compact 3B vision-language model solve multi-step reasoning questions over complex scientific charts?"), explicit grounding in the 500 CharXiv subset, 2,920 PRM critiques, and exact 6-model alignment benchmark metrics.
 
+## Layout Padding Fix: Titlebox & Raggedbottom
+- **What**: Added `\setlength\titlebox{4.8cm}` and `\raggedbottom` to `report/acl_latex.tex` preamble.
+- **Why**: In ACL style, `\flushbottom` is enabled by default, which causes LaTeX to aggressively stretch vertical whitespace between the `\begin{center}` Abstract title and the abstract paragraph when the document has few body paragraphs (Underfull `\vbox (badness 10000)`). `\raggedbottom` prevents unnatural vertical stretching, and `\titlebox{4.8cm}` tightens the two-author header.
+
+
 
 
