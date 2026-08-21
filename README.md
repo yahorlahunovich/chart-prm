@@ -57,6 +57,7 @@ Holdout generations, extracted answers, exact-match flags, and ground truths are
 3. **Step-DPO on single-step fragments taught the model to stop.** Suffix-from-divergence targets restored `Final Answer:` (90% → 99%) but exact-match stayed at 25%. Prefix masking alone is not a substitute for full-trace preference.
 4. **KTO is the format anarchist and the least overconfident.** `Step 1:` rate is 0%; conversational preamble is 99%. It mentions the ground truth most often (66%) and has the lowest wrong-committed proxy (30%), but 0% of its correct answers are structured. Official EM therefore under-credits KTO markdown answers (`** Reverse` vs `Reverse`).
 5. **Exact-match is a harsh, incomplete metric.** SFT has a 5 pp “correct, not exact” gap (`S = 25`, unicode dots). Always inspect [`data/test_predictions/`](data/test_predictions/) before claiming a method failed.
+6. **The PRM judge also works as an inference-time verifier**, not just a training-data labeler. Picking the best of several already-generated rollouts by step-pass rate reaches 27.5% accuracy on the 500-question pool, beating both random selection (18.4%) and majority vote (21.0%) — see [`experiments/008_prm_best_of_n/`](experiments/008_prm_best_of_n/).
 
 ---
 
@@ -253,6 +254,7 @@ Collapse guards abort (or warn) if policy log-prob falls ~40–70 nats below the
 | [`005_holdout_eval_suffix_step_dpo`](experiments/005_holdout_eval_suffix_step_dpo/) | Valid 5-way: Base 26 / SFT 23 / DPO 29 / Step-DPO 25 / KTO 26 |
 | [`006_sft_then_dpo`](experiments/006_sft_then_dpo/) | SFT→DPO training (134/134 steps, pref acc 97.8%) |
 | [`007_sft_dpo_holdout`](experiments/007_sft_dpo_holdout/) | Six-system holdout used in the table above |
+| [`008_prm_best_of_n`](experiments/008_prm_best_of_n/) | PRM used as an inference-time verifier (not a training label): best-of-N over existing rollouts vs. random / majority vote / oracle |
 
 ---
 
