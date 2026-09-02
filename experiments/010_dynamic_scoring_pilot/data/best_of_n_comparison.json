@@ -1,0 +1,20 @@
+{
+  "old_v0_binary": {
+    "n_questions": 100,
+    "random_baseline_accuracy": 0.14516666666666667,
+    "prm_best_of_n_accuracy": 0.21,
+    "majority_vote_accuracy": 0.12,
+    "oracle_accuracy": 0.4,
+    "prm_accuracy_when_oracle_positive": 0.525,
+    "n_eligible_questions": 100
+  },
+  "new_v1_dynamic": {
+    "n_questions": 100,
+    "random_baseline_accuracy": 0.14266666666666666,
+    "prm_best_of_n_accuracy": 0.22,
+    "majority_vote_accuracy": 0.12,
+    "oracle_accuracy": 0.39,
+    "prm_accuracy_when_oracle_positive": 0.5641025641025641,
+    "n_eligible_questions": 100
+  }
+}
