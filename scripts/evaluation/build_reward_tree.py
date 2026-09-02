@@ -37,7 +37,7 @@ from categorize_judge_errors import CATEGORY_ORDER, DISPLAY, cluster_terms, exem
 from chart_prm.reward_tree import choose_child_count, merge_by_distance  # noqa: E402
 
 EXCLUDED_PARENTS = {"other_unspecified"}  # catch-all bucket, not a real criterion
-DEFAULT_MERGE_THRESHOLD = 0.25  # DG-PRM's xi, as published — see note in metrics.md about retuning
+DEFAULT_MERGE_THRESHOLD = 0.14  # tuned locally (see metrics.md sweep table); DG-PRM's published xi=0.25 over-merges on this data
 RETRIEVAL_THRESHOLD = 0.2  # DG-PRM's zeta, used at retrieval time (Phase 2), documented here
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
@@ -224,8 +224,8 @@ def write_metrics_md(
         "MiniLM `fail_analysis_embeddings.npy`, `k` scaled to category size via "
         "`choose_child_count`), described by TF-IDF top terms and 2 exemplar judge sentences, "
         "then deduplicated by merging near-identical sub-clusters (cosine distance <= "
-        f"{merge_threshold}, DG-PRM's `xi`, taken as-published pending retuning — see Observation "
-        "below).\n",
+        f"{merge_threshold}, DG-PRM's `xi`, locally tuned rather than copied from the paper — see "
+        "sweep below).\n",
         "- **This is v0.** Child criteria are cluster descriptions, not the clean, reusable "
         "rubric statements ('axis values must be read from the correct gridline', etc.) DG-PRM's "
         "Phase 1 gets from an LLM judge examining contrastive pairs. That LLM-distillation pass "
@@ -238,18 +238,28 @@ def write_metrics_md(
         f"## Tree stats\n\n- Parents: **{n_parents}**\n- Total child criteria: **{n_children}**\n"
         f"- Merge threshold (xi): {merge_threshold}\n- Retrieval threshold (zeta, for Phase 2): "
         f"{RETRIEVAL_THRESHOLD}\n- Embedding model: {EMBEDDING_MODEL}\n",
-        f"\n## Observation: merge dominance at xi={merge_threshold}\n\n"
-        f"Averaged across parents, **{mean_dominance:.0%}** of a parent's failures end up folded "
-        f"into its single largest child after merging at this threshold — worst case is "
-        f"**{parents[max_dominance_key]['label']}** at {dominance[max_dominance_key]:.0%}. Higher "
-        "dominance means fewer, coarser children (less useful for Phase 2 retrieval); lower "
-        "dominance keeps more distinct children but risks near-duplicates surviving as separate "
-        "criteria. DG-PRM's published default is xi=0.25, tuned on their own domain/embedding "
-        "model; their own ablation (Figure 10a in the paper) shows performance is sensitive to "
-        "this constant, so it should be swept locally (`--merge-threshold`) rather than assumed "
-        "to transfer as-is to short chart-critique sentences on this embedding model. Compare "
-        "this run's dominance numbers against a run at a different threshold before picking one "
-        "for Phase 2.\n",
+        f"\n## Merge threshold: local sweep (why xi={merge_threshold}, not the paper's 0.25)\n\n"
+        "DG-PRM's published default is xi=0.25, tuned on their own domain/embedding model. Their "
+        "own ablation (Figure 10a) shows performance is sensitive to this constant, so it was "
+        "swept locally rather than copied over. Sweeping `--merge-threshold` on this tree "
+        "(`choose_child_count` and every parent's members held fixed):\n\n"
+        "| xi | Children | Avg dominance | Worst case |\n| ---: | ---: | ---: | --- |\n"
+        "| 0.10 - 0.12 | 37 (no merging below here) | 38% | Incomplete/truncated 61% |\n"
+        "| **0.14** | **33** | **44%** | **Incomplete/truncated 61%** |\n"
+        "| 0.16 | 30 | 51% | Wrong numeric 67% |\n"
+        "| 0.18 | 27 | 57% | Bad comparison 83% |\n"
+        "| 0.20 | 26 | 61% | Wrong numeric 100% |\n"
+        "| 0.22 | 21 | 73% | Wrong numeric 100% |\n"
+        "| 0.25 (paper default) | 17 | 79% | Arithmetic 100% |\n\n"
+        "0.14 is the first threshold that does any real deduplication (37 to 33: four genuine "
+        "near-duplicate child pairs folded together) without moving the worst-case category at "
+        "all — \"Incomplete/truncated\" sits at 61% dominance at both 0.10 and 0.14, so that "
+        "collapse is inherent to that category's data, not an artifact of raising the threshold. "
+        "Past 0.16 the worst case climbs quickly toward total collapse (a single child absorbing "
+        "100% of the category). This run:\n\n"
+        f"- Children: **{n_children}**\n- Average dominance: **{mean_dominance:.0%}**\n"
+        f"- Worst case: **{parents[max_dominance_key]['label']}** at "
+        f"{dominance[max_dominance_key]:.0%}\n",
         "\n## Children per parent\n\n| Parent | Source failures | Children | Largest child share |\n"
         "| --- | ---: | ---: | ---: |\n",
     ]
