@@ -3,7 +3,7 @@
   "retrieval_threshold_zeta": 0.2,
   "embedding_model": "all-MiniLM-L6-v2",
   "source": "experiments\\001_500_reasoning\\judge_error_analysis\\fail_analyses_categorized.csv",
-  "child_criteria_status": "v0: embedding sub-clusters described by TF-IDF terms + exemplars, not yet LLM-distilled into rubric statements (pending judge API access)",
+  "child_criteria_status": "v1: LLM-distilled rubric statements (rubric_text) via distill_reward_tree_criteria.py, falling back to v0 TF-IDF/exemplar description for any child a distillation call failed on",
   "parents": {
     "incomplete_or_truncated_step": {
       "label": "Incomplete / truncated reasoning",
@@ -414,7 +414,8 @@
           ],
           "merged_member_counts": [
             20
-          ]
+          ],
+          "rubric_text": "Every reasoning step must fully incorporate all operational filters and constraints specified in the prompt without omission."
         },
         {
           "child_id": "incomplete_or_truncated_step_1",
@@ -821,7 +822,8 @@
           ],
           "merged_member_counts": [
             13
-          ]
+          ],
+          "rubric_text": "Each reasoning step must be fully completed to include clear data extraction, value reading, or logical inference without abrupt truncation."
         }
       ]
     },
@@ -1234,7 +1236,8 @@
           ],
           "merged_member_counts": [
             35
-          ]
+          ],
+          "rubric_text": "All extracted entities, dates, and labels must directly correspond to visible text and data elements present on the chart."
         },
         {
           "child_id": "hallucinated_entity_1",
@@ -1641,7 +1644,8 @@
           ],
           "merged_member_counts": [
             140
-          ]
+          ],
+          "rubric_text": "All referenced data points and axis levels must fall strictly within the visible scale ranges displayed on the chart."
         },
         {
           "child_id": "hallucinated_entity_2",
@@ -2048,7 +2052,8 @@
           ],
           "merged_member_counts": [
             76
-          ]
+          ],
+          "rubric_text": "All comparative values and group metrics must be directly supported by visible chart evidence rather than fabricated numbers."
         },
         {
           "child_id": "hallucinated_entity_3",
@@ -2455,7 +2460,8 @@
           ],
           "merged_member_counts": [
             47
-          ]
+          ],
+          "rubric_text": "Each reasoning step must independently verify values against the chart rather than propagating unverified or fabricated figures."
         },
         {
           "child_id": "hallucinated_entity_4",
@@ -2862,7 +2868,8 @@
           ],
           "merged_member_counts": [
             96
-          ]
+          ],
+          "rubric_text": "Descriptions of curves, intersections, and trends must accurately reflect the actual visual data displayed without inventing details."
         },
         {
           "child_id": "hallucinated_entity_5",
@@ -3269,7 +3276,8 @@
           ],
           "merged_member_counts": [
             51
-          ]
+          ],
+          "rubric_text": "All referenced visual elements, colors, and trends must faithfully match the actual legend and plotted lines on the chart."
         }
       ]
     },
@@ -3682,7 +3690,8 @@
           ],
           "merged_member_counts": [
             16
-          ]
+          ],
+          "rubric_text": "Numerical comparisons and inequalities must be mathematically correct and accurately reflect the underlying data values."
         },
         {
           "child_id": "arithmetic_error_1",
@@ -4089,7 +4098,8 @@
           ],
           "merged_member_counts": [
             22
-          ]
+          ],
+          "rubric_text": "Calculated differences and derived measurements must be mathematically accurate and faithfully represent the visual evidence in the chart."
         }
       ]
     },
@@ -4503,7 +4513,8 @@
           "merged_member_counts": [
             144,
             106
-          ]
+          ],
+          "rubric_text": "Correctly distinguish between panel titles, axis labels, and tick marks by verifying their actual positions and text in the chart structure."
         },
         {
           "child_id": "axis_or_layout_misread_1",
@@ -4911,7 +4922,8 @@
           "merged_member_counts": [
             109,
             118
-          ]
+          ],
+          "rubric_text": "Accurately identify data point coordinates and peak locations by directly aligning curves with their corresponding axis gridlines."
         },
         {
           "child_id": "axis_or_layout_misread_3",
@@ -5318,7 +5330,8 @@
           ],
           "merged_member_counts": [
             169
-          ]
+          ],
+          "rubric_text": "Correctly match data series colors and read exact values by properly referencing the corresponding subplot and y-axis scale."
         },
         {
           "child_id": "axis_or_layout_misread_5",
@@ -5725,7 +5738,8 @@
           ],
           "merged_member_counts": [
             56
-          ]
+          ],
+          "rubric_text": "Read exact numerical ranges, tick intervals, and text labels directly from the axes without estimation or substitution."
         }
       ]
     },
@@ -6139,7 +6153,8 @@
           "merged_member_counts": [
             71,
             104
-          ]
+          ],
+          "rubric_text": "Identify extrema and peaks by strictly reading the coordinates of the highest or lowest points visible on the chart curves."
         },
         {
           "child_id": "ranking_error_1",
@@ -6546,7 +6561,8 @@
           ],
           "merged_member_counts": [
             27
-          ]
+          ],
+          "rubric_text": "Reference exact period or category labels from the chart axes when comparing differences between scenarios."
         },
         {
           "child_id": "ranking_error_2",
@@ -6953,7 +6969,8 @@
           ],
           "merged_member_counts": [
             100
-          ]
+          ],
+          "rubric_text": "Verify the relative ordering of data series values against the visual chart elements before identifying highest or lowest points."
         },
         {
           "child_id": "ranking_error_3",
@@ -7360,7 +7377,8 @@
           ],
           "merged_member_counts": [
             17
-          ]
+          ],
+          "rubric_text": "Accurately order numerical values and identify minima or maxima corresponding to the correct data points on the chart."
         }
       ]
     },
@@ -7773,7 +7791,8 @@
           ],
           "merged_member_counts": [
             100
-          ]
+          ],
+          "rubric_text": "Visual elements like confidence intervals or shaded areas must be interpreted based on their spatial spread rather than color intensity."
         },
         {
           "child_id": "wrong_series_or_color_1",
@@ -8180,7 +8199,8 @@
           ],
           "merged_member_counts": [
             71
-          ]
+          ],
+          "rubric_text": "Data series, lines, or bars must be correctly mapped to their corresponding categories by strictly following the chart legend."
         },
         {
           "child_id": "wrong_series_or_color_2",
@@ -8588,7 +8608,8 @@
           "merged_member_counts": [
             119,
             153
-          ]
+          ],
+          "rubric_text": "Values for specific data series must be accurately extracted from the visual plot at the specified coordinates rather than misattributed."
         },
         {
           "child_id": "wrong_series_or_color_4",
@@ -8995,7 +9016,8 @@
           ],
           "merged_member_counts": [
             62
-          ]
+          ],
+          "rubric_text": "Data point values and time periods must be accurately counted and verified against the correct visual series line."
         },
         {
           "child_id": "wrong_series_or_color_5",
@@ -9402,7 +9424,8 @@
           ],
           "merged_member_counts": [
             63
-          ]
+          ],
+          "rubric_text": "Trends and values for each distinct series must be read independently and accurately without confusing one line with another."
         }
       ]
     },
@@ -9815,7 +9838,8 @@
           ],
           "merged_member_counts": [
             31
-          ]
+          ],
+          "rubric_text": "Comparisons between data values and thresholds must accurately reflect the visual magnitudes shown on the chart."
         },
         {
           "child_id": "threshold_or_comparison_1",
@@ -10222,7 +10246,8 @@
           ],
           "merged_member_counts": [
             79
-          ]
+          ],
+          "rubric_text": "Statements evaluating data counts or thresholds must be factually consistent with the actual chart data without propagating prior errors."
         },
         {
           "child_id": "threshold_or_comparison_2",
@@ -10629,7 +10654,8 @@
           ],
           "merged_member_counts": [
             69
-          ]
+          ],
+          "rubric_text": "Numerical comparisons and counts of data points meeting specific criteria must logically match both the cited values and the chart."
         }
       ]
     },
@@ -11042,7 +11068,8 @@
           ],
           "merged_member_counts": [
             62
-          ]
+          ],
+          "rubric_text": "Extracted numerical values must accurately correspond to the exact plotted data points visible on the chart."
         },
         {
           "child_id": "wrong_numeric_read_1",
@@ -11449,7 +11476,8 @@
           ],
           "merged_member_counts": [
             60
-          ]
+          ],
+          "rubric_text": "Numerical readings must fall precisely within the visual range and error bounds shown on the chart."
         },
         {
           "child_id": "wrong_numeric_read_2",
@@ -11856,7 +11884,8 @@
           ],
           "merged_member_counts": [
             59
-          ]
+          ],
+          "rubric_text": "All cited data values must accurately reflect the visual ground truth shown on the chart."
         }
       ]
     },
@@ -12269,7 +12298,8 @@
           ],
           "merged_member_counts": [
             34
-          ]
+          ],
+          "rubric_text": "Reasoning conclusions must align with the actual data trends and maintain logical consistency throughout the analysis."
         },
         {
           "child_id": "logic_inconsistency_1",
@@ -12676,7 +12706,8 @@
           ],
           "merged_member_counts": [
             80
-          ]
+          ],
+          "rubric_text": "Claims and counts must accurately reflect the visual evidence in the chart and remain consistent with prior steps."
         },
         {
           "child_id": "logic_inconsistency_2",
@@ -13083,7 +13114,8 @@
           ],
           "merged_member_counts": [
             73
-          ]
+          ],
+          "rubric_text": "Data values and reading intervals must be accurately extracted from the chart without factual errors or misinterpretations."
         },
         {
           "child_id": "logic_inconsistency_3",
@@ -13490,7 +13522,8 @@
           ],
           "merged_member_counts": [
             53
-          ]
+          ],
+          "rubric_text": "Extracted data points and intersections must precisely match both the visual evidence and preceding reasoning steps."
         }
       ]
     }
