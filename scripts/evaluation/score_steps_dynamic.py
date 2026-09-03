@@ -114,11 +114,13 @@ async def worker(queue, session, write_queue, semaphore, model: str):
         if task is None:
             break
 
-        (q_id, rollout_idx, image_path, question, steps) = task
+        (q_id, rollout_idx, image_path, question, steps, ground_truth) = task
 
         async with semaphore:
             steps_indexed = list(enumerate(steps))
-            prompt_text = build_dynamic_scoring_prompt(question, steps_indexed, worker.tree)
+            prompt_text = build_dynamic_scoring_prompt(
+                question, steps_indexed, worker.tree, ground_truth=ground_truth
+            )
             image_b64 = encode_image(image_path)
             payload = build_gemini_payload(image_b64, prompt_text)
 
@@ -166,6 +168,7 @@ async def main_async(
     model: str = DEFAULT_MODEL,
     concurrency: int = 5,
     max_rollouts: Optional[int] = None,
+    show_ground_truth: bool = False,
 ) -> None:
     with open(tree_path, "r", encoding="utf-8") as handle:
         tree = json.load(handle)
@@ -203,7 +206,8 @@ async def main_async(
             if not os.path.exists(image_path):
                 continue
 
-            queue.put_nowait((q_id, rollout_idx, image_path, data.get("question", ""), steps))
+            ground_truth = str(data.get("ground_truth", "")).strip() if show_ground_truth else None
+            queue.put_nowait((q_id, rollout_idx, image_path, data.get("question", ""), steps, ground_truth))
             tasks_to_do += 1
             if max_rollouts is not None and tasks_to_do >= max_rollouts:
                 break
@@ -231,28 +235,45 @@ async def main_async(
 
 
 if __name__ == "__main__":
+    BASE_DIR = Path(__file__).resolve().parents[2]
+
     parser = argparse.ArgumentParser(description="Phase 2: dynamic multi-criteria step scoring (Gemini)")
     parser.add_argument("--max-rollouts", type=int, default=None, help="Cap for a cheap smoke run")
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--concurrency", type=int, default=5)
+    parser.add_argument(
+        "--pilot-ids-path",
+        type=Path,
+        default=BASE_DIR / "experiments/010_dynamic_scoring_pilot/data/pilot_question_ids.json",
+        help="JSON file with a 'question_ids' list to score",
+    )
+    parser.add_argument(
+        "--output-path",
+        type=Path,
+        default=BASE_DIR / "experiments/010_dynamic_scoring_pilot/data/dynamic_scores.jsonl",
+        help="Resumable output jsonl",
+    )
+    parser.add_argument(
+        "--show-ground-truth",
+        action="store_true",
+        help="Ablation only: include the answer key in the prompt (default: blind, the normal Phase 2 design)",
+    )
     args = parser.parse_args()
 
-    BASE_DIR = Path(__file__).resolve().parents[2]
     CLEANED_PATH = BASE_DIR / "experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl"
-    PILOT_IDS_PATH = BASE_DIR / "experiments/010_dynamic_scoring_pilot/data/pilot_question_ids.json"
     TREE_PATH = BASE_DIR / "experiments/009_reward_tree/data/reward_tree.json"
     IMAGE_DIR = BASE_DIR / "data/CharXiv/images"
-    OUTPUT_FILE = BASE_DIR / "experiments/010_dynamic_scoring_pilot/data/dynamic_scores.jsonl"
 
     asyncio.run(
         main_async(
             str(CLEANED_PATH),
-            str(PILOT_IDS_PATH),
+            str(args.pilot_ids_path),
             str(TREE_PATH),
             str(IMAGE_DIR),
-            str(OUTPUT_FILE),
+            str(args.output_path),
             model=args.model,
             concurrency=args.concurrency,
             max_rollouts=args.max_rollouts,
+            show_ground_truth=args.show_ground_truth,
         )
     )

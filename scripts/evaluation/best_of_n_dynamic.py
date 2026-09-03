@@ -36,8 +36,8 @@ def load_rollout_meta(cleaned_path: Path) -> dict[tuple[str, int], dict]:
     return meta
 
 
-def build_dynamic_candidate(rollout_meta: dict, dynamic_row: dict) -> dict | None:
-    score = dynamic_process_score(dynamic_row["scores"])
+def build_dynamic_candidate(rollout_meta: dict, dynamic_row: dict, step_aggregation: str = "mean") -> dict | None:
+    score = dynamic_process_score(dynamic_row["scores"], step_aggregation=step_aggregation)
     if score is None:
         return None
     final_answer = str(rollout_meta.get("model_final_answer", "")).strip()
@@ -62,11 +62,37 @@ def group_and_summarize(grouped: dict[str, list[dict]]) -> dict:
 
 
 def main() -> None:
+    import argparse
+
     base_dir = Path(__file__).resolve().parents[2]
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--dynamic-path",
+        type=Path,
+        default=base_dir / "experiments/010_dynamic_scoring_pilot/data/dynamic_scores.jsonl",
+    )
+    parser.add_argument(
+        "--pilot-ids-path",
+        type=Path,
+        default=base_dir / "experiments/010_dynamic_scoring_pilot/data/pilot_question_ids.json",
+    )
+    parser.add_argument(
+        "--out-path",
+        type=Path,
+        default=base_dir / "experiments/010_dynamic_scoring_pilot/data/best_of_n_comparison.json",
+    )
+    parser.add_argument(
+        "--step-aggregation",
+        choices=["mean", "min"],
+        default="mean",
+        help="How dynamic_process_score collapses multiple flagged criteria within one step",
+    )
+    args = parser.parse_args()
+
     cleaned_path = base_dir / "experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl"
     evals_path = base_dir / "experiments/001_500_reasoning/data/evaluated_rollouts.jsonl"
-    dynamic_path = base_dir / "experiments/010_dynamic_scoring_pilot/data/dynamic_scores.jsonl"
-    pilot_ids_path = base_dir / "experiments/010_dynamic_scoring_pilot/data/pilot_question_ids.json"
+    dynamic_path = args.dynamic_path
+    pilot_ids_path = args.pilot_ids_path
 
     with pilot_ids_path.open(encoding="utf-8") as handle:
         pilot_ids = set(json.load(handle)["question_ids"])
@@ -102,7 +128,7 @@ def main() -> None:
             meta = rollout_meta.get((qid, data["rollout_index"]))
             if meta is None:
                 continue
-            candidate = build_dynamic_candidate(meta, data)
+            candidate = build_dynamic_candidate(meta, data, step_aggregation=args.step_aggregation)
             if candidate is None:
                 continue
             new_grouped.setdefault(qid, []).append(candidate)
@@ -126,13 +152,11 @@ def main() -> None:
         else:
             print(f"{label:<38}{old_v:>17.1%}{new_v:>18.1%}")
 
-    out_dir = base_dir / "experiments/010_dynamic_scoring_pilot/data"
-    out_path = out_dir / "best_of_n_comparison.json"
-    out_path.write_text(
+    args.out_path.write_text(
         json.dumps({"old_v0_binary": old_summary, "new_v1_dynamic": new_summary}, indent=2),
         encoding="utf-8",
     )
-    print(f"\nWrote {out_path}")
+    print(f"\nWrote {args.out_path}")
 
 
 if __name__ == "__main__":

@@ -54,6 +54,17 @@ TASK_INSTRUCTIONS = (
     "ground truth and should not guess at it."
 )
 
+# Ablation-only variant (see build_dynamic_scoring_prompt's ground_truth param): the closing
+# sentence above becomes false once an answer key is supplied, so it needs a different ending
+# rather than a contradictory one bolted on.
+_INFORMED_CLOSING = (
+    "\nJudge each step against the chart image, the question, and the step's own text. You ARE "
+    "given the correct final answer below -- use it only to check whether each step's claims are "
+    "factually consistent with that answer and the chart, not to assume every step must be right "
+    "just because the final answer is correct."
+)
+TASK_INSTRUCTIONS_GROUND_TRUTH_SHOWN = TASK_INSTRUCTIONS.rsplit("\nJudge each step ONLY", 1)[0] + _INFORMED_CLOSING
+
 RESPONSE_FORMAT_INSTRUCTIONS = (
     "Respond strictly as a JSON array, one object per step, in this exact schema:\n"
     "[\n"
@@ -98,15 +109,27 @@ def build_step_block(step_index: int, step_text: str) -> str:
 
 
 def build_dynamic_scoring_prompt(
-    question: str, steps: Sequence[Tuple[int, str]], tree: Dict[str, Any]
+    question: str,
+    steps: Sequence[Tuple[int, str]],
+    tree: Dict[str, Any],
+    ground_truth: Optional[str] = None,
 ) -> str:
-    """Full judge prompt. Deliberately excludes the ground-truth answer -- see module docstring."""
+    """Full judge prompt. Blind to the ground-truth answer by default -- see module docstring.
+
+    `ground_truth` exists only for a controlled ablation (is the blind design costing us
+    selection accuracy, or is the new judge just not competitive) -- it is never set in the
+    normal Phase 2 pipeline. Passing it swaps in a instructions closing that acknowledges the
+    answer key instead of contradicting it.
+    """
     criteria_list = format_tree_criteria_list(tree)
     step_blocks = "\n".join(build_step_block(idx, text) for idx, text in steps)
+    instructions = TASK_INSTRUCTIONS_GROUND_TRUTH_SHOWN if ground_truth else TASK_INSTRUCTIONS
+    gt_block = f"Ground Truth Answer: {ground_truth}\n\n" if ground_truth else ""
     return (
-        f"{TASK_INSTRUCTIONS}\n"
+        f"{instructions}\n"
         f"Failure-pattern criteria (grouped by category):\n\n{criteria_list}\n\n"
         f"Chart Question: {question}\n\n"
+        f"{gt_block}"
         f"Steps:\n{step_blocks}\n\n"
         f"{RESPONSE_FORMAT_INSTRUCTIONS}"
     )
@@ -133,17 +156,29 @@ def parse_dynamic_scores(response_text: Optional[str]) -> Optional[List[Dict[str
     return parsed
 
 
-def dynamic_process_score(parsed_scores: Sequence[Dict[str, Any]]) -> Optional[float]:
+def dynamic_process_score(
+    parsed_scores: Sequence[Dict[str, Any]], step_aggregation: str = "mean"
+) -> Optional[float]:
     """Aggregate a rollout's per-step, per-criterion 1-3 scores into one process score in [0, 1].
 
-    Per step: mean of (score-1)/2 across that step's flagged criteria; a step with no
-    criteria flagged (no on-topic failure pattern found) scores 1.0 -- absence of a
-    flagged issue is itself evidence the step is fine, not missing data. Steps are then
-    averaged with equal weight, so a step that happened to trip more criteria doesn't
-    dominate the rollout's score. None if there are no steps to score.
+    Per step, `step_aggregation` collapses that step's flagged criteria (each normalized to
+    (score-1)/2) into one number:
+      - "mean" (default): average across criteria. A step with several flagged criteria
+        and one bad one gets partial credit for the others.
+      - "min": the worst flagged criterion decides the step's score, mirroring how the
+        original binary judge worked (any single failure fails the step) and how
+        `format_full_dpo.py` picks "chosen" rollouts (all_pass -- one failing step
+        disqualifies the whole rollout, not an average across steps).
+    A step with no criteria flagged (no on-topic failure pattern found) scores 1.0 under
+    either mode -- absence of a flagged issue is evidence the step is fine, not missing
+    data. Steps are then averaged with equal weight across the rollout either way, so a
+    step that happened to trip more criteria doesn't dominate just by criteria count.
+    None if there are no steps to score.
     """
     if not parsed_scores:
         return None
+    if step_aggregation not in ("mean", "min"):
+        raise ValueError(f"step_aggregation must be 'mean' or 'min', got {step_aggregation!r}")
     step_scores = []
     for step in parsed_scores:
         criteria = step.get("scores") or []
@@ -152,7 +187,7 @@ def dynamic_process_score(parsed_scores: Sequence[Dict[str, Any]]) -> Optional[f
             continue
         normalized = [(c["score"] - 1) / 2 for c in criteria if c.get("score") in (1, 2, 3)]
         if normalized:
-            step_scores.append(sum(normalized) / len(normalized))
+            step_scores.append(min(normalized) if step_aggregation == "min" else sum(normalized) / len(normalized))
     if not step_scores:
         return None
     return sum(step_scores) / len(step_scores)

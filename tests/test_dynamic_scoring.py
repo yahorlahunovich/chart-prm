@@ -86,17 +86,25 @@ def test_prompt_shows_full_tree_once_and_lists_all_steps():
     assert prompt.count("[axis_0]") == 1
 
 
-def test_prompt_has_no_way_to_receive_a_ground_truth_answer():
-    # Regression guard for the deliberate design choice: the function signature has no
-    # answer-key parameter, so there is no way for a caller to accidentally leak one in.
-    # (The instructions legitimately *mention* "ground truth" to tell the judge not to
-    # guess at it -- that phrase appearing is correct, not a leak.)
-    import inspect
+def test_prompt_with_ground_truth_shows_it_and_acknowledges_it_instead_of_denying_it():
+    blind = build_dynamic_scoring_prompt("Q?", [(0, "Step 0: text.")], TREE)
+    informed = build_dynamic_scoring_prompt("Q?", [(0, "Step 0: text.")], TREE, ground_truth="42")
 
-    params = set(inspect.signature(build_dynamic_scoring_prompt).parameters)
-    assert not any("truth" in p or "answer" in p for p in params)
+    assert "Ground Truth Answer: 42" in informed
+    assert "Ground Truth Answer:" not in blind
+    # the blind closing sentence ("not told the ground truth") must not survive into the
+    # informed prompt, since it would be a direct contradiction
+    assert "not told the ground truth" not in informed.lower()
+    assert "given the correct final answer" in informed.lower()
 
+
+def test_prompt_defaults_to_blind_with_no_ground_truth_passed():
+    # Regression guard for the deliberate default: calling without ground_truth (the normal
+    # Phase 2 path) never mentions an answer, and explicitly tells the judge it has none.
+    # (ground_truth is an explicit, opt-in parameter for the sighted-vs-blind ablation only
+    # -- see test_prompt_with_ground_truth_shows_it_and_acknowledges_it_instead_of_denying_it.)
     prompt = build_dynamic_scoring_prompt("Q?", [(0, "Step 0: text.")], TREE)
+    assert "Ground Truth Answer:" not in prompt
     assert "not told the ground truth" in prompt.lower()  # judge is explicitly told not to use it
 
 
@@ -146,3 +154,32 @@ def test_dynamic_process_score_averages_criteria_within_a_step_first():
 
 def test_dynamic_process_score_empty_input_is_none():
     assert dynamic_process_score([]) is None
+
+
+def test_dynamic_process_score_min_mode_uses_worst_criterion_per_step():
+    # Same fixture as the mean test above, but the worst criterion (score=1) should
+    # decide step 0 entirely under "min" mode, not get averaged against score=3.
+    steps = [
+        {"step_index": 0, "scores": [{"criterion_id": "a", "score": 1}, {"criterion_id": "b", "score": 3}]},
+        {"step_index": 1, "scores": [{"criterion_id": "c", "score": 3}]},
+    ]
+    assert dynamic_process_score(steps, step_aggregation="min") == 0.5  # mean(0.0, 1.0)
+
+
+def test_dynamic_process_score_min_mode_matches_mean_when_one_criterion_per_step():
+    steps = [{"step_index": 0, "scores": [{"criterion_id": "a", "score": 3}]}]
+    assert dynamic_process_score(steps, step_aggregation="min") == dynamic_process_score(steps)
+
+
+def test_dynamic_process_score_min_mode_no_criteria_step_still_scores_fine():
+    steps = [{"step_index": 0, "scores": []}]
+    assert dynamic_process_score(steps, step_aggregation="min") == 1.0
+
+
+def test_dynamic_process_score_rejects_unknown_aggregation():
+    steps = [{"step_index": 0, "scores": [{"criterion_id": "a", "score": 1}]}]
+    try:
+        dynamic_process_score(steps, step_aggregation="max")
+        assert False, "expected ValueError"
+    except ValueError:
+        pass

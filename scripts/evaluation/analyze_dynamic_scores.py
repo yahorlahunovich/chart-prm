@@ -41,6 +41,11 @@ def main() -> None:
     )
     parser.add_argument("--tree-path", type=Path, default=Path("experiments/009_reward_tree/data/reward_tree.json"))
     parser.add_argument("--output-dir", type=Path, default=Path("experiments/010_dynamic_scoring_pilot"))
+    parser.add_argument(
+        "--title",
+        default="Experiment 010: Dynamic Multi-Criteria Scoring Pilot (DG-PRM Phase 2)",
+        help="Markdown H1 for metrics.md",
+    )
     args = parser.parse_args()
 
     rows = load_rows(args.scores_path)
@@ -86,12 +91,12 @@ def main() -> None:
         parent_usage[child_to_parent.get(cid, "unknown")] += n
 
     lines = [
-        "# Experiment 010: Dynamic Multi-Criteria Scoring Pilot (DG-PRM Phase 2)\n",
+        f"# {args.title}\n",
         "\n",
         "## What this is\n",
         "\n",
-        "For each rollout of 100 training-pool questions (frozen in "
-        "`data/pilot_question_ids.json`, disjoint from the protected holdout), a Gemini judge "
+        f"For each rollout of {len(pilot_ids)} training-pool questions (frozen in "
+        f"`{args.pilot_ids_path.name}`, disjoint from the protected holdout), a Gemini judge "
         "(`gemini-3.5-flash-lite`, free tier) is shown the full 33-criterion reward tree from "
         "experiment 009 once, and for every step self-selects which criteria apply and scores "
         "them 1-3 -- blind to the ground-truth answer "
