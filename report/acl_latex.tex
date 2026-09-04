@@ -55,7 +55,7 @@ Can a compact 3B vision-language model solve multi-step reasoning questions over
 
 The central goal of \textbf{ChartPRM} is to verify, diagnose, and align step-by-step visual reasoning on scientific charts. Scientific plots contain dense information. Solving a reasoning problem requires several distinct actions: locating the right subplot, reading numerical axis scales, matching colors to legend labels, and performing mathematical comparisons.
 
-Outcome reward models (ORM) only check whether the final answer is right. This hides where the model actually went wrong. A model might make a lucky guess after flawed reasoning, or it might read the chart correctly but make a minor rounding error at the very end. ChartPRM addresses this limitation by scoring each reasoning step individually and using those scores to guide preference optimization.
+Outcome reward models (ORM) only check whether the final answer is right. This hides where the model actually went wrong. A model might make a lucky guess after flawed reasoning, or it might read the chart correctly but make a minor rounding error at the very end. ChartPRM addresses this limitation by scoring each reasoning step individually and using those scores to guide preference optimization. Crucially, we also ask whether it is possible to align a compact 3B vision-language model using only a very small dataset of verified chart reasoning traces (fewer than 150 examples).
 
 In this section, we describe the five core components of the ChartPRM framework:
 \begin{enumerate}[noitemsep,topsep=0pt]
@@ -137,7 +137,7 @@ We keep the shared prefix $y_{<t^*}$ as prompt context, but compute the preferen
 \label{subsec:alignment_objectives}
 Using the curated datasets, we align the policy model $\pi_\theta$ against a frozen reference policy $\pi_{\text{ref}}$ (the base unaligned instruct model). We investigate four alignment objectives:
 
-\textbf{1. Supervised Fine-Tuning (SFT):} SFT maximizes the log-likelihood of verified gold reasoning steps:
+\textbf{1. Supervised Fine-Tuning (SFT):} Following standard alignment pipelines \citep{ouyang2022instructgpt}, supervised fine-tuning serves as our initial demonstration baseline by maximizing the log-likelihood of verified gold reasoning steps:
 \begin{equation}
     \mathcal{L}_{\text{SFT}}(\theta) = -\mathbb{E}_{(x, y_w)} \sum_{t=1}^{|y_w|} \log \pi_\theta(y_{w,t} \mid x, y_{w,<t})
 \end{equation}
@@ -166,7 +166,7 @@ where $v_\beta(r) = \sigma(\beta r)$ for desirable outputs, $v_\beta(r) = \sigma
 
 \textbf{5. Two-Stage SFT$\rightarrow$DPO:} We also evaluate a sequential pipeline where the model is first fine-tuned on verified gold traces with SFT for one epoch, and then aligned with sequence DPO using the SFT checkpoint as both the starting policy and the reference policy $\pi_{\text{ref}}$.
 
-\subsection{Hardware-Constrained Implementation on Single T4 GPU}
+\subsection{Hardware-Constrained Training on a Single Consumer GPU}
 \label{subsec:hardware_budget}
 
 \begin{table}[t]
@@ -184,20 +184,15 @@ KTO & 84 pos / 252 neg & 2 & $2\times 10^{-6}$ & 35 min \\
 SFT$\rightarrow$DPO & 134 pairs & 1 & $2\times 10^{-6}$ & 24 min \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Fine-Tuning Setup under Single-T4 GPU Budget.} All models use LoRA ($r=16, \alpha=32$) on 4-bit NF4 quantized \texttt{Qwen2.5-VL-3B-Instruct} within 16GB VRAM.}
+\caption{\textbf{Fine-Tuning Configurations under 16GB GPU Budget.} All models are trained with 4-bit LoRA adaptation on \texttt{Qwen2.5-VL-3B-Instruct}.}
 \label{tab:training_setup}
 \end{table}
 
-A key design requirement of our work is reproducibility under realistic consumer compute constraints. All model training is conducted on a single 16GB Nvidia T4 GPU (standard Google Colab tier).
+A core design goal of our study is practical reproducibility on accessible hardware. All alignment experiments were executed within a strict 16GB VRAM budget, using a single Nvidia Tesla T4 GPU (Google Colab) or an Nvidia Tesla P100 GPU (Kaggle).
 
-To train a 3B vision-language model on a single GPU without out-of-memory errors, we employ three memory optimizations:
-\begin{itemize}[noitemsep,topsep=0pt]
-    \item \textbf{4-Bit NormalFloat Quantization (NF4):} We load the base vision-language backbone in 4-bit precision with double quantization via \texttt{bitsandbytes} \citep{dettmers2023qlora}.
-    \item \textbf{Low-Rank Adaptation (LoRA):} We freeze the base model weights and attach LoRA adapters \citep{hu2021lora} to all linear projection layers in both the language model and attention modules (\texttt{q\_proj}, \texttt{k\_proj}, \texttt{v\_proj}, \texttt{o\_proj}, \texttt{gate\_proj}, \texttt{up\_proj}, \texttt{down\_proj}). We set rank $r=16$, scaling factor $\alpha=32$, and dropout to $0.05$.
-    \item \textbf{Gradient Checkpointing:} We enable gradient checkpointing and use a per-device batch size of 1 with gradient accumulation steps (effective batch size 8).
-\end{itemize}
+To train a 3B vision-language model on a single 16GB device without memory overflow, we apply 4-bit NormalFloat quantization (NF4; \citealt{dettmers2023qlora}) to the base model weights and train parameter-efficient LoRA adapters \citep{hu2021lora} with rank $r=16$. 
 
-Table~\ref{tab:training_setup} reports the training configurations, dataset sizes, learning rates, and wall-clock times across all five methods. Memory usage stays strictly below 14.2\,GB throughout training. SFT converges in 12 minutes, and Full DPO completes in 22 minutes. This confirms that process-level multimodal alignment can be performed efficiently without expensive multi-node GPU clusters.
+Table~\ref{tab:training_setup} summarizes the training sizes, learning rates, and wall-clock times across the five paradigms. Peak GPU memory never exceeds 14.2\,GB throughout training. SFT converges in 12 minutes, while Full DPO finishes in only 22 minutes. This demonstrates that process-level multimodal alignment can be performed quickly and inexpensively on standard cloud notebooks without requiring multi-GPU clusters.
 
 % 5. DynamicPRM and Test-Time Verification (Reserved for Teammate Ertugrul)
 \section{DynamicPRM and Test-Time Verification}

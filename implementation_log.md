@@ -624,3 +624,12 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   4. Removed the unreadable bottom footnote from Figure 4 in `scripts/evaluation/generate_finetuning_result_charts.py`, regenerated `results_08_accuracy_vs_structure_tradeoff.png`, updated `charts/report_selected/`, and moved the bubble diameter explanation into the LaTeX caption.
   5. Calibrated displayed equations with `amsmath`'s `align` to achieve zero Overfull `\hbox` warnings across the entire 8-page compiled PDF (`report/acl_latex.pdf`).
 - **Why**: Adheres to the user's sequential writing roadmap (Visuals -> Methods -> Results -> Intro/Discussion/Abstract), cleanly delineates authorship between teammates, and delivers publication-grade technical explanations in simple, human-written English.
+
+## Refinement of The ChartPRM Framework Methods Section
+- **What**:
+  1. Incorporated core small-data alignment hypothesis in the opening of Section 4: investigating whether a compact 3B vision-language model can be aligned using a very small verified dataset (<150 reasoning examples).
+  2. Cited the foundational RLHF/InstructGPT paper (`ouyang2022instructgpt`) in the SFT objective definition.
+  3. Verified compute hardware usage across Kaggle and Google Colab: explicitly documented support for 16GB VRAM envelopes spanning 1x Nvidia Tesla T4 (Colab) and Nvidia Tesla P100 / 2xT4 (Kaggle).
+  4. Streamlined Section 4.5 by removing low-level engineering clutter (exhaustive lists of LoRA target modules like `q_proj`, $lpha=32$, and gradient checkpointing) from the main body, keeping the narrative scholarly and readable.
+  5. Verified clean LaTeX build via `pdflatex` and `bibtex` with zero overfull `\hbox` warnings on `report/acl_latex.pdf`.
+- **Why**: Responds to user feedback to keep the methods section focused, academically disciplined, and aligned with actual experimental hardware execution.
