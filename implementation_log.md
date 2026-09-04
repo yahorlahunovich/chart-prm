@@ -610,3 +610,37 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   5. Calibrated table typography (`\footnotesize`, `\tabcolsep` between 2.5pt and 3.5pt, compact column headers) to eliminate all Overfull `\hbox` warnings completely.
   6. Verified compilation cleanly using `pdflatex` and `bibtex` to produce a 9-page ACL-compliant PDF.
 - **Why**: Satisfies the user requirement to place all selected figures and tables into the research report with clear, understandable interpretations, maintaining publication-grade typographic precision and strict compute constraint alignment.
+
+## Implementation of "The ChartPRM Framework" Methods Section in ACL Report
+- **What**:
+  1. Updated `report/acl_latex.tex` to author a dedicated ~2-page Methods section titled **"The ChartPRM Framework"**:
+     - **Structured Step-by-Step Reasoning Protocol**: Detailed the Chain-of-Thought prompting design (`Step 1:`, `Step 2:`, ..., `Final Answer:`), rollout sampling ($	au=0.7$, $N=4$), answer parsing, and structural compliance scoring (with preamble penalties).
+     - **Multimodal Step-Level Process Reward Modeling**: Formulated the `muse-spark-1.1` judge setup, input contexts (image, question, ground truth, step history, candidate step), binary step scoring ($s_t \in \{0, 1\}$), natural language critiques, and trajectory-level process reward $R(	au)$.
+     - **Preference Dataset Curation & Step Slicing**: Outlined filtering of 70 verified SFT gold traces, 134 sequence DPO pairs, 54 Step-DPO divergence suffix pairs (with prefix masking before divergence step $t^*$), and 336 unpaired KTO examples (1:3 ratio).
+     - **Preference Alignment Objectives**: Specified mathematical formulations for SFT, Full DPO ($eta=0.1$), Step-DPO suffix preference loss, KTO prospect utility, and SFT$ightarrow$DPO two-stage alignment.
+     - **Resource-Constrained Training on Single T4 GPU**: Documented 4-bit NF4 quantization, LoRA configuration ($r=16, lpha=32$), gradient checkpointing, and memory profiling (<14.2 GB VRAM) alongside Table 4.
+  2. Reserved a blank section titled **"DynamicPRM and Test-Time Verification"** with clear placeholder comments for teammate Ertugrul Taparci, positioning Table 5 (Best-of-N metrics) and Figure 2 (PRM verifier accuracy) ready for his writeup.
+  3. Cleaned premature text from other sections (Introduction, Related Work, Results, Conclusions) keeping their section headings and float anchors ready for sequential drafting.
+  4. Removed the unreadable bottom footnote from Figure 4 in `scripts/evaluation/generate_finetuning_result_charts.py`, regenerated `results_08_accuracy_vs_structure_tradeoff.png`, updated `charts/report_selected/`, and moved the bubble diameter explanation into the LaTeX caption.
+  5. Calibrated displayed equations with `amsmath`'s `align` to achieve zero Overfull `\hbox` warnings across the entire 8-page compiled PDF (`report/acl_latex.pdf`).
+- **Why**: Adheres to the user's sequential writing roadmap (Visuals -> Methods -> Results -> Intro/Discussion/Abstract), cleanly delineates authorship between teammates, and delivers publication-grade technical explanations in simple, human-written English.
+
+## Refinement of The ChartPRM Framework Methods Section
+- **What**:
+  1. Incorporated core small-data alignment hypothesis in the opening of Section 4: investigating whether a compact 3B vision-language model can be aligned using a very small verified dataset (<150 reasoning examples).
+  2. Cited the foundational RLHF/InstructGPT paper (`ouyang2022instructgpt`) in the SFT objective definition.
+  3. Verified compute hardware usage across Kaggle and Google Colab: explicitly documented support for 16GB VRAM envelopes spanning 1x Nvidia Tesla T4 (Colab) and Nvidia Tesla P100 / 2xT4 (Kaggle).
+  4. Streamlined Section 4.5 by removing low-level engineering clutter (exhaustive lists of LoRA target modules like `q_proj`, $lpha=32$, and gradient checkpointing) from the main body, keeping the narrative scholarly and readable.
+  5. Verified clean LaTeX build via `pdflatex` and `bibtex` with zero overfull `\hbox` warnings on `report/acl_latex.pdf`.
+- **Why**: Responds to user feedback to keep the methods section focused, academically disciplined, and aligned with actual experimental hardware execution.
+
+## Streamlining Methods Section & Rollout-Level Batching Verification
+- **What**:
+  1. Removed Outcome Reward Model (ORM) mentions from Section 4 opening (reserved for Introduction).
+  2. Removed structural compliance score calculation (+25% increments) from Section 4.1 to avoid metric clutter in the methods section.
+  3. Verified code implementation (`scripts/evaluation/evaluate_rollouts_meta.py`) and documented rollout-level batching: all steps of a trajectory are sent in a single `muse-spark-1.1` API call with a 512px downscaled chart image to manage API token constraints.
+  4. Eliminated standalone hardware subsection (\S 4.5), merging the 16GB VRAM budget details and Table 4 into Subsection 4.4 ("Preference Alignment Objectives and Training Setup").
+  5. Kept small-data alignment hypothesis and RLHF citation (`ouyang2022instructgpt`) cleanly intact.
+  6. Recompiled `report/acl_latex.tex` with zero Overfull `\hbox` warnings to an 8-page PDF (`report/acl_latex.pdf`).
+- **Why**: Streamlines the ChartPRM framework description to focus on core algorithmic contributions, accurately reflects API token optimizations, and adheres to user guidance.
+

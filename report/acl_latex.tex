@@ -39,49 +39,102 @@
 Can a compact 3B vision-language model solve multi-step reasoning questions over complex scientific charts? We investigate this question by benchmarking \texttt{Qwen2.5-VL-3B-Instruct} on 500 challenging reasoning problems from the CharXiv benchmark. Rather than relying solely on outcome accuracy, we apply dense process-level verification via a multimodal LLM-as-a-judge (\texttt{muse-spark-1.1}) to trace where reasoning trajectories diverge. We find that rollouts fail early: over 80\% of initial mistakes occur within the first two steps, and an error at step $N$ leads to downstream failure in $\sim$83\% of cases. Text analysis of 2,920 judge critiques reveals that failures are overwhelmingly perceptual (axis and legend misreadings comprise 43.5\% of errors) rather than logical or arithmetic (1.3\%). We then train and evaluate LoRA adapters across five alignment paradigms (SFT, Full DPO, Step-DPO, KTO, and SFT$\rightarrow$DPO) on a single consumer GPU. Full-sequence DPO achieves the highest exact-match accuracy at 29\% (improving over the 26\% base), while SFT enforces 100\% formatting compliance at the cost of reasoning accuracy (23\%). Although KTO captures the ground-truth answer in text 66\% of the time, it suffers from structural formatting collapse. Our findings demonstrate that for small VLMs, the primary bottleneck in chart reasoning is visual grounding rather than chain-of-thought logic.
 \end{abstract}
 
-% 2. Introduction
+% 2. Introduction (To be written in subsequent step)
 \section{Introduction}
 \label{sec:introduction}
-Scientific charts compress complex experimental data into visual figures. Understanding these charts requires multimodal large language models (MLLMs) to connect high-level scientific concepts with precise low-level visual elements, such as axis ticks, color legends, and data curves. While recent foundation models claim impressive chart understanding, compact open-weight models (around 3B parameters) still struggle with complex chart reasoning \citep{wang2024charxiv}. 
+% [Placeholder: Introduction will cover motivation for multimodal chart reasoning, limitations of outcome-based evaluation (ORM), summary of the CharXiv 500 reasoning subset and Qwen2.5-VL-3B baseline, and an overview of our main empirical findings.]
 
-Most existing benchmarks evaluate chart reasoning using outcome reward models (ORM) that only check the final answer. However, final answers hide why and where models fail. A model might stumble due to a bad visual reading in the first step, an arithmetic mistake in the middle, or a format parsing failure at the very end. 
-
-In this work, we introduce \textbf{ChartPRM}, an empirical study of process reward modeling and preference alignment for scientific chart reasoning. We focus on 500 complex reasoning questions from the CharXiv benchmark \citep{wang2024charxiv}. Using a powerful multimodal LLM-as-a-judge (\texttt{muse-spark-1.1}), we score 4,947 individual reasoning steps and categorize 2,920 natural language critiques. We find that failures are overwhelmingly perceptual rather than mathematical, and that early mistakes trigger catastrophic cascades. Building on these insights, we benchmark five alignment algorithms under a strict single-GPU budget and show that process verification significantly improves test-time reasoning.
-
-% 3. Related Work
+% 3. Related Work (To be written in subsequent step)
 \section{Related Work}
 \label{sec:related_work}
+% [Placeholder: Related Work will review multimodal chart comprehension benchmarks (CharXiv, MatCha), process reward models and step verification (PRM, DG-PRM, LLM-as-a-judge), and preference optimization algorithms (DPO, Step-DPO, KTO, SimPO).]
 
-\subsection{Multimodal Chart Reasoning Benchmarks}
-Early chart understanding benchmarks focused on simple data retrieval and fact extraction. The CharXiv benchmark \citep{wang2024charxiv} introduced a challenging testbed of real figures from arXiv papers. CharXiv distinguishes between simple descriptive questions and complex reasoning questions. In this study, we strictly focus on the reasoning subset, which requires multi-step deductive chains over scientific plots.
+% 4. The ChartPRM Framework (Core Implementation - 2 Pages)
+\section{The ChartPRM Framework}
+\label{sec:chartprm_framework}
 
-\subsection{Process Reward Models and Verification}
-Process Reward Models (PRMs) evaluate intermediate reasoning steps rather than just the final answer \citep{lightman2023prm,yin2024dgprm}. In text-only mathematical reasoning, PRMs guide search and reduce hallucination. In multimodal domains, LLM-as-a-judge methods \citep{zheng2023judging} provide scalable evaluation. We extend this paradigm to dense step-by-step verification of visual chart reasoning.
+The central goal of \textbf{ChartPRM} is to verify, diagnose, and align step-by-step visual reasoning on complex scientific charts. Scientific plots pack dense information into visual elements. Solving a reasoning question requires multiple distinct steps: locating the relevant panel, reading numerical axis scales, matching curve styles to legend labels, and performing logical comparisons.
 
-\subsection{Preference Optimization for Visual Reasoning}
-Direct Preference Optimization (DPO; \citealt{rafailov2023dpo}) replaced complex reinforcement learning with a stable binary cross-entropy loss over chosen and rejected responses. Recent extensions include Step-DPO \citep{lai2024stepdpo}, which pinpoints step-level divergence suffixes, and Kahneman-Tversky Optimization (KTO; \citealt{ethayarajh2024kto}), which aligns models using unpaired positive and negative feedback based on prospect theory.
+ChartPRM decomposes this task into discrete reasoning steps, scores each step individually with a multimodal judge, and uses those step-level signals to guide preference optimization. Crucially, we also ask whether it is possible to align a compact 3B vision-language model using only a very small dataset of verified chart reasoning traces (fewer than 150 examples).
 
-% 4. Benchmark, Vision Model, and Algorithms
-\section{Benchmark, Vision Model, and Algorithms}
-\label{sec:benchmark_model_algorithms}
+In this section, we describe the four core components of the ChartPRM framework:
+\begin{enumerate}[noitemsep,topsep=0pt]
+    \item Structured step-by-step reasoning generation,
+    \item Multimodal process reward modeling with rollout-level batching,
+    \item Preference dataset curation and divergence slicing, and
+    \item Preference alignment objectives and training setup.
+\end{enumerate}
 
-\subsection{The CharXiv Reasoning Benchmark}
-We evaluate on a balanced subset of 500 reasoning questions from CharXiv \citep{wang2024charxiv}. We deliberately filter out simple descriptive questions. The dataset spans 62 diverse chart types across computer science, physics, economics, and mathematics. We maintain a fixed holdout set of 100 questions for final evaluation.
+\subsection{Structured Step-by-Step Reasoning Protocol}
+\label{subsec:reasoning_protocol}
+To enable step-level verification, the vision-language model must generate reasoning traces that can be parsed into discrete steps. We use a structured Chain-of-Thought prompt that instructs the model to break down its reasoning into sequential steps and end with a clear final answer:
+\begin{quote}
+\small
+\texttt{Solve the chart reasoning question step by step. Structure your answer strictly as follows:\\
+Step 1: <visual observation>\\
+Step 2: <intermediate reading or deduction>\\
+...\\
+Final Answer: <concise answer>}
+\end{quote}
 
-\subsection{Base Vision Model (Qwen2.5-VL-3B)}
-We use \texttt{Qwen2.5-VL-3B-Instruct} \citep{bai2025qwen25vl} as our base model. It features a native dynamic resolution vision encoder and an aligned language backbone. 
-
-To enable training on accessible hardware, we train all models under a strict compute limit: a single 16GB Nvidia T4 GPU on Google Colab. We apply 4-bit NormalFloat quantization (NF4; \citealt{dettmers2023qlora}) and Low-Rank Adaptation (LoRA; \citealt{hu2021lora}) with rank $r=16$ and scaling factor $\alpha=32$ on all linear projection layers.
-
-\subsection{Alignment Algorithms and Training Setup}
-We study five alignment paradigms:
+We enforce three practical formatting rules:
 \begin{itemize}[noitemsep,topsep=0pt]
-    \item \textbf{SFT}: Standard cross-entropy fine-tuning on fully verified, correct rollouts.
-    \item \textbf{Full DPO}: Sequence-level preference loss on paired chosen and rejected trajectories \citep{rafailov2023dpo}.
-    \item \textbf{Step-DPO}: Preference loss applied only to the suffix where chosen and rejected traces first diverge \citep{lai2024stepdpo}.
-    \item \textbf{KTO}: Prospect-theoretic optimization on unpaired positive and negative outputs \citep{ethayarajh2024kto}.
-    \item \textbf{SFT$\rightarrow$DPO}: Two-stage pipeline initialising DPO from the SFT checkpoint.
+    \item Each step must start with a explicit label (\texttt{Step 1:}, \texttt{Step 2:}, etc.).
+    \item The final prediction must appear on its own line after \texttt{Final Answer:}, without markdown asterisks.
+    \item The model must not include conversational filler (such as ``Certainly! Here is my analysis'').
 \end{itemize}
+
+To create a diverse pool of candidate solutions, we sample rollouts using temperature $\tau = 0.7$ and top-$p = 0.9$. For each question in the training pool, we sample up to four candidate rollouts. Across the 500 CharXiv reasoning questions, this procedure generates 1,274 complete rollout trajectories.
+
+We evaluate each rollout with an automated parser that extracts the prediction following \texttt{Final Answer:} and applies lowercase whitespace normalization to measure exact match against the ground truth.
+
+\subsection{Multimodal Process Reward Modeling}
+\label{subsec:prm_judge}
+Once rollouts are generated, we evaluate each intermediate reasoning step using a multimodal LLM-as-a-judge. We employ \texttt{muse-spark-1.1} \citep{meta2026musespark} as our judge model. 
+
+Evaluating each step in an individual API call would require repeatedly uploading the high-resolution chart image for every step, quickly exhausting API token allowances. To address this constraint, we implement \textit{rollout-level batching}: we downscale the chart image to a maximum dimension of 512 pixels (preserving visual legibility while reducing token costs) and evaluate all reasoning steps of a rollout within a single multimodal API request.
+
+The judge receives:
+\begin{enumerate}[noitemsep,topsep=0pt]
+    \item The chart image $I$ (resized to $\le 512$\,px),
+    \item The question text $q$,
+    \item The reference ground-truth answer $y^*$, and
+    \item The full sequence of generated steps $(y_1, \dots, y_T)$.
+\end{enumerate}
+
+The judge evaluates each step sequentially in context and returns a structured JSON array containing two fields per step:
+\begin{itemize}[noitemsep,topsep=0pt]
+    \item \textbf{Binary Step Score ($s_t \in \{0, 1\}$):} The judge assigns $s_t = 1$ if the visual grounding and deduction in Step $t$ are factually correct. It assigns $s_t = 0$ if the step contains an axis misreading, color confusion, hallucinated label, or arithmetic mistake.
+    \item \textbf{Natural Language Critique:} For each failed step ($s_t = 0$), the judge provides a concise critique explaining the specific visual or logical failure (for example: ``The model misreads the logarithmic y-axis scale as linear, estimating 40 instead of 10'').
+\end{itemize}
+
+We define the overall process reward of a complete reasoning trajectory $\tau$ as the mean score across all its steps:
+\begin{equation}
+    R(\tau) = \frac{1}{T} \sum_{t=1}^T s_t
+    \label{eq:process_reward}
+\end{equation}
+A trajectory is considered \textit{fully verified} only if every step receives a passing score ($R(\tau) = 1.0$). If any step fails, the trajectory receives $R(\tau) < 1.0$.
+
+\subsection{Preference Dataset Curation and Step Slicing}
+\label{subsec:dataset_curation}
+From the 1,274 judged rollouts (comprising 4,947 individual steps), we curate training datasets for five distinct alignment methods:
+
+\textbf{1. Supervised Fine-Tuning (SFT) Dataset:} We select only rollouts that achieve a perfect process score ($R(\tau) = 1.0$) and also produce the correct final answer. This strict filter yields 70 gold-standard reasoning rollouts. Because every step is verified by the judge, the model is trained exclusively on factually grounded visual reasoning.
+
+\textbf{2. Sequence DPO Preference Pairs:} For each question where multiple rollouts were sampled, we construct pairwise comparisons $(y_w, y_l)$. The chosen rollout $y_w$ has a higher process reward ($R(y_w) > R(y_l)$) or reaches the correct final answer when $y_l$ does not. This yields 134 chosen-rejected sequence pairs across the training pool.
+
+\textbf{3. Step-DPO Suffix Slicing:} In standard sequence DPO, the entire rejected response is penalized equally. However, our trajectory analysis reveals that rejected rollouts often start with completely correct steps. Penalizing early correct steps teaches the model the wrong lesson. 
+
+To solve this credit assignment problem, Step-DPO isolates the first point of divergence. For each pair $(y_w, y_l)$, we compare steps sequentially to identify the first step index $t^*$ where the two traces diverge or where $y_l$ makes its first mistake:
+\begin{equation}
+    t^* = \min \{ t \mid y_{w,t} \neq y_{l,t} \text{ or } s_t(y_l) = 0 \}
+\end{equation}
+We keep the shared prefix $y_{<t^*}$ as prompt context, but compute the preference loss strictly over the divergent suffix starting at $t^*$. This yields 54 clean, prefix-aligned step pairs.
+
+\textbf{4. KTO Unpaired Dataset:} Unlike DPO, Kahneman-Tversky Optimization does not require paired rollouts for the exact same prompt. We split rollouts into desirable and undesirable pools based on their process score and answer accuracy. We collect 84 desirable rollouts ($R \ge 0.75$ and correct final answer) and 252 undesirable rollouts ($R < 0.5$ or wrong answer), establishing a 1:3 positive-to-negative ratio.
+
+\subsection{Preference Alignment Objectives and Training Setup}
+\label{subsec:alignment_objectives}
 
 \begin{table}[t]
 \centering
@@ -98,20 +151,52 @@ KTO & 84 pos / 252 neg & 2 & $2\times 10^{-6}$ & 35 min \\
 SFT$\rightarrow$DPO & 134 pairs & 1 & $2\times 10^{-6}$ & 24 min \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Fine-Tuning Setup under Single-T4 GPU Budget.} All models use LoRA ($r=16, \alpha=32$) on 4-bit NF4 quantized \texttt{Qwen2.5-VL-3B-Instruct} within 16GB VRAM.}
+\caption{\textbf{Fine-Tuning Configurations under 16GB GPU Budget.} All models are trained with 4-bit LoRA adaptation ($r=16$) on \texttt{Qwen2.5-VL-3B-Instruct}.}
 \label{tab:training_setup}
 \end{table}
 
-Table~\ref{tab:training_setup} summarizes the training configurations, dataset sizes, and runtimes. The table shows that multimodal preference alignment on compact models is computationally lightweight. SFT completes in 12 minutes on 70 verified rollouts. Full DPO trains on 134 preference pairs in only 22 minutes. Peak GPU memory never exceeds 14.2\,GB. This proves that competitive alignment does not require massive compute clusters.
+Using the curated datasets, we align the policy model $\pi_\theta$ against a frozen reference policy $\pi_{\text{ref}}$ (the base unaligned instruct model). All models are fine-tuned under a strict 16GB VRAM budget on a single Nvidia Tesla T4 GPU (Google Colab) or an Nvidia Tesla P100 GPU (Kaggle), using 4-bit NF4 quantization \citep{dettmers2023qlora} and LoRA adapters \citep{hu2021lora} with rank $r=16$. Table~\ref{tab:training_setup} summarizes the training configurations, dataset sizes, learning rates, and wall-clock runtimes. Peak GPU memory remains under 14.2\,GB throughout training.
 
-% 5. Models and LLM-as-a-Judge
-\section{Models and LLM-as-a-Judge}
-\label{sec:models_and_judge}
+We investigate five alignment paradigms:
 
-\subsection{Generator and PRM Judge Protocol}
-We prompt \texttt{Qwen2.5-VL-3B-Instruct} to generate step-by-step reasoning chains followed by a final answer tag (\texttt{Step 1:}, \texttt{Step 2:}, \dots, \texttt{Final Answer:}). For each question, we sample up to four rollouts at temperature $\tau=0.7$.
+\textbf{1. Supervised Fine-Tuning (SFT):} Following standard alignment pipelines \citep{ouyang2022instructgpt}, supervised fine-tuning serves as our initial demonstration baseline by maximizing the log-likelihood of verified gold reasoning steps:
+\begin{equation}
+    \mathcal{L}_{\text{SFT}}(\theta) = -\mathbb{E}_{(x, y_w)} \sum_{t=1}^{|y_w|} \log \pi_\theta(y_{w,t} \mid x, y_{w,<t})
+\end{equation}
+This teaches the model the desired formatting structure, but provides no negative feedback on what errors to avoid.
 
-To evaluate intermediate steps, we use \texttt{muse-spark-1.1} \citep{meta2026musespark} as our multimodal judge. The judge receives the original chart image, the question, the ground-truth answer, and the current reasoning step in context. For each step, the judge returns a binary score (1 for valid grounding, 0 for error) and a natural language critique explaining any flaw.
+\textbf{2. Full-Sequence DPO:} Sequence-level Direct Preference Optimization \citep{rafailov2023dpo} optimizes a Bradley-Terry preference model directly over token probabilities:
+\begin{align}
+    \mathcal{L}_{\text{DPO}}(\theta; \pi_{\text{ref}}) = -\mathbb{E} \Big[ \log \sigma \Big( & \beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{\text{ref}}(y_w \mid x)} \nonumber \\
+    {} - & \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\text{ref}}(y_l \mid x)} \Big) \Big]
+\end{align}
+where $\sigma$ is the sigmoid function, and $\beta = 0.1$ controls the strength of the KL regularization penalty.
+
+\textbf{3. Suffix Step-DPO:} Suffix Step-DPO \citep{lai2024stepdpo} applies the preference loss only to the divergent suffix:
+\begin{align}
+    \mathcal{L}_{\text{Step-DPO}}(\theta) = -\mathbb{E} \Big[ \log \sigma \Big( & \beta \sum_{k \ge t^*} \log \tfrac{\pi_\theta(y_{w,k})}{\pi_{\text{ref}}(y_{w,k})} \nonumber \\
+    {} - & \beta \sum_{k \ge t^*} \log \tfrac{\pi_\theta(y_{l,k})}{\pi_{\text{ref}}(y_{l,k})} \Big) \Big]
+\end{align}
+Tokens in the shared prefix $y_{<t^*}$ are masked out from gradient calculation. The loss focuses entirely on correcting the initial visual mistake.
+
+\textbf{4. Kahneman-Tversky Optimization (KTO):} KTO \citep{ethayarajh2024kto} aligns models using unpaired data by applying a prospect-theoretic utility function:
+\begin{equation}
+    \mathcal{L}_{\text{KTO}}(\theta) = \mathbb{E}_{y} \left[ w(y) \left( 1 - v_\beta \left( \hat{r}_\theta(x, y) - z_{\text{ref}} \right) \right) \right]
+\end{equation}
+where $\hat{r}_\theta(x, y) = \log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)}$ is the implicit reward, $v_\beta(r) = \sigma(\beta r)$ for desirable outputs, $v_\beta(r) = \sigma(-\beta r)$ for undesirable outputs, and $z_{\text{ref}}$ is a running estimate of the implicit reward KL baseline.
+
+\textbf{5. Two-Stage SFT$\rightarrow$DPO:} We also evaluate a sequential pipeline where the model is first fine-tuned on verified gold traces with SFT for one epoch, and then aligned with sequence DPO using the SFT checkpoint as both the starting policy and the reference policy $\pi_{\text{ref}}$.
+
+% 5. DynamicPRM and Test-Time Verification (Reserved for Teammate Ertugrul)
+\section{DynamicPRM and Test-Time Verification}
+\label{sec:dynamic_prm}
+% =========================================================================
+% RESERVED SECTION FOR ERTUGRUL TAPARCI
+% This section is designated for:
+% 1. DynamicPRM formulation and adaptive process reward modeling.
+% 2. Test-time Best-of-N candidate search and verification protocol.
+% 3. Analysis of PRM selection vs. self-consistency majority voting.
+% =========================================================================
 
 \begin{figure}[t]
   \centering
@@ -139,26 +224,10 @@ Majority Vote & 21.0\% & +2.6 pp & 47.7\% \\
 \label{tab:best_of_n}
 \end{table}
 
-\subsection{Test-Time Verification with PRM Best-of-N}
-Can the step-level judge serve as an inference-time verifier without any fine-tuning? We test this hypothesis using Best-of-$N$ candidate search across 309 questions with multiple candidate outputs. 
-
-Figure~\ref{fig:prm_best_of_n} and Table~\ref{tab:best_of_n} compare three candidate selection strategies against an oracle verifier:
-\begin{itemize}[noitemsep,topsep=0pt]
-    \item \textbf{Uniform Random Selection}: Picking a rollout at random achieves 18.4\% exact-match accuracy.
-    \item \textbf{Majority Voting (Self-Consistency)}: Selecting the most frequent final answer reaches 21.0\% (+2.6 pp).
-    \item \textbf{PRM Best-of-$N$}: Selecting the rollout with the highest average step score reaches \textbf{27.5\%} (+9.1 pp over random, and +6.5 pp over majority voting).
-\end{itemize}
-
-Why does the PRM beat majority voting? In chart reasoning, models often share common perceptual blind spots. For example, multiple rollouts frequently misread the same tick label, leading them to agree on the same wrong answer. Majority voting falls into this trap. In contrast, the PRM evaluates the intermediate steps. It catches the visual mistake early, rejects the flawed rollouts, and selects the single trace that read the chart correctly.
-
-Table~\ref{tab:best_of_n} also reveals the remaining headroom. The oracle upper bound is 44.0\%, meaning that for 44\% of questions, at least one generated candidate was correct. PRM verification recovers 62.5\% of these solvable problems (85 of 136). The 16.5 point gap between PRM and oracle highlights that improving judge verification quality is a direct path to higher system accuracy.
-
-% 6. Analysis of Reasoning Steps
-\section{Analysis of Reasoning Steps}
+% 6. Analysis of Reasoning Steps and Error Taxonomy (To be written in subsequent step)
+\section{Analysis of Reasoning Steps and Error Taxonomy}
 \label{sec:reasoning_analysis}
-
-\subsection{Reasoning Trajectory Dynamics}
-We analyzed 4,947 reasoning steps across 1,274 rollouts generated on the 500 CharXiv problems. Table~\ref{tab:trajectory_stats} and Figure~\ref{fig:trajectory_dynamics} summarize how reasoning trajectories unfold over time.
+% [Placeholder: This section will report the reasoning cliff, the 82.7% error cascade, and the 9-category error taxonomy from judge text critiques.]
 
 \begin{figure*}[t]
   \centering
@@ -210,21 +279,6 @@ Mean Steps per Rollout & 3.88 & -- \\
 \label{tab:trajectory_stats}
 \end{table}
 
-The empirical data uncovers two key dynamics:
-
-\textbf{1. The Reasoning Cliff (Mistakes Happen Early):} Figure~\ref{fig:trajectory_dynamics}a tracks accuracy by step position. The model starts relatively well, with 73\% accuracy at Step 0. But accuracy plummets immediately: it drops to 37\% at Step 1, and levels off at 26\% by Step 3. Table~\ref{tab:trajectory_stats} shows that 31.0\% of all first errors occur at Step 0, and 48.8\% occur at Step 1. Together, \textbf{79.7\% of all first errors occur within the first two steps}.
-
-\textbf{2. The Error Cascade (Mistakes Are Fatal):} Once a model makes a mistake, does it ever get back on track? Figure~\ref{fig:trajectory_dynamics}b plots the transition probabilities between steps. If Step $N$ is correct, the next step remains correct 61.2\% of the time. But if Step $N$ fails, the next step also fails in \textbf{82.7\% of cases}. The model recovers in only 17.3\% of transitions.
-
-These dynamics explain why end-to-end rollout success is only 12.1\% (Table~\ref{tab:trajectory_stats}). Compact models do not fail because they get lost in complex mathematical deductions. Instead, they misread a visual element right at the beginning. That single initial mistake corrupts all subsequent deductions. This finding provides strong motivation for process reward modeling: we must detect and prune errors at Step 0 and Step 1 before the cascade occurs.
-
-% 7. Analysis of Judge Scores & 8. Error Analysis from Judge Text Responses
-\section{Error Analysis from Judge Critiques}
-\label{sec:text_error_analysis}
-
-\subsection{9-Category Error Taxonomy}
-Why do reasoning steps fail? We analyzed 2,920 negative natural language critiques provided by the \texttt{muse-spark-1.1} judge. Using priority-based keyword matching, we mapped each critique into a 9-category error taxonomy. Table~\ref{tab:error_taxonomy} and Figure~\ref{fig:error_taxonomy} detail the taxonomy, frequencies, and representative critiques.
-
 \begin{figure*}[t]
   \centering
   \begin{subfigure}{0.51\textwidth}
@@ -268,21 +322,10 @@ Other / Unspecified & $N=215$ & 7.4\% & \textit{unspecified, error, incorrect} &
 \label{tab:error_taxonomy}
 \end{table*}
 
-The taxonomy reveals an unmistakable result: \textbf{model failures are visual, not logical or arithmetic}.
-\begin{itemize}[noitemsep,topsep=0pt]
-    \item \textbf{Perceptual Errors Dominate (43.5\%):} Axis and layout misreads (24.0\%) and series/color confusion (19.5\%) combine to form 43.5\% of all step errors (Figure~\ref{fig:taxonomy_dist}). The model confuses log and linear scales, reads numbers from the wrong panel, or swaps dashed and solid lines.
-    \item \textbf{Entity Hallucinations (15.2\%):} In 445 instances, the model hallucinates bars, legends, or curves that do not exist anywhere in the figure.
-    \item \textbf{Arithmetic is Rarely the Bottleneck (1.3\%):} Pure calculation mistakes account for only 38 out of 2,920 errors. Small language backbones can perform basic arithmetic. They simply compute operations on numbers that were read incorrectly from the chart image.
-\end{itemize}
-
-Figure~\ref{fig:taxonomy_depth} shows how error types shift as reasoning progresses. At Step 0, \textbf{78.5\% of all failures are axis and layout misreadings}. By Step 2 and Step 3, axis errors decline, but ranking mistakes (10.9\%) and logical contradictions (8.2\%) rise. This shift illustrates the error cascade in real data: an axis misreading at Step 0 feeds incorrect numbers into later steps, producing flawed comparisons downstream.
-
-% 9. Comparison of Methods & 10. Results and Discussion
-\section{Results and Discussion}
+% 7. Alignment Results and Discussion (To be written in subsequent step)
+\section{Alignment Results and Discussion}
 \label{sec:results}
-
-\subsection{Holdout Benchmark Evaluation}
-Table~\ref{tab:main_benchmark} reports performance on our 100-question holdout set across all alignment paradigms. We report official exact-match (EM) accuracy, normalized token match, ground-truth recall in prose, structural formatting score, preamble penalty rate, and wrong committed answers (our proxy for hallucination). Figure~\ref{fig:pareto_frontier} plots the Pareto frontier of exact match accuracy against structural compliance.
+% [Placeholder: This section will report the 100-question holdout benchmark, the Pareto frontier trade-off between accuracy and structure, and the error mode composition.]
 
 \begin{table*}[t]
 \centering
@@ -312,17 +355,9 @@ Pareto-DPO & Multi-Filter & 30.0\% & 31.0\% & 30.0\% & -- & 97.0\% & 4.0\% & 46.
 \begin{figure}[t]
   \centering
   \includegraphics[width=\columnwidth]{../charts/report_selected/results_08_accuracy_vs_structure_tradeoff.png}
-  \caption{\textbf{Accuracy vs. Structure Pareto Frontier.} Full DPO achieves the best balance (29.0\% accuracy, 97.2\% structure). SFT attains 100\% structure at lower accuracy (23.0\%). KTO yields highest latent recall (66.0\%) but collapses structurally (21.2\%).}
+  \caption{\textbf{Accuracy vs. Structure Pareto Frontier.} Bubble diameter is proportional to ground-truth mention recall in prose (47\%--66\%). Full DPO achieves the best balance (29.0\% accuracy, 97.2\% structure). SFT attains 100\% structure at lower accuracy (23.0\%). KTO yields highest latent recall (66.0\%) but collapses structurally (21.2\%).}
   \label{fig:pareto_frontier}
 \end{figure}
-
-The benchmark uncovers three distinct behaviors:
-
-\textbf{1. Full DPO Achieves the Best Pareto Balance:} Full-sequence DPO reaches \textbf{29.0\%} exact match (+3.0 pp over the base model) while maintaining high structural compliance (97.2\%) and a low preamble rate (5.0\%). By learning from full chosen versus rejected rollouts, DPO reinforces valid reasoning chains without breaking the expected output syntax.
-
-\textbf{2. SFT Enforces Strict Syntax but Hurts Reasoning:} SFT achieves a perfect \textbf{100.0\%} structural compliance score and completely eliminates preambles (0.0\%). However, its exact-match accuracy drops to 23.0\% (3.0 pp below base). Fine-tuning exclusively on positive rollouts causes the model to overfit to the formatting template. It outputs crisp \texttt{Step} tags, but becomes less flexible when interpreting subtle chart features.
-
-\textbf{3. KTO Suffers Structural Collapse:} KTO captures the correct answer in text \textbf{66.0\%} of the time (highest among all models). However, its official exact match is only 26.0\%, and its structure score collapses to \textbf{21.2\%}. Because KTO trains on unpaired examples, it loses the strict \texttt{Final Answer:} format and includes rambling preambles in 99.0\% of responses. The model often knows the right answer, but fails to extract it cleanly.
 
 \begin{figure}[t]
   \centering
@@ -331,24 +366,19 @@ The benchmark uncovers three distinct behaviors:
   \label{fig:error_modes}
 \end{figure}
 
-\subsection{Holdout Error Mode Composition}
-Figure~\ref{fig:error_modes} categorizes responses into four error modes: extracted correct, unextracted correct in prose, ground truth mentioned but wrong answer committed, and committed wrong (hallucination proxy).
-
-This breakdown explains how models err. In the base model, 37.0\% of responses commit to a wrong answer without ever mentioning the truth. Full DPO reduces ungrounded guessing by aligning intermediate reasoning steps. Meanwhile, KTO converts many committed errors into unextracted correct prose, but fails the final extraction. Effective multimodal alignment must therefore optimize both visual reasoning and formatting compliance simultaneously.
-
-% 11. Conclusions & Limitations
+% 8. Conclusions and Limitations (To be written in subsequent step)
 \section{Conclusions}
 \label{sec:conclusions}
-In this paper, we presented ChartPRM, a step-level process reward analysis of compact vision models on CharXiv reasoning questions. Dense step verification reveals that chart reasoning fails early (80\% of first errors occur at Step $\le 1$) and catastrophically (82.7\% cascade probability). Critiques from an LLM judge prove that failures are overwhelmingly perceptual (43.5\% visual grounding vs. 1.3\% arithmetic). Under a strict single-T4 GPU budget, Full DPO achieves the best Pareto balance (29.0\% accuracy, 97.2\% structure), while PRM Best-of-$N$ verification provides a +6.5 pp boost over self-consistency at test time.
+% [Placeholder: Summary of primary conclusions and future directions.]
 
 \section*{Limitations}
-Our study focuses on \texttt{Qwen2.5-VL-3B-Instruct} and CharXiv reasoning questions. While this tests reasoning under realistic compute limits (a single T4 GPU), findings may differ for larger models (e.g., 72B) or simpler chart benchmarks. Additionally, our PRM judge (\texttt{muse-spark-1.1}) itself has an error rate, as shown by the 16.5 pp gap between PRM Best-of-$N$ and the verification oracle.
+% [Placeholder: Discussion of compute envelope (single T4 GPU), model scale (3B), and judge error margins.]
 
-% 12. References
+% References
 \nocite{*}
 \bibliography{custom}
 
-% 13. Appendix
+% Appendix
 \appendix
 \section{Supplementary Training and Diagnostic Visualizations}
 \label{sec:appendix_diagnostics}
@@ -380,17 +410,5 @@ Our study focuses on \texttt{Qwen2.5-VL-3B-Instruct} and CharXiv reasoning quest
   \caption{\textbf{Error Distribution Across CharXiv Domains.} Physics and Economics charts exhibit the highest rate of axis misreads (>34\%), while Mathematics and Computer Science suffer more from entity hallucinations (>22\%).}
   \label{fig:appendix_domain_taxonomy}
 \end{figure}
-
-\subsection{Training Dynamics and Reward Margins}
-Figure~\ref{fig:appendix_training_dynamics} illustrates training curves across the alignment methods. SFT cross-entropy loss decays smoothly from 1.4 to 0.6. In Step-DPO, the implicit reward margin between chosen and rejected steps expands rapidly to $\Delta r \approx +10.0$ by step 40, reflecting the strong gradient penalty applied to divergence suffixes. Sequence DPO maintains steady margin growth ($\Delta r \approx +2.5$) without numerical instability.
-
-\subsection{Compound Error Co-Occurrence}
-Figure~\ref{fig:appendix_cooccurrence} maps the co-occurrence of error categories across the 2,920 negative judge critiques. In chart reasoning, errors rarely occur in isolation. In 460 instances, logical contradictions co-occur with series and color confusion. In 314 instances, logical errors co-occur with axis misreads. This confirms that when the model misidentifies a chart element, downstream deduction is almost guaranteed to fail.
-
-\subsection{Structural Instruction Following}
-Figure~\ref{fig:appendix_structure_breakdown} breaks down compliance across individual prompt constraints: presence of \texttt{Step 1:}, \texttt{Step 2:}, plain \texttt{Final Answer:}, and absence of conversational preambles. SFT achieves 100\% compliance across every sub-metric. In contrast, KTO fails primarily due to preamble penalties (-30\%) and bolded final answer tags, explaining its structural collapse.
-
-\subsection{Disciplinary Failure Modes}
-Figure~\ref{fig:appendix_domain_taxonomy} examines how error types vary across the 8 CharXiv subject areas. Physics and Economics charts exhibit the highest rate of axis misreads (>34\%), driven by logarithmic scales and dense multi-panel layouts. Mathematics and Computer Science charts exhibit the highest proportion of entity hallucinations (>22\%), where models invent visual labels not present in abstract plots.
 
 \end{document}
