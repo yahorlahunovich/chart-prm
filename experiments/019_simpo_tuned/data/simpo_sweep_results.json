@@ -1,0 +1,110 @@
+[
+  {
+    "index": 0,
+    "config": {
+      "lr": 5e-07,
+      "beta": 2.0,
+      "gamma_beta_ratio": 0.5
+    },
+    "summary": {
+      "n_steps": 134,
+      "final_loss": 1.399338722229004,
+      "mean_loss_tail": 1.4916998455018708,
+      "mean_preference_accuracy_tail": 0.5151515151515151,
+      "mean_reward_margin_tail": -0.12504095110026273,
+      "all_finite": true,
+      "error": null
+    },
+    "adapter_dir": "/kaggle/working/simpo_sweep/config_00"
+  },
+  {
+    "index": 1,
+    "config": {
+      "lr": 1e-06,
+      "beta": 2.0,
+      "gamma_beta_ratio": 0.5
+    },
+    "summary": {
+      "n_steps": 134,
+      "final_loss": 1.4025814533233643,
+      "mean_loss_tail": 1.4910989186980508,
+      "mean_preference_accuracy_tail": 0.5151515151515151,
+      "mean_reward_margin_tail": -0.12454205119248593,
+      "all_finite": true,
+      "error": null
+    },
+    "adapter_dir": "/kaggle/working/simpo_sweep/config_01"
+  },
+  {
+    "index": 2,
+    "config": {
+      "lr": 1e-05,
+      "beta": 2.0,
+      "gamma_beta_ratio": 0.5
+    },
+    "summary": {
+      "n_steps": 134,
+      "final_loss": 1.5016608238220215,
+      "mean_loss_tail": 1.468335424408768,
+      "mean_preference_accuracy_tail": 0.5151515151515151,
+      "mean_reward_margin_tail": -0.10157673106049046,
+      "all_finite": true,
+      "error": null
+    },
+    "adapter_dir": "/kaggle/working/simpo_sweep/config_02"
+  },
+  {
+    "index": 3,
+    "config": {
+      "lr": 5e-07,
+      "beta": 5.0,
+      "gamma_beta_ratio": 0.5
+    },
+    "summary": {
+      "n_steps": 134,
+      "final_loss": 2.8522629737854004,
+      "mean_loss_tail": 3.0805398659272627,
+      "mean_preference_accuracy_tail": 0.5151515151515151,
+      "mean_reward_margin_tail": -0.31189723087079596,
+      "all_finite": true,
+      "error": null
+    },
+    "adapter_dir": "/kaggle/working/simpo_sweep/config_03"
+  },
+  {
+    "index": 4,
+    "config": {
+      "lr": 1e-06,
+      "beta": 5.0,
+      "gamma_beta_ratio": 0.5
+    },
+    "summary": {
+      "n_steps": 134,
+      "final_loss": 2.8622019290924072,
+      "mean_loss_tail": 3.080218057289268,
+      "mean_preference_accuracy_tail": 0.5151515151515151,
+      "mean_reward_margin_tail": -0.31221651669704553,
+      "all_finite": true,
+      "error": null
+    },
+    "adapter_dir": "/kaggle/working/simpo_sweep/config_04"
+  },
+  {
+    "index": 5,
+    "config": {
+      "lr": 1e-05,
+      "beta": 5.0,
+      "gamma_beta_ratio": 0.5
+    },
+    "summary": {
+      "n_steps": 134,
+      "final_loss": 3.1552250385284424,
+      "mean_loss_tail": 3.014597588867852,
+      "mean_preference_accuracy_tail": 0.5151515151515151,
+      "mean_reward_margin_tail": -0.2520537159659646,
+      "all_finite": true,
+      "error": null
+    },
+    "adapter_dir": "/kaggle/working/simpo_sweep/config_05"
+  }
+]
