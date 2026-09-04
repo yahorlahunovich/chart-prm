@@ -669,5 +669,20 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   3. Recompiled cleanly via `pdflatex` to an 11-page PDF (`report/acl_latex.pdf`) with **zero Overfull `\hbox` warnings**.
 - **Why**: Completes the core empirical narrative using human-written, simple-English interpretations, satisfies all formatting constraints, and ensures flawless typographic float ordering.
 
+## Restoration of Complete 15-Entry Bibliography & In-Text Citation Indexing
+- **What**:
+  1. Identified that `\nocite{*}` had been omitted during the Section 4 clearpage replacement, causing BibTeX to temporarily omit unreferenced bibliography entries.
+  2. Restored `\nocite{*}` before `\bibliography{custom}` to guarantee that all 15 curated bibliography entries in `custom.bib` are always included.
+  3. Weaved explicit in-text citations throughout the methods and results sections:
+     - `wang2024charxiv` (CharXiv benchmark in \S 3.1 & \S 4.1)
+     - `wei2022cot` (Chain-of-Thought prompting in \S 3.1)
+     - `zheng2023judging` (LLM-as-a-judge paradigm in \S 3.2)
+     - `bai2025qwen25vl` (Qwen2.5-VL base policy in \S 3.4 & \S 4.1)
+     - `lightman2023prm` (Process reward modeling in \S 4.1)
+     - Along with `ouyang2022instructgpt`, `rafailov2023dpo`, `lai2024stepdpo`, `ethayarajh2024kto`, `meng2024simpo`, `dettmers2023qlora`, `hu2021lora`, `meta2026musespark`, `liu2023matcha`, and `yin2024dgprm`.
+  4. Executed full `pdflatex -> bibtex -> pdflatex -> pdflatex` compilation cycle. Verified via PDF inspection that all 15 references are rendered completely and cleanly on Page 9.
+- **Why**: Preserves complete scholarly attribution for all 15 cited works across benchmarks, models, judges, and alignment algorithms.
+
+
 
 
