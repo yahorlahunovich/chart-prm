@@ -1,0 +1,15 @@
+{
+  "id": "ertugrultaparci/dpo-v2-sweep",
+  "title": "dpo-v2-sweep",
+  "code_file": "sweep_dpo_v2.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "accelerator": "gpuT4x2",
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

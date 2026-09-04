@@ -1,0 +1,17 @@
+{
+  "id": "ertugrultaparci/dpo-v2-tuned-holdout-eval",
+  "title": "dpo-v2-tuned-holdout-eval",
+  "code_file": "evaluate_dpo_v2_tuned_holdout.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "accelerator": "gpuT4x2",
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [
+    "ertugrultaparci/dpo-v2-sweep"
+  ]
+}
