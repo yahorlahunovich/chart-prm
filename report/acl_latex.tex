@@ -53,17 +53,16 @@ Can a compact 3B vision-language model solve multi-step reasoning questions over
 \section{The ChartPRM Framework}
 \label{sec:chartprm_framework}
 
-The central goal of \textbf{ChartPRM} is to verify, diagnose, and align step-by-step visual reasoning on scientific charts. Scientific plots contain dense information. Solving a reasoning problem requires several distinct actions: locating the right subplot, reading numerical axis scales, matching colors to legend labels, and performing mathematical comparisons.
+The central goal of \textbf{ChartPRM} is to verify, diagnose, and align step-by-step visual reasoning on complex scientific charts. Scientific plots pack dense information into visual elements. Solving a reasoning question requires multiple distinct steps: locating the relevant panel, reading numerical axis scales, matching curve styles to legend labels, and performing logical comparisons.
 
-Outcome reward models (ORM) only check whether the final answer is right. This hides where the model actually went wrong. A model might make a lucky guess after flawed reasoning, or it might read the chart correctly but make a minor rounding error at the very end. ChartPRM addresses this limitation by scoring each reasoning step individually and using those scores to guide preference optimization. Crucially, we also ask whether it is possible to align a compact 3B vision-language model using only a very small dataset of verified chart reasoning traces (fewer than 150 examples).
+ChartPRM decomposes this task into discrete reasoning steps, scores each step individually with a multimodal judge, and uses those step-level signals to guide preference optimization. Crucially, we also ask whether it is possible to align a compact 3B vision-language model using only a very small dataset of verified chart reasoning traces (fewer than 150 examples).
 
-In this section, we describe the five core components of the ChartPRM framework:
+In this section, we describe the four core components of the ChartPRM framework:
 \begin{enumerate}[noitemsep,topsep=0pt]
     \item Structured step-by-step reasoning generation,
-    \item Multimodal process reward modeling with an LLM-as-a-judge,
-    \item Preference dataset curation and divergence slicing,
-    \item Preference alignment objectives, and
-    \item Resource-efficient implementation on consumer GPU hardware.
+    \item Multimodal process reward modeling with rollout-level batching,
+    \item Preference dataset curation and divergence slicing, and
+    \item Preference alignment objectives and training setup.
 \end{enumerate}
 
 \subsection{Structured Step-by-Step Reasoning Protocol}
@@ -87,25 +86,26 @@ We enforce three practical formatting rules:
 
 To create a diverse pool of candidate solutions, we sample rollouts using temperature $\tau = 0.7$ and top-$p = 0.9$. For each question in the training pool, we sample up to four candidate rollouts. Across the 500 CharXiv reasoning questions, this procedure generates 1,274 complete rollout trajectories.
 
-We evaluate each rollout with an automated parser. The parser extracts the text following \texttt{Final Answer:} and applies lowercase whitespace normalization to measure exact match against the ground truth. It also computes a \textit{Structural Compliance Score} ($0$--$100$\%). A response receives $+25\%$ for containing \texttt{Step 1:}, $+25\%$ for \texttt{Step 2:}, $+25\%$ for an unbolded \texttt{Final Answer:}, and $+25\%$ for having at least two distinct steps. If the model includes a conversational preamble before \texttt{Step 1:}, we subtract a $30\%$ penalty.
+We evaluate each rollout with an automated parser that extracts the prediction following \texttt{Final Answer:} and applies lowercase whitespace normalization to measure exact match against the ground truth.
 
 \subsection{Multimodal Process Reward Modeling}
 \label{subsec:prm_judge}
 Once rollouts are generated, we evaluate each intermediate reasoning step using a multimodal LLM-as-a-judge. We employ \texttt{muse-spark-1.1} \citep{meta2026musespark} as our judge model. 
 
-For each reasoning step $t$ in a trajectory $\tau = (y_1, y_2, \dots, y_T)$, the judge receives five pieces of context:
+Evaluating each step in an individual API call would require repeatedly uploading the high-resolution chart image for every step, quickly exhausting API token allowances. To address this constraint, we implement \textit{rollout-level batching}: we downscale the chart image to a maximum dimension of 512 pixels (preserving visual legibility while reducing token costs) and evaluate all reasoning steps of a rollout within a single multimodal API request.
+
+The judge receives:
 \begin{enumerate}[noitemsep,topsep=0pt]
-    \item The original high-resolution chart image $I$,
+    \item The chart image $I$ (resized to $\le 512$\,px),
     \item The question text $q$,
-    \item The reference ground-truth answer $y^*$,
-    \item The verified reasoning history from previous steps $y_{<t} = (y_1, \dots, y_{t-1})$, and
-    \item The candidate step under evaluation $y_t$.
+    \item The reference ground-truth answer $y^*$, and
+    \item The full sequence of generated steps $(y_1, \dots, y_T)$.
 \end{enumerate}
 
-The judge evaluates whether Step $t$ is factually grounded in the chart image and logically sound. For each step, it produces two outputs:
+The judge evaluates each step sequentially in context and returns a structured JSON array containing two fields per step:
 \begin{itemize}[noitemsep,topsep=0pt]
-    \item \textbf{Binary Step Score ($s_t \in \{0, 1\}$):} The judge assigns $s_t = 1$ if the visual extraction and intermediate deduction are correct. It assigns $s_t = 0$ if the step contains an axis misreading, color confusion, hallucinated data point, or invalid calculation.
-    \item \textbf{Natural Language Critique:} If $s_t = 0$, the judge writes a concise critique explaining the exact error (for example: ``The model misreads the logarithmic y-axis scale as linear, estimating 40 instead of 10'').
+    \item \textbf{Binary Step Score ($s_t \in \{0, 1\}$):} The judge assigns $s_t = 1$ if the visual grounding and deduction in Step $t$ are factually correct. It assigns $s_t = 0$ if the step contains an axis misreading, color confusion, hallucinated label, or arithmetic mistake.
+    \item \textbf{Natural Language Critique:} For each failed step ($s_t = 0$), the judge provides a concise critique explaining the specific visual or logical failure (for example: ``The model misreads the logarithmic y-axis scale as linear, estimating 40 instead of 10'').
 \end{itemize}
 
 We define the overall process reward of a complete reasoning trajectory $\tau$ as the mean score across all its steps:
@@ -133,15 +133,37 @@ We keep the shared prefix $y_{<t^*}$ as prompt context, but compute the preferen
 
 \textbf{4. KTO Unpaired Dataset:} Unlike DPO, Kahneman-Tversky Optimization does not require paired rollouts for the exact same prompt. We split rollouts into desirable and undesirable pools based on their process score and answer accuracy. We collect 84 desirable rollouts ($R \ge 0.75$ and correct final answer) and 252 undesirable rollouts ($R < 0.5$ or wrong answer), establishing a 1:3 positive-to-negative ratio.
 
-\subsection{Preference Alignment Objectives}
+\subsection{Preference Alignment Objectives and Training Setup}
 \label{subsec:alignment_objectives}
-Using the curated datasets, we align the policy model $\pi_\theta$ against a frozen reference policy $\pi_{\text{ref}}$ (the base unaligned instruct model). We investigate four alignment objectives:
+
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Method} & \textbf{Data Size} & \textbf{Epochs} & \textbf{LR} & \textbf{Time} \\
+\midrule
+SFT & 70 traces & 1 & $1\times 10^{-5}$ & 12 min \\
+Full DPO & 134 pairs & 1 & $1\times 10^{-5}$ & 22 min \\
+Step-DPO & 54 pairs & 2 & $1\times 10^{-5}$ & 15 min \\
+KTO & 84 pos / 252 neg & 2 & $2\times 10^{-6}$ & 35 min \\
+SFT$\rightarrow$DPO & 134 pairs & 1 & $2\times 10^{-6}$ & 24 min \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Fine-Tuning Configurations under 16GB GPU Budget.} All models are trained with 4-bit LoRA adaptation ($r=16$) on \texttt{Qwen2.5-VL-3B-Instruct}.}
+\label{tab:training_setup}
+\end{table}
+
+Using the curated datasets, we align the policy model $\pi_\theta$ against a frozen reference policy $\pi_{\text{ref}}$ (the base unaligned instruct model). All models are fine-tuned under a strict 16GB VRAM budget on a single Nvidia Tesla T4 GPU (Google Colab) or an Nvidia Tesla P100 GPU (Kaggle), using 4-bit NF4 quantization \citep{dettmers2023qlora} and LoRA adapters \citep{hu2021lora} with rank $r=16$. Table~\ref{tab:training_setup} summarizes the training configurations, dataset sizes, learning rates, and wall-clock runtimes. Peak GPU memory remains under 14.2\,GB throughout training.
+
+We investigate five alignment paradigms:
 
 \textbf{1. Supervised Fine-Tuning (SFT):} Following standard alignment pipelines \citep{ouyang2022instructgpt}, supervised fine-tuning serves as our initial demonstration baseline by maximizing the log-likelihood of verified gold reasoning steps:
 \begin{equation}
     \mathcal{L}_{\text{SFT}}(\theta) = -\mathbb{E}_{(x, y_w)} \sum_{t=1}^{|y_w|} \log \pi_\theta(y_{w,t} \mid x, y_{w,<t})
 \end{equation}
-This teaches the model the desired formatting structure, but it does not provide negative feedback on what mistakes to avoid.
+This teaches the model the desired formatting structure, but provides no negative feedback on what errors to avoid.
 
 \textbf{2. Full-Sequence DPO:} Sequence-level Direct Preference Optimization \citep{rafailov2023dpo} optimizes a Bradley-Terry preference model directly over token probabilities:
 \begin{align}
@@ -161,38 +183,9 @@ Tokens in the shared prefix $y_{<t^*}$ are masked out from gradient calculation.
 \begin{equation}
     \mathcal{L}_{\text{KTO}}(\theta) = \mathbb{E}_{y} \left[ w(y) \left( 1 - v_\beta \left( \hat{r}_\theta(x, y) - z_{\text{ref}} \right) \right) \right]
 \end{equation}
-where $\hat{r}_\theta(x, y) = \log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)}$ is the implicit reward, and
-where $v_\beta(r) = \sigma(\beta r)$ for desirable outputs, $v_\beta(r) = \sigma(-\beta r)$ for undesirable outputs, and $z_{\text{ref}}$ is a running estimate of the implicit reward KL baseline.
+where $\hat{r}_\theta(x, y) = \log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)}$ is the implicit reward, $v_\beta(r) = \sigma(\beta r)$ for desirable outputs, $v_\beta(r) = \sigma(-\beta r)$ for undesirable outputs, and $z_{\text{ref}}$ is a running estimate of the implicit reward KL baseline.
 
 \textbf{5. Two-Stage SFT$\rightarrow$DPO:} We also evaluate a sequential pipeline where the model is first fine-tuned on verified gold traces with SFT for one epoch, and then aligned with sequence DPO using the SFT checkpoint as both the starting policy and the reference policy $\pi_{\text{ref}}$.
-
-\subsection{Hardware-Constrained Training on a Single Consumer GPU}
-\label{subsec:hardware_budget}
-
-\begin{table}[t]
-\centering
-\footnotesize
-\setlength{\tabcolsep}{2.5pt}
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Method} & \textbf{Data Size} & \textbf{Epochs} & \textbf{LR} & \textbf{Time} \\
-\midrule
-SFT & 70 traces & 1 & $1\times 10^{-5}$ & 12 min \\
-Full DPO & 134 pairs & 1 & $1\times 10^{-5}$ & 22 min \\
-Step-DPO & 54 pairs & 2 & $1\times 10^{-5}$ & 15 min \\
-KTO & 84 pos / 252 neg & 2 & $2\times 10^{-6}$ & 35 min \\
-SFT$\rightarrow$DPO & 134 pairs & 1 & $2\times 10^{-6}$ & 24 min \\
-\bottomrule
-\end{tabular}
-\caption{\textbf{Fine-Tuning Configurations under 16GB GPU Budget.} All models are trained with 4-bit LoRA adaptation on \texttt{Qwen2.5-VL-3B-Instruct}.}
-\label{tab:training_setup}
-\end{table}
-
-A core design goal of our study is practical reproducibility on accessible hardware. All alignment experiments were executed within a strict 16GB VRAM budget, using a single Nvidia Tesla T4 GPU (Google Colab) or an Nvidia Tesla P100 GPU (Kaggle).
-
-To train a 3B vision-language model on a single 16GB device without memory overflow, we apply 4-bit NormalFloat quantization (NF4; \citealt{dettmers2023qlora}) to the base model weights and train parameter-efficient LoRA adapters \citep{hu2021lora} with rank $r=16$. 
-
-Table~\ref{tab:training_setup} summarizes the training sizes, learning rates, and wall-clock times across the five paradigms. Peak GPU memory never exceeds 14.2\,GB throughout training. SFT converges in 12 minutes, while Full DPO finishes in only 22 minutes. This demonstrates that process-level multimodal alignment can be performed quickly and inexpensively on standard cloud notebooks without requiring multi-GPU clusters.
 
 % 5. DynamicPRM and Test-Time Verification (Reserved for Teammate Ertugrul)
 \section{DynamicPRM and Test-Time Verification}

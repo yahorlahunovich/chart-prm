@@ -633,3 +633,14 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   4. Streamlined Section 4.5 by removing low-level engineering clutter (exhaustive lists of LoRA target modules like `q_proj`, $lpha=32$, and gradient checkpointing) from the main body, keeping the narrative scholarly and readable.
   5. Verified clean LaTeX build via `pdflatex` and `bibtex` with zero overfull `\hbox` warnings on `report/acl_latex.pdf`.
 - **Why**: Responds to user feedback to keep the methods section focused, academically disciplined, and aligned with actual experimental hardware execution.
+
+## Streamlining Methods Section & Rollout-Level Batching Verification
+- **What**:
+  1. Removed Outcome Reward Model (ORM) mentions from Section 4 opening (reserved for Introduction).
+  2. Removed structural compliance score calculation (+25% increments) from Section 4.1 to avoid metric clutter in the methods section.
+  3. Verified code implementation (`scripts/evaluation/evaluate_rollouts_meta.py`) and documented rollout-level batching: all steps of a trajectory are sent in a single `muse-spark-1.1` API call with a 512px downscaled chart image to manage API token constraints.
+  4. Eliminated standalone hardware subsection (\S 4.5), merging the 16GB VRAM budget details and Table 4 into Subsection 4.4 ("Preference Alignment Objectives and Training Setup").
+  5. Kept small-data alignment hypothesis and RLHF citation (`ouyang2022instructgpt`) cleanly intact.
+  6. Recompiled `report/acl_latex.tex` with zero Overfull `\hbox` warnings to an 8-page PDF (`report/acl_latex.pdf`).
+- **Why**: Streamlines the ChartPRM framework description to focus on core algorithmic contributions, accurately reflects API token optimizations, and adheres to user guidance.
+
