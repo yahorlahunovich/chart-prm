@@ -13,6 +13,7 @@ dependencies = [
     "pillow>=12.3.0",
     "python-dotenv>=1.2.2",
     "requests>=2.34.2",
+    "scienceplots>=2.2.2",
     "seaborn>=0.13.2",
     "umap-learn>=0.5.12",
 ]

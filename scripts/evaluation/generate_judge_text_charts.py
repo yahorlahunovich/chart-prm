@@ -36,7 +36,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from src.visualization.style import setup_plot_style
+from src.visualization.style import TAXONOMY_PALETTE, setup_plot_style
+
+# Curated categorical color palette for taxonomy matching SciencePlots
+TAXONOMY_COLORS: Dict[str, str] = TAXONOMY_PALETTE
 
 # Priority regex taxonomy rules matching Meta judge error analyses
 RULES: List[Tuple[str, str, str]] = [
@@ -103,22 +106,6 @@ RULES: List[Tuple[str, str, str]] = [
 CATEGORY_ORDER = [r[0] for r in RULES] + ["other_unspecified"]
 DISPLAY_MAP = {r[0]: r[1] for r in RULES}
 DISPLAY_MAP["other_unspecified"] = "Other / unspecified"
-
-# Curated categorical color palette for taxonomy
-TAXONOMY_COLORS: Dict[str, str] = {
-    "Axis / layout / chart-structure misread": "#4C78A8",          # Steel Blue
-    "Wrong series / color / legend identity": "#F58518",           # Amber Orange
-    "Hallucinated entity / label not on chart": "#E45756",         # Coral Red
-    "Wrong ranking / extremum (highest/lowest/second)": "#72B7B2", # Soft Teal
-    "Logic inconsistency / false conclusion": "#B279A2",          # Muted Purple
-    "Other / unspecified": "#BAB0AC",                              # Slate Grey
-    "Wrong numeric value read from chart": "#FF9DA7",              # Rose Pink
-    "Bad comparison / threshold logic": "#9D7660",                 # Warm Brown
-    "Arithmetic / calculation mistake": "#54A24B",                 # Grass Green
-    "Incomplete / truncated reasoning": "#EECA3B",                 # Sand Gold
-    "Other / Minor": "#BAB0AC",
-    "Other / Minor Causes": "#BAB0AC",
-}
 
 
 def assign_primary_category(text: str) -> str:
@@ -198,9 +185,7 @@ def plot_01_error_taxonomy(df_fails: pd.DataFrame, out_path: Path) -> None:
 
     fig, ax = plt.subplots(figsize=(8.5, 4.8))
     y_pos = np.arange(len(counts))
-    colors = [TAXONOMY_COLORS.get(cat, "#4C78A8") for cat in counts.index]
-
-    ax.barh(y_pos, counts.values, color=colors, height=0.68, edgecolor="none")
+    ax.barh(y_pos, counts.values, color="#0077BB", height=0.68, edgecolor="none")
     ax.set_yticks(y_pos)
     ax.set_yticklabels(counts.index, fontsize=10)
     ax.invert_yaxis()
@@ -210,7 +195,7 @@ def plot_01_error_taxonomy(df_fails: pd.DataFrame, out_path: Path) -> None:
     max_val = counts.max()
     for i, (n, p) in enumerate(zip(counts.values, pcts.values)):
         ax.text(
-            n + max_val * 0.015,
+            n + max_val * 0.02,
             i,
             f"{n:,} ({p:.1f}%)",
             va="center",
@@ -220,8 +205,9 @@ def plot_01_error_taxonomy(df_fails: pd.DataFrame, out_path: Path) -> None:
             fontweight="bold" if p > 10 else "normal",
         )
 
-    ax.set_xlim(0, max_val * 1.18)
-    ax.grid(axis="x", linestyle="--", alpha=0.3)
+    ax.set_xlim(0, max_val * 1.25)
+    ax.yaxis.grid(False)
+    ax.xaxis.grid(True, linestyle="--", alpha=0.3)
 
     fig.tight_layout()
     fig.savefig(out_path, dpi=300, bbox_inches="tight")
@@ -324,7 +310,7 @@ def plot_03_critique_length_distribution(df_all: pd.DataFrame, out_path: Path) -
 
     df_plot = df_all.copy()
     df_plot["Outcome"] = df_plot["score"].map({1: "Valid Step (Score = 1)", 0: "Refuted Step (Score = 0)"})
-    palette_outcome = {"Valid Step (Score = 1)": "#54A24B", "Refuted Step (Score = 0)": "#E45756"}
+    palette_outcome = {"Valid Step (Score = 1)": "#44AA99", "Refuted Step (Score = 0)": "#CC6677"}
 
     # Subplot A: KDE Curve
     sns.kdeplot(
@@ -336,11 +322,11 @@ def plot_03_critique_length_distribution(df_all: pd.DataFrame, out_path: Path) -
         fill=True,
         common_norm=False,
         alpha=0.35,
-        linewidth=2.0,
+        linewidth=1.8,
     )
-    ax1.set_title("(A) Text Length Density Distribution", fontsize=11.5, fontweight="bold")
-    ax1.set_xlabel("Judge Analysis Character Count", fontsize=10.5)
-    ax1.set_ylabel("Density", fontsize=10.5)
+    ax1.set_title("(A) Text Length Density Distribution", fontsize=11.0, fontweight="bold")
+    ax1.set_xlabel("Judge Analysis Character Count", fontsize=9.5)
+    ax1.set_ylabel("Density", fontsize=9.5)
     ax1.set_xlim(0, 550)
     ax1.grid(True, linestyle="--", alpha=0.3)
 
@@ -355,11 +341,11 @@ def plot_03_critique_length_distribution(df_all: pd.DataFrame, out_path: Path) -
         width=0.45,
         showmeans=True,
         legend=False,
-        meanprops={"marker": "D", "markerfacecolor": "white", "markeredgecolor": "black", "markersize": 6},
+        meanprops={"marker": "D", "markerfacecolor": "white", "markeredgecolor": "black", "markersize": 5},
     )
-    ax2.set_title("(B) Summary Statistics (Mean: Diamonds)", fontsize=11.5, fontweight="bold")
+    ax2.set_title("(B) Summary Statistics (Mean: Diamonds)", fontsize=11.0, fontweight="bold")
     ax2.set_xlabel("")
-    ax2.set_ylabel("Analysis Length (Characters)", fontsize=10.5)
+    ax2.set_ylabel("Analysis Length (Characters)", fontsize=9.5)
     ax2.set_ylim(0, 550)
     ax2.grid(axis="y", linestyle="--", alpha=0.3)
 
@@ -367,9 +353,10 @@ def plot_03_critique_length_distribution(df_all: pd.DataFrame, out_path: Path) -
     mean_fail = df_plot[df_plot["score"] == 0]["analysis_len"].mean()
 
     ax2.text(0, mean_valid + 25, f"Mean: {mean_valid:.1f} ch\n(Med: {df_plot[df_plot['score']==1]['analysis_len'].median():.0f})",
-             ha="center", fontsize=8.5, fontweight="bold", bbox=dict(boxstyle="round,pad=0.2", facecolor="white", alpha=0.8, edgecolor="#54A24B"))
+             ha="center", fontsize=8.5, fontweight="bold", bbox=dict(boxstyle="round,pad=0.2", facecolor="white", alpha=0.8, edgecolor="#44AA99"))
     ax2.text(1, mean_fail + 25, f"Mean: {mean_fail:.1f} ch\n(Med: {df_plot[df_plot['score']==0]['analysis_len'].median():.0f})",
-             ha="center", fontsize=8.5, fontweight="bold", bbox=dict(boxstyle="round,pad=0.2", facecolor="white", alpha=0.8, edgecolor="#E45756"))
+             ha="center", fontsize=8.5, fontweight="bold", bbox=dict(boxstyle="round,pad=0.2", facecolor="white", alpha=0.8, edgecolor="#CC6677"))
+
 
     fig.suptitle("Meta PRM Judge Response Verbosity: Valid vs. Refuted Steps", fontsize=13, fontweight="bold", y=1.03)
     fig.tight_layout()
@@ -433,13 +420,13 @@ def plot_04_top_keywords_per_category(df_fails: pd.DataFrame, out_path: Path) ->
             scores = filtered_scores[top_indices]
 
             y_pos = np.arange(len(terms))
-            bar_color = TAXONOMY_COLORS.get(cat_label, "#4C78A8")
-            ax.barh(y_pos, scores, color=bar_color, height=0.65, alpha=0.85)
+            ax.barh(y_pos, scores, color="#0077BB", height=0.65, alpha=0.85)
             ax.set_yticks(y_pos)
             ax.set_yticklabels(terms, fontsize=9.5)
             ax.invert_yaxis()
             ax.set_title(f"{short_titles[cat_label]} (n={len(subset)})", fontsize=10.5, fontweight="bold", pad=8)
-            ax.grid(axis="x", linestyle="--", alpha=0.25)
+            ax.yaxis.grid(False)
+            ax.xaxis.grid(True, linestyle="--", alpha=0.25)
             ax.set_xlabel("Mean TF-IDF", fontsize=8.5)
 
     fig.suptitle("Diagnostic Keywords Extracted from Meta PRM Judge Critiques", fontsize=13, fontweight="bold", y=0.99)
@@ -470,6 +457,11 @@ def plot_05_error_taxonomy_by_domain(df_fails: pd.DataFrame, out_path: Path) -> 
     ct = ct.reindex(index=domain_order, columns=top_cats).fillna(0)
 
     fig, ax = plt.subplots(figsize=(9.5, 5))
+    ax.grid(False)
+    ax.minorticks_off()
+    ax.tick_params(which="both", length=0)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
     sns.heatmap(
         ct,
         annot=True,
@@ -523,6 +515,11 @@ def plot_06_error_taxonomy_by_chart_type(df_fails: pd.DataFrame, out_path: Path)
     ct = ct.reindex(index=top_chart_types, columns=top_cats).fillna(0)
 
     fig, ax = plt.subplots(figsize=(10, 4.8))
+    ax.grid(False)
+    ax.minorticks_off()
+    ax.tick_params(which="both", length=0)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
     sns.heatmap(
         ct,
         annot=True,
@@ -578,11 +575,16 @@ def plot_07_multilabel_cooccurrence(df_fails: pd.DataFrame, out_path: Path) -> N
     mask = np.eye(len(cooccur), dtype=bool)
 
     fig, ax = plt.subplots(figsize=(8.5, 6.5))
+    ax.grid(False)
+    ax.minorticks_off()
+    ax.tick_params(which="both", length=0)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
     sns.heatmap(
         cooccur,
         annot=True,
         fmt="d",
-        cmap="Purples",
+        cmap="Blues",
         mask=mask,
         cbar_kws={"label": "Co-Occurring Diagnoses (Count)"},
         ax=ax,
