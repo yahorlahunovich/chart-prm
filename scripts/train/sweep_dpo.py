@@ -1,41 +1,25 @@
 #!/usr/bin/env python3
 """
-Small local hyperparameter sweep for SimPO, sized to this project's actual scale.
+Small local hyperparameter sweep for DPO, built after the Pareto-DPO v2 run
+(298 pairs from the full 0-9 rollout pool, roughly double v1's 154) hit the
+trainer's own collapse guard at step 215/298: "policy chosen_logp=-148.8 is
+42.0 nats below chosen_ref_logp=-106.8; likely generative collapse", using
+the exact same hyperparameters (lr=1e-5, beta=0.1) that trained cleanly on
+every prior DPO run in this project at the smaller v1/original scale. The
+larger, more diverse v2 pair pool (which includes rollouts 5-9, judged at a
+lower 66.5% clean-parse rate than the original 0-4 batch -- see experiment
+016) evidently doesn't tolerate the same aggressive update size.
 
-Experiment 017's single SimPO run (paper-default beta=2.0, gamma_beta_ratio=0.5,
-lr=1e-6) landed at 26% -- below both DPO variants -- with a noisier training
-curve than DPO's runs (preference accuracy only ~44.8% -> ~52.2% across 134
-steps, no clean downward loss trend). Those defaults were tuned by SimPO's
-authors on tens-of-thousands-of-pairs datasets with multi-epoch training and
-learning-rate warmup; none of that was re-validated for this project's much
-smaller scale (134 pairs, 1 epoch, batch size 1, no schedule). This sweeps
-lr and beta the same way experiment 009 swept the reward tree's merge
-threshold (xi) locally instead of trusting a paper default -- using the
-cheap training-time signal (does loss trend down, does preference accuracy
-trend up, no collapse) to pick a promising config before spending a full
-holdout-eval GPU run on just one of them.
-
-Reloads a genuinely fresh base model + LoRA adapter for every config (an
-earlier version tried to reuse one base model across configs via PEFT's
-add_adapter/set_adapter/delete_adapter to skip repeated model loads -- that
-broke in practice: config 2 [lr=1e-6, beta=2.0], the exact hyperparameters
-experiment 017's standalone run trained cleanly, produced a NaN loss under
-the reused-model version, strongly suggesting some state wasn't actually
-isolated between configs despite delete_adapter. HuggingFace caches the
-downloaded weights locally after the first load, so a "fresh" reload within
-the same Kaggle session is just a fast local load, not a repeated multi-GB
-download -- the isolation is worth the (small) extra time.
-
-Trains each config for one full epoch on the fixed dpo_pairs.jsonl (same
-file Full DPO and the original SimPO run trained on), and picks a winner by
-mean preference accuracy over the last 25% of steps (tie-broken by lowest
-mean loss over that same window, excluding any config that crashed or went
-non-finite). A single config's failure (NaN loss, OOM, etc.) is caught and
-recorded rather than taking down the whole sweep, and sweep_results.json is
-rewritten after every config, not just at the end, so a later crash never
-throws away earlier configs' results the way the first version did. Saves
-every config's adapter to a numbered subdirectory and copies the winner to
---output-dir for the eval kernel to pick up.
+Sweeps lr (lower = smaller steps) and beta (higher = tighter trust region
+around the reference model, i.e. more resistant to the policy diverging)
+around the known-collapsing baseline, including that baseline itself in the
+grid for a documented before/after comparison. A fresh base model is loaded
+for every config (no adapter reuse across configs -- see sweep_simpo.py's
+docstring for why that was worth avoiding after a similar sweep there hit an
+unexplained NaN under adapter reuse that a real config never produced
+standalone). A single config's collapse is caught and recorded rather than
+taking down the whole sweep, and sweep_results.json is rewritten after every
+config so a later failure never discards earlier results.
 """
 
 import argparse
@@ -44,17 +28,17 @@ from pathlib import Path
 import sys
 import torch
 
-from chart_prm.data_guards import validate_training_dataset
-from chart_prm.simpo.trainer import fit_simpo
+from chart_prm.data_guards import collapse_guard, validate_training_dataset
+from chart_prm.dpo.trainer import fit_dpo
 from chart_prm.dpo.utils import load_step_dpo_dataset
 
 GRID = [
-    {"lr": 5e-7, "beta": 2.0, "gamma_beta_ratio": 0.5},
-    {"lr": 1e-6, "beta": 2.0, "gamma_beta_ratio": 0.5},
-    {"lr": 1e-5, "beta": 2.0, "gamma_beta_ratio": 0.5},
-    {"lr": 5e-7, "beta": 5.0, "gamma_beta_ratio": 0.5},
-    {"lr": 1e-6, "beta": 5.0, "gamma_beta_ratio": 0.5},
-    {"lr": 1e-5, "beta": 5.0, "gamma_beta_ratio": 0.5},
+    {"lr": 1e-5, "beta": 0.1},  # the baseline that collapsed on the v2 pair set -- kept for comparison
+    {"lr": 1e-5, "beta": 0.3},
+    {"lr": 5e-6, "beta": 0.1},
+    {"lr": 5e-6, "beta": 0.3},
+    {"lr": 2e-6, "beta": 0.1},
+    {"lr": 2e-6, "beta": 0.3},
 ]
 
 
@@ -85,7 +69,11 @@ def summarize_history(history: list) -> dict:
 
 
 def pick_best_config(results: list) -> dict:
-    """Highest mean preference_accuracy over the last 25% of steps; ties broken by lowest mean loss (tail)."""
+    """Highest mean preference_accuracy over the last 25% of steps; ties broken by lowest
+    mean loss (tail), excluding non-finite runs. `results` is expected to already be
+    restricted to configs that finished (fit_dpo either completes the full dataset or
+    raises partway through with no partial history returned -- there is no "partially
+    completed" case to separately filter for here)."""
     if not results:
         raise ValueError("No sweep results to pick from.")
     finite_results = [r for r in results if r["summary"]["all_finite"]]
@@ -97,17 +85,18 @@ def pick_best_config(results: list) -> dict:
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Small local hyperparameter sweep for SimPO")
+    parser = argparse.ArgumentParser(description="Small local hyperparameter sweep for DPO")
     parser.add_argument(
         "--dataset-path",
         type=str,
-        default="experiments/001_500_reasoning/data/dpo_pairs.jsonl",
-        help="Same pairs file every SimPO/DPO run this project has used, for a fair comparison",
+        required=True,
+        help="Preference pairs jsonl (e.g. experiments/018_pareto_dpo_v2_extra_rollouts/data/pareto_dpo_pairs_v2.jsonl)",
     )
     parser.add_argument("--images-dir", type=str, default="data/CharXiv/images")
     parser.add_argument("--model-id", type=str, default="Qwen/Qwen2.5-VL-3B-Instruct")
-    parser.add_argument("--output-dir", type=str, default="adapters/qwen_vl_simpo_tuned_adapter")
-    parser.add_argument("--sweep-output-dir", type=str, default="/kaggle/working/simpo_sweep")
+    parser.add_argument("--output-dir", type=str, default="adapters/qwen_vl_dpo_tuned_adapter")
+    parser.add_argument("--sweep-output-dir", type=str, default="/kaggle/working/dpo_sweep")
+    parser.add_argument("--max-logp-drop", type=float, default=40.0)
     parser.add_argument("--skip-data-guard", action="store_true")
     return parser.parse_args()
 
@@ -120,11 +109,11 @@ def main():
         print(f"Dataset path {data_path} not found. Exiting.")
         sys.exit(1)
 
-    print(f"Loading SimPO sweep dataset from {data_path}...")
+    print(f"Loading DPO sweep dataset from {data_path}...")
     dataset = load_step_dpo_dataset(data_path, images_dir=args.images_dir)
     print(f"Loaded {len(dataset)} preference pairs.")
     if not args.skip_data_guard:
-        stats = validate_training_dataset(dataset, name="SimPO sweep")
+        stats = validate_training_dataset(dataset, name="DPO sweep")
         print(f"Data guard OK: mean_chars={stats['mean_chars']:.1f} final_answer_rate={stats['final_answer_rate']:.1%}")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -160,7 +149,6 @@ def main():
     sweep_out = Path(args.sweep_output_dir)
     sweep_out.mkdir(parents=True, exist_ok=True)
     sweep_results_path = sweep_out / "sweep_results.json"
-    import shutil
 
     results = []
     for i, config in enumerate(GRID):
@@ -179,25 +167,28 @@ def main():
                     f"[cfg={cfg} step {step:03d}] Loss: {metrics['loss']:.4f} | "
                     f"Margin: {metrics['reward_margin']:.4f} | Acc: {metrics['preference_accuracy']*100:.1f}%"
                 )
+            warning = collapse_guard(metrics, max_logp_drop_vs_ref=args.max_logp_drop)
+            if warning:
+                raise RuntimeError(f"DPO collapse guard tripped at step {step}: {warning}")
 
         cfg_dir = sweep_out / f"config_{i:02d}"
         cfg_dir.mkdir(parents=True, exist_ok=True)
         error = None
         history = []
         try:
-            history = fit_simpo(
+            history = fit_dpo(
                 model=model,
                 dataset=dataset,
                 processor=processor,
+                ref_model=None,
                 lr=config["lr"],
                 beta=config["beta"],
-                gamma_beta_ratio=config["gamma_beta_ratio"],
                 epochs=1,
                 batch_size=1,
                 device=device,
                 on_step_end=print_step_log,
             )
-        except Exception as exc:  # noqa: BLE001 -- one bad config must not sink the whole sweep
+        except Exception as exc:  # noqa: BLE001 -- one bad config (e.g. collapse) must not sink the sweep
             error = f"{type(exc).__name__}: {exc}"
             print(f"Config {i + 1} FAILED: {error}")
 
@@ -219,8 +210,6 @@ def main():
             }
         )
 
-        # Rewrite after every config, not just at the end -- a later config crashing must
-        # never throw away already-completed configs' results.
         with sweep_results_path.open("w", encoding="utf-8") as f:
             json.dump(results, f, indent=2)
 
@@ -238,6 +227,7 @@ def main():
 
     out_dir = Path(args.output_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
+    import shutil
 
     for item in Path(best["adapter_dir"]).iterdir():
         shutil.copy2(item, out_dir / item.name)
@@ -246,7 +236,7 @@ def main():
         json.dump(best, f, indent=2)
 
     print(f"Copied winning config's adapter to {out_dir}")
-    print("SimPO sweep complete!")
+    print("DPO sweep complete!")
 
 
 if __name__ == "__main__":
