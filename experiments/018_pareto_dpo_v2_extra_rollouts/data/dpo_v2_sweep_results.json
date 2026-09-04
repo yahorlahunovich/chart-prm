@@ -1,0 +1,104 @@
+[
+  {
+    "index": 0,
+    "config": {
+      "lr": 1e-05,
+      "beta": 0.1
+    },
+    "summary": {
+      "n_steps": 0,
+      "final_loss": null,
+      "mean_loss_tail": null,
+      "mean_preference_accuracy_tail": null,
+      "mean_reward_margin_tail": null,
+      "all_finite": false,
+      "error": "RuntimeError: DPO collapse guard tripped at step 215: policy chosen_logp=-147.1 is 40.3 nats below chosen_ref_logp=-106.8; likely generative collapse"
+    },
+    "adapter_dir": null
+  },
+  {
+    "index": 1,
+    "config": {
+      "lr": 1e-05,
+      "beta": 0.3
+    },
+    "summary": {
+      "n_steps": 0,
+      "final_loss": null,
+      "mean_loss_tail": null,
+      "mean_preference_accuracy_tail": null,
+      "mean_reward_margin_tail": null,
+      "all_finite": false,
+      "error": "RuntimeError: DPO collapse guard tripped at step 259: policy chosen_logp=-124.1 is 58.7 nats below chosen_ref_logp=-65.3; likely generative collapse"
+    },
+    "adapter_dir": null
+  },
+  {
+    "index": 2,
+    "config": {
+      "lr": 5e-06,
+      "beta": 0.1
+    },
+    "summary": {
+      "n_steps": 298,
+      "final_loss": 0.32907140254974365,
+      "mean_loss_tail": 0.6480360291394833,
+      "mean_preference_accuracy_tail": 0.6486486486486487,
+      "mean_reward_margin_tail": 0.25302197220357686,
+      "all_finite": true,
+      "error": null
+    },
+    "adapter_dir": "/kaggle/working/dpo_sweep/config_02"
+  },
+  {
+    "index": 3,
+    "config": {
+      "lr": 5e-06,
+      "beta": 0.3
+    },
+    "summary": {
+      "n_steps": 298,
+      "final_loss": 0.056765392422676086,
+      "mean_loss_tail": 0.8189593835816816,
+      "mean_preference_accuracy_tail": 0.6486486486486487,
+      "mean_reward_margin_tail": 0.77249990484199,
+      "all_finite": true,
+      "error": null
+    },
+    "adapter_dir": "/kaggle/working/dpo_sweep/config_03"
+  },
+  {
+    "index": 4,
+    "config": {
+      "lr": 2e-06,
+      "beta": 0.1
+    },
+    "summary": {
+      "n_steps": 298,
+      "final_loss": 0.5800344944000244,
+      "mean_loss_tail": 0.6657536879584596,
+      "mean_preference_accuracy_tail": 0.6621621621621622,
+      "mean_reward_margin_tail": 0.0650515026236708,
+      "all_finite": true,
+      "error": null
+    },
+    "adapter_dir": "/kaggle/working/dpo_sweep/config_04"
+  },
+  {
+    "index": 5,
+    "config": {
+      "lr": 2e-06,
+      "beta": 0.3
+    },
+    "summary": {
+      "n_steps": 298,
+      "final_loss": 0.42846745252609253,
+      "mean_loss_tail": 0.640672267288775,
+      "mean_preference_accuracy_tail": 0.6486486486486487,
+      "mean_reward_margin_tail": 0.1857530554202763,
+      "all_finite": true,
+      "error": null
+    },
+    "adapter_dir": "/kaggle/working/dpo_sweep/config_05"
+  }
+]

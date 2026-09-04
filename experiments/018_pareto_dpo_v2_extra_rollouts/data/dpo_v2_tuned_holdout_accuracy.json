@@ -1,0 +1,12 @@
+{
+  "n": 100,
+  "exact_match": {
+    "dpo_v2_tuned": {
+      "correct": 28,
+      "accuracy": 0.28
+    }
+  },
+  "extracted_answer_rate": {
+    "dpo_v2_tuned": 1.0
+  }
+}
