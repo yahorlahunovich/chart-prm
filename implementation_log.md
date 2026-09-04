@@ -551,5 +551,37 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   4. **Added High-Insight Compound Failure Matrix to Report**:
      - Substituted `judge_07_multilabel_cooccurrence.png` into `charts/report_selected/` to complete the 10 curated report figures.
      - Harmonized `judge_07` with a sequential `Blues` colormap, disabled outer spines and axis tick marks (`ax.minorticks_off()`, `ax.tick_params(length=0)`), ensuring the masked diagonal is clean pure white without tick or frame artifacts.
-     - Updated `charts/report_selected/README.md` to reflect the updated curated suite.
 - **Why**: Academic figures must maximize the data-to-ink ratio and communicate high-density empirical insights without decorative chart junk or redundant rainbow encodings.
+
+## Curated Report Suite Update & Table Architecture Definition
+- **What**:
+  1. Conducted an exhaustive audit of all 29 generated charts in `charts/` and evaluated the 10 selected figures in `charts/report_selected/`.
+  2. Determined a 3-tier publication hierarchy:
+     - **Tier 1 (Main Body - 5 Core Figures)**:
+       - `results_08_accuracy_vs_structure_tradeoff.png` (Flagship Pareto frontier)
+       - `judge_01_error_taxonomy.png` (43.5% perceptual vs 1.3% arithmetic failure breakdown)
+       - `judge_02_error_by_step_depth.png` (Temporal error transition from Step 0 perception to deeper logic)
+       - `08_error_cascade.png` (82.7% error cascade probability justifying PRM)
+       - `02_score_progression.png` (Reasoning cliff from 73% at Step 0 to 26% at Step 3)
+       - `prm_best_of_n_accuracy.png` (Inference-time PRM verification beating majority vote and random rollouts)
+       - `results_03_error_mode_hallucination_breakdown.png` (Holdout error composition & hallucination proxy)
+       - `results_01_overall_model_comparison.png` (Grouped 4-metric benchmark comparison)
+     - **Tier 2 (Appendix Diagnostics)**:
+       - `results_04_training_dynamics_loss_rewards.png` (Loss curves and reward margin growth)
+       - `judge_07_multilabel_cooccurrence.png` (Compound error co-occurrence matrix)
+       - `results_02_structure_instruction_following.png` (Formatting & preamble compliance breakdown)
+       - `judge_05_error_taxonomy_by_domain.png` (Disciplinary error distributions across 8 domains)
+     - **Superseded / Excluded Figures (Replaced by High-Density Tables or Omitted)**:
+       - `judge_08_umap_embeddings.png` (Excluded per visualization standards due to uninformative point cloud)
+       - `judge_04_top_keywords_per_category.png` (Replaced by Table 2)
+       - `04_first_error_position.png` (Replaced by Table 3)
+       - `01_overall_accuracy.png`, `03_rollout_success.png`, `10_terminal_accuracy.png` (Replaced by Table 3)
+  3. Defined and fully populated 5 publication-ready LaTeX tables for `report/acl_latex.tex`:
+     - **Table 1**: Main Holdout Benchmark Results across 6 alignment paradigms ($N=100$).
+     - **Table 2**: 9-Category PRM Judge Error Taxonomy with prevalence, TF-IDF terms, and judge quotes ($N=2,920$).
+     - **Table 3**: Reasoning Trajectory & Process Verification Statistics.
+     - **Table 4**: Alignment Training Configurations & Single-T4 GPU Budgets.
+     - **Table 5**: Inference-Time PRM Verification vs. Search Baselines (Best-of-N).
+  4. Updated `charts/report_selected/` by importing `02_score_progression.png`, `prm_best_of_n_accuracy.png`, `judge_07_multilabel_cooccurrence.png`, `results_02_structure_instruction_following.png`, and `judge_05_error_taxonomy_by_domain.png`.
+  5. Updated `charts/report_selected/README.md` with complete figure descriptions, LaTeX integration snippets, and table substitution references.
+- **Why**: Ensures the report stays strictly within ACL page limits while maximizing scientific rigor, replacing low-information-density plots with structured tables and establishing PRM inference-time search alongside training alignment.
