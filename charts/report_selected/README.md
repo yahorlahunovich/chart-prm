@@ -14,7 +14,7 @@ This directory contains the curated set of 10 primary and high-value figures sel
 ## 2. PRM Judge Error Taxonomy & Critiques (Sec 8)
 - **`judge_01_error_taxonomy.png`**: 9-category failure modes taxonomy classified from 2,920 Meta PRM Judge critiques (Axis/Layout misread 24.0%, Series/Color 19.5%, Hallucinated entity 15.2%, Arithmetic 1.3%).
 - **`judge_02_error_by_step_depth.png`**: Evolution of error categories across reasoning step depth (Step 0 to Step 4+), showing early perception bottlenecks transitioning into deeper logical failures.
-- **`judge_08_umap_embeddings.png`**: 2D UMAP projection of MiniLM sentence embeddings of judge natural language critiques, demonstrating semantic clustering corresponding to diagnosed error categories.
+- **`judge_07_multilabel_cooccurrence.png`**: Multi-label co-occurrence matrix across diagnosed failure causes (N=2,920 critiques), quantitatively proving how early perceptual errors (axis/legend confusion) trigger compound downstream reasoning failures.
 - **`judge_04_top_keywords_per_category.png`**: Faceted bar charts showing top TF-IDF diagnostic vocabulary for the 6 primary error categories.
 
 ---

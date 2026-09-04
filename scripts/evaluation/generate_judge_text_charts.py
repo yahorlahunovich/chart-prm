@@ -185,9 +185,7 @@ def plot_01_error_taxonomy(df_fails: pd.DataFrame, out_path: Path) -> None:
 
     fig, ax = plt.subplots(figsize=(8.5, 4.8))
     y_pos = np.arange(len(counts))
-    colors = [TAXONOMY_COLORS.get(cat, "#4C78A8") for cat in counts.index]
-
-    ax.barh(y_pos, counts.values, color=colors, height=0.68, edgecolor="none")
+    ax.barh(y_pos, counts.values, color="#0077BB", height=0.68, edgecolor="none")
     ax.set_yticks(y_pos)
     ax.set_yticklabels(counts.index, fontsize=10)
     ax.invert_yaxis()
@@ -197,7 +195,7 @@ def plot_01_error_taxonomy(df_fails: pd.DataFrame, out_path: Path) -> None:
     max_val = counts.max()
     for i, (n, p) in enumerate(zip(counts.values, pcts.values)):
         ax.text(
-            n + max_val * 0.015,
+            n + max_val * 0.02,
             i,
             f"{n:,} ({p:.1f}%)",
             va="center",
@@ -208,7 +206,8 @@ def plot_01_error_taxonomy(df_fails: pd.DataFrame, out_path: Path) -> None:
         )
 
     ax.set_xlim(0, max_val * 1.25)
-    ax.grid(axis="x", linestyle="--", alpha=0.3)
+    ax.yaxis.grid(False)
+    ax.xaxis.grid(True, linestyle="--", alpha=0.3)
 
     fig.tight_layout()
     fig.savefig(out_path, dpi=300, bbox_inches="tight")
@@ -421,13 +420,13 @@ def plot_04_top_keywords_per_category(df_fails: pd.DataFrame, out_path: Path) ->
             scores = filtered_scores[top_indices]
 
             y_pos = np.arange(len(terms))
-            bar_color = TAXONOMY_COLORS.get(cat_label, "#4C78A8")
-            ax.barh(y_pos, scores, color=bar_color, height=0.65, alpha=0.85)
+            ax.barh(y_pos, scores, color="#0077BB", height=0.65, alpha=0.85)
             ax.set_yticks(y_pos)
             ax.set_yticklabels(terms, fontsize=9.5)
             ax.invert_yaxis()
             ax.set_title(f"{short_titles[cat_label]} (n={len(subset)})", fontsize=10.5, fontweight="bold", pad=8)
-            ax.grid(axis="x", linestyle="--", alpha=0.25)
+            ax.yaxis.grid(False)
+            ax.xaxis.grid(True, linestyle="--", alpha=0.25)
             ax.set_xlabel("Mean TF-IDF", fontsize=8.5)
 
     fig.suptitle("Diagnostic Keywords Extracted from Meta PRM Judge Critiques", fontsize=13, fontweight="bold", y=0.99)
@@ -458,6 +457,11 @@ def plot_05_error_taxonomy_by_domain(df_fails: pd.DataFrame, out_path: Path) -> 
     ct = ct.reindex(index=domain_order, columns=top_cats).fillna(0)
 
     fig, ax = plt.subplots(figsize=(9.5, 5))
+    ax.grid(False)
+    ax.minorticks_off()
+    ax.tick_params(which="both", length=0)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
     sns.heatmap(
         ct,
         annot=True,
@@ -511,6 +515,11 @@ def plot_06_error_taxonomy_by_chart_type(df_fails: pd.DataFrame, out_path: Path)
     ct = ct.reindex(index=top_chart_types, columns=top_cats).fillna(0)
 
     fig, ax = plt.subplots(figsize=(10, 4.8))
+    ax.grid(False)
+    ax.minorticks_off()
+    ax.tick_params(which="both", length=0)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
     sns.heatmap(
         ct,
         annot=True,
@@ -566,11 +575,16 @@ def plot_07_multilabel_cooccurrence(df_fails: pd.DataFrame, out_path: Path) -> N
     mask = np.eye(len(cooccur), dtype=bool)
 
     fig, ax = plt.subplots(figsize=(8.5, 6.5))
+    ax.grid(False)
+    ax.minorticks_off()
+    ax.tick_params(which="both", length=0)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
     sns.heatmap(
         cooccur,
         annot=True,
         fmt="d",
-        cmap="Purples",
+        cmap="Blues",
         mask=mask,
         cbar_kws={"label": "Co-Occurring Diagnoses (Count)"},
         ax=ax,

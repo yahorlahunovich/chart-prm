@@ -538,3 +538,18 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   4. Models & PEFT: Qwen2.5-VL (`bai2025qwen25vl`), LoRA (`hu2021lora`), QLoRA (`dettmers2023qlora`).
   Tested compilation cleanly via `pdflatex` and `bibtex` in `report/acl_latex.tex`.
 - **Why**: Pruned extraneous benchmarks (PlotQA, MathVista, ChartQA) and unused frameworks (ReAct, ChartGemma, Math-Shepherd, VisualPRM) to keep the paper bibliography lean, relevant, and directly aligned with the project's codebase, prompt design, and empirical experiments.
+
+## Scientific Visualization Discipline & Curated Report Refinement
+- **What**: Refined chart styling to strictly adhere to scientific visualization principles (Nature Methods *Points of View*, Claus Wilke's *Fundamentals of Data Visualization*, Edward Tufte) and eliminated uninformative plots:
+  1. **Resolved Rainbow Bar Chart Anti-Pattern**:
+     - In `scripts/evaluation/generate_judge_text_charts.py` (`judge_01_error_taxonomy.png`), eliminated redundant categorical coloring across the 9 horizontal bars. All bars now use a single, authoritative Paul Tol Steel Blue (`#0077BB`).
+     - Suppressed horizontal strike-through gridlines (`ax.yaxis.grid(False)`) and adjusted label padding (`n + max_val * 0.02`), allowing clean direct text annotations (`702 (24.0%)`).
+  2. **Unified Small Multiples Styling**:
+     - In `judge_04_top_keywords_per_category.png`, harmonized all 6 faceted TF-IDF diagnostic panels to share the exact same uniform Steel Blue (`#0077BB`), removing cross-panel color shifts and horizontal gridline strikes.
+  3. **Eliminated Low-Insight UMAP Scatter Plot**:
+     - Removed `judge_08_umap_embeddings.png` from `charts/report_selected/` as the 2D projection of 2,920 short sentence embeddings lacked decision boundaries and created an uninformative point cloud.
+  4. **Added High-Insight Compound Failure Matrix to Report**:
+     - Substituted `judge_07_multilabel_cooccurrence.png` into `charts/report_selected/` to complete the 10 curated report figures.
+     - Harmonized `judge_07` with a sequential `Blues` colormap, disabled outer spines and axis tick marks (`ax.minorticks_off()`, `ax.tick_params(length=0)`), ensuring the masked diagonal is clean pure white without tick or frame artifacts.
+     - Updated `charts/report_selected/README.md` to reflect the updated curated suite.
+- **Why**: Academic figures must maximize the data-to-ink ratio and communicate high-density empirical insights without decorative chart junk or redundant rainbow encodings.
