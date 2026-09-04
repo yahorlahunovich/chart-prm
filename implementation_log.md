@@ -610,3 +610,17 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   5. Calibrated table typography (`\footnotesize`, `\tabcolsep` between 2.5pt and 3.5pt, compact column headers) to eliminate all Overfull `\hbox` warnings completely.
   6. Verified compilation cleanly using `pdflatex` and `bibtex` to produce a 9-page ACL-compliant PDF.
 - **Why**: Satisfies the user requirement to place all selected figures and tables into the research report with clear, understandable interpretations, maintaining publication-grade typographic precision and strict compute constraint alignment.
+
+## Implementation of "The ChartPRM Framework" Methods Section in ACL Report
+- **What**:
+  1. Updated `report/acl_latex.tex` to author a dedicated ~2-page Methods section titled **"The ChartPRM Framework"**:
+     - **Structured Step-by-Step Reasoning Protocol**: Detailed the Chain-of-Thought prompting design (`Step 1:`, `Step 2:`, ..., `Final Answer:`), rollout sampling ($	au=0.7$, $N=4$), answer parsing, and structural compliance scoring (with preamble penalties).
+     - **Multimodal Step-Level Process Reward Modeling**: Formulated the `muse-spark-1.1` judge setup, input contexts (image, question, ground truth, step history, candidate step), binary step scoring ($s_t \in \{0, 1\}$), natural language critiques, and trajectory-level process reward $R(	au)$.
+     - **Preference Dataset Curation & Step Slicing**: Outlined filtering of 70 verified SFT gold traces, 134 sequence DPO pairs, 54 Step-DPO divergence suffix pairs (with prefix masking before divergence step $t^*$), and 336 unpaired KTO examples (1:3 ratio).
+     - **Preference Alignment Objectives**: Specified mathematical formulations for SFT, Full DPO ($eta=0.1$), Step-DPO suffix preference loss, KTO prospect utility, and SFT$ightarrow$DPO two-stage alignment.
+     - **Resource-Constrained Training on Single T4 GPU**: Documented 4-bit NF4 quantization, LoRA configuration ($r=16, lpha=32$), gradient checkpointing, and memory profiling (<14.2 GB VRAM) alongside Table 4.
+  2. Reserved a blank section titled **"DynamicPRM and Test-Time Verification"** with clear placeholder comments for teammate Ertugrul Taparci, positioning Table 5 (Best-of-N metrics) and Figure 2 (PRM verifier accuracy) ready for his writeup.
+  3. Cleaned premature text from other sections (Introduction, Related Work, Results, Conclusions) keeping their section headings and float anchors ready for sequential drafting.
+  4. Removed the unreadable bottom footnote from Figure 4 in `scripts/evaluation/generate_finetuning_result_charts.py`, regenerated `results_08_accuracy_vs_structure_tradeoff.png`, updated `charts/report_selected/`, and moved the bubble diameter explanation into the LaTeX caption.
+  5. Calibrated displayed equations with `amsmath`'s `align` to achieve zero Overfull `\hbox` warnings across the entire 8-page compiled PDF (`report/acl_latex.pdf`).
+- **Why**: Adheres to the user's sequential writing roadmap (Visuals -> Methods -> Results -> Intro/Discussion/Abstract), cleanly delineates authorship between teammates, and delivers publication-grade technical explanations in simple, human-written English.

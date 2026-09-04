@@ -143,17 +143,6 @@ def plot_01_overall_model_comparison(df_summary: pd.DataFrame, out_path: Path) -
     ax.grid(axis="y", linestyle="--", alpha=0.3)
     ax.legend(frameon=False, loc="upper right", ncol=2, fontsize=9.5)
 
-    # Highlight box for key takeaway
-    fig.text(
-        0.13,
-        -0.03,
-        "Key Findings: Full DPO (Instruct→DPO) achieves highest accuracy (29% exact, 30% token match).\n"
-        "SFT achieves 100% structure compliance. KTO recalls GT in 66% of texts but collapses in structured output.",
-        fontsize=9,
-        style="italic",
-        color="#333",
-    )
-
     fig.tight_layout()
     fig.savefig(out_path, dpi=300, bbox_inches="tight")
     plt.close(fig)
@@ -632,16 +621,6 @@ def plot_08_accuracy_vs_structure_tradeoff(df_summary: pd.DataFrame, out_path: P
     ax.set_xlim(8, 107)
     ax.set_ylim(20, 32.5)
     ax.grid(True, linestyle="--", alpha=0.3)
-
-    fig.text(
-        0.13,
-        -0.03,
-        "Note: Bubble diameter is proportional to Ground Truth Mention Recall in text (47% - 66%).\n"
-        "Full DPO achieves the optimal Pareto position (29% accuracy, 97.2% structure).",
-        fontsize=8.5,
-        style="italic",
-        color="#333",
-    )
 
     fig.tight_layout()
     fig.savefig(out_path, dpi=300, bbox_inches="tight")
