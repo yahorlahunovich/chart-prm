@@ -127,6 +127,14 @@ async def worker(queue, session, write_queue, semaphore, model: str):
             response_text = await call_gemini_api(session, payload, model=model)
             parsed_scores = parse_dynamic_scores(response_text)
 
+            if parsed_scores is None:
+                # Don't persist a failed call (e.g. quota exhaustion, malformed response) as
+                # "processed" -- that would permanently skip this rollout on resume even though
+                # it never got a real judge score. Leaving it unwritten means the next run (with
+                # this key or a fresh one) retries it instead of silently losing it.
+                queue.task_done()
+                continue
+
             result = {
                 "question_id": q_id,
                 "rollout_index": rollout_idx,
@@ -248,6 +256,12 @@ if __name__ == "__main__":
         help="JSON file with a 'question_ids' list to score",
     )
     parser.add_argument(
+        "--cleaned-path",
+        type=Path,
+        default=BASE_DIR / "experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl",
+        help="Cleaned rollouts jsonl (question_id, rollout_index, question, ground_truth, parsed_steps)",
+    )
+    parser.add_argument(
         "--output-path",
         type=Path,
         default=BASE_DIR / "experiments/010_dynamic_scoring_pilot/data/dynamic_scores.jsonl",
@@ -260,7 +274,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    CLEANED_PATH = BASE_DIR / "experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl"
+    CLEANED_PATH = args.cleaned_path
     TREE_PATH = BASE_DIR / "experiments/009_reward_tree/data/reward_tree.json"
     IMAGE_DIR = BASE_DIR / "data/CharXiv/images"
 
