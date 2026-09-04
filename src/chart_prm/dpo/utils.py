@@ -18,6 +18,7 @@ def sequence_logprob(
     logits: torch.Tensor,
     labels: torch.Tensor,
     label_pad_token_id: int = -100,
+    average: bool = False,
 ) -> torch.Tensor:
     """
     Computes sequence log-probability for response tokens.
@@ -28,6 +29,10 @@ def sequence_logprob(
         logits: (batch_size, seq_len, vocab_size)
         labels: (batch_size, seq_len)
         label_pad_token_id: Label value to ignore (-100)
+        average: If True, divide by the number of valid response tokens (mean
+            log-probability per token) instead of summing -- SimPO's reward
+            uses this length-normalized form instead of DPO's raw sum, which
+            is what removes DPO's bias toward longer chosen responses.
 
     Returns:
         seq_logprob: (batch_size,) sequence log-probabilities
@@ -59,6 +64,8 @@ def sequence_logprob(
     masked_logps = per_token_logps * mask.float()
     seq_logprob = masked_logps.sum(dim=-1)
 
+    if average:
+        return seq_logprob / mask.sum(dim=-1)
     return seq_logprob
 
 

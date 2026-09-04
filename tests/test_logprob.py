@@ -73,3 +73,24 @@ def test_prompt_masking_independence():
 
     # The computed response log-probability must be IDENTICAL because prompt token predictions are masked out with -100
     assert torch.allclose(logp1, logp2, atol=1e-6)
+
+
+def test_sequence_logprob_average_divides_by_response_length():
+    """
+    Test 7: average=True (SimPO's length normalization) equals the summed
+    log-probability divided by the number of unmasked response tokens.
+    """
+    logits = torch.tensor([
+        [
+            [2.0, 1.0, 0.0],
+            [0.0, 3.0, 1.0],
+            [1.0, 0.0, 4.0],
+            [0.0, 0.0, 0.0],
+        ]
+    ])
+    labels = torch.tensor([[-100, -100, 2, 0]])  # 2 valid response tokens
+
+    summed = sequence_logprob(logits, labels, average=False)
+    averaged = sequence_logprob(logits, labels, average=True)
+
+    assert torch.allclose(averaged, summed / 2, atol=1e-6)
