@@ -1,0 +1,12 @@
+{
+  "n": 100,
+  "exact_match": {
+    "simpo": {
+      "correct": 26,
+      "accuracy": 0.26
+    }
+  },
+  "extracted_answer_rate": {
+    "simpo": 1.0
+  }
+}
