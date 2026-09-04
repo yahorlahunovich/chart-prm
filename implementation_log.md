@@ -530,3 +530,11 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
      - Re-rendered all 29 charts in `charts/` and copied the 10 selected report figures into `charts/report_selected/`.
 - **Why**: The original charts suffered from inconsistent palettes, harsh saturated primaries, colliding text annotations, and ad-hoc styling across separate scripts. Adopting `SciencePlots` and Paul Tol scientific palettes guarantees conference-grade aesthetics, accessibility, and uniform branding across the paper and presentation artifacts.
 
+## Report Reference Collection & Bibliography Curation
+- **What**: Curated and verified the final bibliography for the research report in `report/custom.bib` with 15 core citations spanning:
+  1. Benchmark & Prompting: CharXiv (`wang2024charxiv`), Chain-of-Thought (`wei2022cot`), MatCha (`liu2023matcha`).
+  2. Process Reward Modeling & Judges: Let's Verify Step by Step (`lightman2023prm`), DG-PRM (`yin2024dgprm`), LLM-as-a-Judge (`zheng2023judging`), Meta Muse Spark 1.1 (`meta2026musespark`).
+  3. Alignment Algorithms: InstructGPT (`ouyang2022instructgpt`), DPO (`rafailov2023dpo`), Step-DPO (`lai2024stepdpo`), KTO (`ethayarajh2024kto`), SimPO (`meng2024simpo`).
+  4. Models & PEFT: Qwen2.5-VL (`bai2025qwen25vl`), LoRA (`hu2021lora`), QLoRA (`dettmers2023qlora`).
+  Tested compilation cleanly via `pdflatex` and `bibtex` in `report/acl_latex.tex`.
+- **Why**: Pruned extraneous benchmarks (PlotQA, MathVista, ChartQA) and unused frameworks (ReAct, ChartGemma, Math-Shepherd, VisualPRM) to keep the paper bibliography lean, relevant, and directly aligned with the project's codebase, prompt design, and empirical experiments.
