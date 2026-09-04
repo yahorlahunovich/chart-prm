@@ -77,18 +77,43 @@ def load_rollout_meta(cleaned_path: Path) -> dict[tuple[str, int], dict]:
 
 
 def main() -> None:
-    base_dir = Path(__file__).resolve().parents[2]
-    cleaned_path = base_dir / "experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl"
-    dynamic_path = base_dir / "experiments/011_dynamic_scoring_full/data/dynamic_scores.jsonl"
-    tree_path = base_dir / "experiments/009_reward_tree/data/reward_tree.json"
-    output_dir = base_dir / "experiments/014_pareto_dpo/data"
-    output_path = output_dir / "pareto_dpo_pairs.jsonl"
+    import argparse
 
-    for path in (cleaned_path, dynamic_path, tree_path):
+    base_dir = Path(__file__).resolve().parents[2]
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--cleaned-path",
+        type=Path,
+        nargs="+",
+        default=[base_dir / "experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl"],
+        help="One or more cleaned-rollout jsonl files (question_id, rollout_index, parsed_steps, ...)",
+    )
+    parser.add_argument(
+        "--dynamic-path",
+        type=Path,
+        nargs="+",
+        default=[base_dir / "experiments/011_dynamic_scoring_full/data/dynamic_scores.jsonl"],
+        help="One or more dynamic-judge-score jsonl files, matched by (question_id, rollout_index) to --cleaned-path",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=base_dir / "experiments/014_pareto_dpo/data",
+    )
+    parser.add_argument("--output-name", default="pareto_dpo_pairs.jsonl")
+    args = parser.parse_args()
+
+    tree_path = base_dir / "experiments/009_reward_tree/data/reward_tree.json"
+    output_dir = args.output_dir
+    output_path = output_dir / args.output_name
+
+    for path in [*args.cleaned_path, *args.dynamic_path, tree_path]:
         if not path.exists():
             raise FileNotFoundError(f"Missing input: {path}")
 
-    rollout_meta = load_rollout_meta(cleaned_path)
+    rollout_meta: dict[tuple[str, int], dict] = {}
+    for cleaned_path in args.cleaned_path:
+        rollout_meta.update(load_rollout_meta(cleaned_path))
     tree = json.loads(tree_path.read_text(encoding="utf-8"))
     criterion_to_parent = build_criterion_to_parent(tree)
     parent_ids = list(tree["parents"].keys())
@@ -97,38 +122,44 @@ def main() -> None:
     n_rows = 0
     n_skipped_no_meta = 0
     n_skipped_no_solution = 0
-    with dynamic_path.open(encoding="utf-8") as handle:
-        for line in handle:
-            if not line.strip():
-                continue
-            n_rows += 1
-            data = json.loads(line)
-            qid = str(data["question_id"])
-            ridx = data["rollout_index"]
-            meta = rollout_meta.get((qid, ridx))
-            if meta is None:
-                n_skipped_no_meta += 1
-                continue
+    seen_idents: set[tuple[str, int]] = set()
+    for dynamic_path in args.dynamic_path:
+        with dynamic_path.open(encoding="utf-8") as handle:
+            for line in handle:
+                if not line.strip():
+                    continue
+                n_rows += 1
+                data = json.loads(line)
+                qid = str(data["question_id"])
+                ridx = data["rollout_index"]
+                ident = (qid, ridx)
+                if ident in seen_idents:
+                    continue  # a rollout scored in more than one --dynamic-path file; keep the first
+                seen_idents.add(ident)
+                meta = rollout_meta.get(ident)
+                if meta is None:
+                    n_skipped_no_meta += 1
+                    continue
 
-            solution = reconstruct_solution(meta.get("parsed_steps") or [], meta.get("model_final_answer", ""))
-            if not solution or "Final Answer:" not in solution:
-                n_skipped_no_solution += 1
-                continue
+                solution = reconstruct_solution(meta.get("parsed_steps") or [], meta.get("model_final_answer", ""))
+                if not solution or "Final Answer:" not in solution:
+                    n_skipped_no_solution += 1
+                    continue
 
-            vector = per_parent_vector(data.get("scores") or [], criterion_to_parent, parent_ids)
-            correct = answers_match(meta.get("ground_truth", ""), meta.get("model_final_answer", ""))
+                vector = per_parent_vector(data.get("scores") or [], criterion_to_parent, parent_ids)
+                correct = answers_match(meta.get("ground_truth", ""), meta.get("model_final_answer", ""))
 
-            candidates_by_question.setdefault(qid, []).append(
-                {
-                    "solution": solution,
-                    "correct": correct,
-                    "vector": vector,
-                    "rollout_index": ridx,
-                    "question": meta.get("question", ""),
-                    "ground_truth": meta.get("ground_truth", ""),
-                    "model_final_answer": meta.get("model_final_answer", ""),
-                }
-            )
+                candidates_by_question.setdefault(qid, []).append(
+                    {
+                        "solution": solution,
+                        "correct": correct,
+                        "vector": vector,
+                        "rollout_index": ridx,
+                        "question": meta.get("question", ""),
+                        "ground_truth": meta.get("ground_truth", ""),
+                        "model_final_answer": meta.get("model_final_answer", ""),
+                    }
+                )
 
     pairs = []
     for qid, candidates in candidates_by_question.items():
