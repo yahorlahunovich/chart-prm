@@ -644,3 +644,15 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   6. Recompiled `report/acl_latex.tex` with zero Overfull `\hbox` warnings to an 8-page PDF (`report/acl_latex.pdf`).
 - **Why**: Streamlines the ChartPRM framework description to focus on core algorithmic contributions, accurately reflects API token optimizations, and adheres to user guidance.
 
+## Integration of DynamicPRM & Test-Time Verification into ChartPRM and Removal of Colab References
+- **What**:
+  1. Deleted all mentions of Google Colab from `report/acl_latex.tex` and `README.md`. Specified Kaggle exclusively (Nvidia Tesla T4 and Tesla P100 GPUs) for training and evaluation.
+  2. Integrated DynamicPRM and Test-Time Verification as explicit subsections under Section 4 ("The ChartPRM Framework"):
+     - Subsection 4.5: `DynamicPRM` (reserved for teammate Ertugrul Taparci for dynamic PRM formulation and adaptive verification).
+     - Subsection 4.6: `Test-Time Verification and Search` (reserved for teammate Ertugrul Taparci, anchoring Figure 2 and Table 5 for Best-of-N candidate search).
+  3. Updated the Section 4 overview enumeration to list all six core components of the unified ChartPRM framework (Reasoning Protocol, PRM Judge, Dataset Curation, Preference Alignment, DynamicPRM, and Test-Time Verification).
+  4. Renumbered subsequent paper sections: Section 5 ("Analysis of Reasoning Steps and Error Taxonomy"), Section 6 ("Alignment Results and Discussion"), and Section 7 ("Conclusions").
+  5. Recompiled `report/acl_latex.pdf` cleanly to 8 pages with zero Overfull `\hbox` warnings.
+- **Why**: Ensures accurate hardware reporting (no Colab usage) and establishes that test-time verification and DynamicPRM are integral components of the ChartPRM framework rather than disjoint external modules.
+
+
