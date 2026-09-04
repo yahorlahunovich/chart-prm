@@ -585,3 +585,28 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   4. Updated `charts/report_selected/` by importing `02_score_progression.png`, `prm_best_of_n_accuracy.png`, `judge_07_multilabel_cooccurrence.png`, `results_02_structure_instruction_following.png`, and `judge_05_error_taxonomy_by_domain.png`.
   5. Updated `charts/report_selected/README.md` with complete figure descriptions, LaTeX integration snippets, and table substitution references.
 - **Why**: Ensures the report stays strictly within ACL page limits while maximizing scientific rigor, replacing low-information-density plots with structured tables and establishing PRM inference-time search alongside training alignment.
+
+## Integration of Figures, Tables, and Interpretive Analysis into ACL Paper
+- **What**:
+  1. Inserted 5 publication tables into `report/acl_latex.tex`:
+     - **Table 1** (`tab:main_benchmark`): Primary holdout evaluation across base, SFT, Full DPO, Step-DPO, KTO, SFT->DPO, plus ChartGemma, SimPO, and Pareto-DPO extensions ($N=100$).
+     - **Table 2** (`tab:error_taxonomy`): 9-category PRM judge error taxonomy with counts, shares, keywords, and quotes ($N=2,920$).
+     - **Table 3** (`tab:trajectory_stats`): Trajectory verification, step-pass rates, first error locations, and cascade probabilities ($N=4,947$).
+     - **Table 4** (`tab:training_setup`): Fine-tuning configurations and training times under single-T4 GPU constraints.
+     - **Table 5** (`tab:best_of_n`): Inference-time Best-of-N PRM verification vs. majority voting and random rollouts ($N=309$).
+  2. Inserted 5 primary figure groups into the main paper body:
+     - **Figure 1** (`fig:trajectory_dynamics`): 2-panel composite of `02_score_progression.png` (accuracy cliff) and `08_error_cascade.png` (82.7% cascade failure).
+     - **Figure 2** (`fig:prm_best_of_n`): `prm_best_of_n_accuracy.png` (PRM verifier at 27.5% vs. majority voting at 21.0%).
+     - **Figure 3** (`fig:error_taxonomy`): 2-panel composite of `judge_01_error_taxonomy.png` (43.5% perceptual errors) and `judge_02_error_by_step_depth.png` (Step 0 axis bottleneck).
+     - **Figure 4** (`fig:pareto_frontier`): `results_08_accuracy_vs_structure_tradeoff.png` (Pareto frontier of accuracy vs. structure).
+     - **Figure 5** (`fig:error_modes`): `results_03_error_mode_hallucination_breakdown.png` (Holdout error composition and hallucination proxy).
+  3. Inserted 4 diagnostic figures into the Appendix:
+     - **Figure A1** (`fig:appendix_training_dynamics`): `results_04_training_dynamics_loss_rewards.png`.
+     - **Figure A2** (`fig:appendix_cooccurrence`): `judge_07_multilabel_cooccurrence.png`.
+     - **Figure A3** (`fig:appendix_structure_breakdown`): `results_02_structure_instruction_following.png`.
+     - **Figure A4** (`fig:appendix_domain_taxonomy`): `judge_05_error_taxonomy_by_domain.png`.
+  4. Authored concise, human-written interpretive narratives using simple English phrases:
+     - Focused on interpreting *why* models fail and *what* empirical trends signify (e.g., explaining why PRM beats self-consistency consensus by catching common perceptual errors early; explaining why SFT memorizes formatting at the expense of flexible reasoning).
+  5. Calibrated table typography (`\footnotesize`, `\tabcolsep` between 2.5pt and 3.5pt, compact column headers) to eliminate all Overfull `\hbox` warnings completely.
+  6. Verified compilation cleanly using `pdflatex` and `bibtex` to produce a 9-page ACL-compliant PDF.
+- **Why**: Satisfies the user requirement to place all selected figures and tables into the research report with clear, understandable interpretations, maintaining publication-grade typographic precision and strict compute constraint alignment.
