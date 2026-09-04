@@ -7,7 +7,7 @@
 
 **Alignment methods for multimodal chart reasoning under strict academic compute.**
 
-ChartPRM studies whether process-level supervision and preference alignment can improve *chart question answering* when the generator is a small vision-language model. Starting from Qwen2.5-VL-3B-Instruct, we generate explicit `Step N:` / `Final Answer:` traces on a balanced 500-question CharXiv reasoning subset, score those traces with an LLM-as-a-judge PRM, and train **SFT**, **full-trajectory DPO**, **suffix Step-DPO**, **KTO**, and **sequential SFT→DPO**. All training and holdout evaluation fit on a single T4 (Colab) or 2×T4 / 1×P100 (Kaggle).
+ChartPRM studies whether process-level supervision and preference alignment can improve *chart question answering* when the generator is a small vision-language model. Starting from Qwen2.5-VL-3B-Instruct, we generate explicit `Step N:` / `Final Answer:` traces on a balanced 500-question CharXiv reasoning subset, score those traces with an LLM-as-a-judge PRM, and train **SFT**, **full-trajectory DPO**, **suffix Step-DPO**, **KTO**, and **sequential SFT→DPO**. All training and holdout evaluation fit on Kaggle (2×T4 or 1×P100).
 
 > Descriptive CharXiv questions are out of scope. We use 500 stratified reasoning questions for training data and a disjoint 100-question holdout for evaluation.
 
@@ -235,7 +235,6 @@ uv run python scripts/evaluation/analyze_holdout_quality.py \
 
 | Setting | Device | Precision | Batch |
 | :--- | :--- | :--- | :--- |
-| Colab | 1× NVIDIA T4 16 GB | 4-bit NF4 QLoRA | 1 |
 | Kaggle preferred | 2× T4 | fp16 + LoRA, SDPA, frozen vision encoder | 1 |
 | Kaggle fallback | 1× Tesla P100 (sm_60) | Pin `torch==2.5.1+cu124`; kernels include a `--no-deps` + cuDNN fallback | 1 |
 

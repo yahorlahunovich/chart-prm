@@ -57,12 +57,14 @@ The central goal of \textbf{ChartPRM} is to verify, diagnose, and align step-by-
 
 ChartPRM decomposes this task into discrete reasoning steps, scores each step individually with a multimodal judge, and uses those step-level signals to guide preference optimization. Crucially, we also ask whether it is possible to align a compact 3B vision-language model using only a very small dataset of verified chart reasoning traces (fewer than 150 examples).
 
-In this section, we describe the four core components of the ChartPRM framework:
+In this section, we describe the core components of the ChartPRM framework:
 \begin{enumerate}[noitemsep,topsep=0pt]
     \item Structured step-by-step reasoning generation,
     \item Multimodal process reward modeling with rollout-level batching,
-    \item Preference dataset curation and divergence slicing, and
-    \item Preference alignment objectives and training setup.
+    \item Preference dataset curation and divergence slicing,
+    \item Preference alignment objectives and training setup,
+    \item DynamicPRM adaptive process reward modeling, and
+    \item Test-time verification and candidate search.
 \end{enumerate}
 
 \subsection{Structured Step-by-Step Reasoning Protocol}
@@ -155,7 +157,7 @@ SFT$\rightarrow$DPO & 134 pairs & 1 & $2\times 10^{-6}$ & 24 min \\
 \label{tab:training_setup}
 \end{table}
 
-Using the curated datasets, we align the policy model $\pi_\theta$ against a frozen reference policy $\pi_{\text{ref}}$ (the base unaligned instruct model). All models are fine-tuned under a strict 16GB VRAM budget on a single Nvidia Tesla T4 GPU (Google Colab) or an Nvidia Tesla P100 GPU (Kaggle), using 4-bit NF4 quantization \citep{dettmers2023qlora} and LoRA adapters \citep{hu2021lora} with rank $r=16$. Table~\ref{tab:training_setup} summarizes the training configurations, dataset sizes, learning rates, and wall-clock runtimes. Peak GPU memory remains under 14.2\,GB throughout training.
+Using the curated datasets, we align the policy model $\pi_\theta$ against a frozen reference policy $\pi_{\text{ref}}$ (the base unaligned instruct model). All models are fine-tuned under a strict 16GB VRAM budget on an Nvidia Tesla T4 or Tesla P100 GPU on Kaggle, using 4-bit NF4 quantization \citep{dettmers2023qlora} and LoRA adapters \citep{hu2021lora} with rank $r=16$. Table~\ref{tab:training_setup} summarizes the training configurations, dataset sizes, learning rates, and wall-clock runtimes. Peak GPU memory remains under 14.2\,GB throughout training.
 
 We investigate five alignment paradigms:
 
@@ -187,15 +189,21 @@ where $\hat{r}_\theta(x, y) = \log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(
 
 \textbf{5. Two-Stage SFT$\rightarrow$DPO:} We also evaluate a sequential pipeline where the model is first fine-tuned on verified gold traces with SFT for one epoch, and then aligned with sequence DPO using the SFT checkpoint as both the starting policy and the reference policy $\pi_{\text{ref}}$.
 
-% 5. DynamicPRM and Test-Time Verification (Reserved for Teammate Ertugrul)
-\section{DynamicPRM and Test-Time Verification}
-\label{sec:dynamic_prm}
+\subsection{DynamicPRM}
+\label{subsec:dynamic_prm}
 % =========================================================================
-% RESERVED SECTION FOR ERTUGRUL TAPARCI
-% This section is designated for:
+% RESERVED SUBSECTION FOR ERTUGRUL TAPARCI
+% This subsection is designated for:
 % 1. DynamicPRM formulation and adaptive process reward modeling.
-% 2. Test-time Best-of-N candidate search and verification protocol.
-% 3. Analysis of PRM selection vs. self-consistency majority voting.
+% =========================================================================
+
+\subsection{Test-Time Verification and Search}
+\label{subsec:test_time_verification}
+% =========================================================================
+% RESERVED SUBSECTION FOR ERTUGRUL TAPARCI
+% This subsection is designated for:
+% 1. Test-time Best-of-N candidate search and verification protocol.
+% 2. Analysis of PRM selection vs. self-consistency majority voting.
 % =========================================================================
 
 \begin{figure}[t]
@@ -224,7 +232,7 @@ Majority Vote & 21.0\% & +2.6 pp & 47.7\% \\
 \label{tab:best_of_n}
 \end{table}
 
-% 6. Analysis of Reasoning Steps and Error Taxonomy (To be written in subsequent step)
+% 5. Analysis of Reasoning Steps and Error Taxonomy (To be written in subsequent step)
 \section{Analysis of Reasoning Steps and Error Taxonomy}
 \label{sec:reasoning_analysis}
 % [Placeholder: This section will report the reasoning cliff, the 82.7% error cascade, and the 9-category error taxonomy from judge text critiques.]
@@ -322,7 +330,7 @@ Other / Unspecified & $N=215$ & 7.4\% & \textit{unspecified, error, incorrect} &
 \label{tab:error_taxonomy}
 \end{table*}
 
-% 7. Alignment Results and Discussion (To be written in subsequent step)
+% 6. Alignment Results and Discussion (To be written in subsequent step)
 \section{Alignment Results and Discussion}
 \label{sec:results}
 % [Placeholder: This section will report the 100-question holdout benchmark, the Pareto frontier trade-off between accuracy and structure, and the error mode composition.]
@@ -366,7 +374,7 @@ Pareto-DPO & Multi-Filter & 30.0\% & 31.0\% & 30.0\% & -- & 97.0\% & 4.0\% & 46.
   \label{fig:error_modes}
 \end{figure}
 
-% 8. Conclusions and Limitations (To be written in subsequent step)
+% 7. Conclusions and Limitations (To be written in subsequent step)
 \section{Conclusions}
 \label{sec:conclusions}
 % [Placeholder: Summary of primary conclusions and future directions.]
