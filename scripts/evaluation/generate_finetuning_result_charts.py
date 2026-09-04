@@ -35,18 +35,19 @@ import seaborn as sns
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from src.visualization.style import setup_plot_style, PALETTE
+from src.visualization.style import METRIC_PALETTE, PALETTE, setup_plot_style
 
 # Canonical display order and color palette for all 6 models
 MODEL_ORDER = ["Base", "SFT", "Full DPO", "Step-DPO", "KTO", "SFT→DPO"]
 MODEL_PALETTE = {
-    "Base": PALETTE.get("Base", "#7A7A7A"),
-    "SFT": PALETTE.get("SFT", "#4C78A8"),
-    "Full DPO": PALETTE.get("DPO", "#F58518"),
-    "Step-DPO": PALETTE.get("Step-DPO", "#B279A2"),
-    "KTO": PALETTE.get("KTO", "#72B7B2"),
-    "SFT→DPO": PALETTE.get("SFT-DPO", "#E45756"),
+    "Base": PALETTE.get("Base", "#777777"),
+    "SFT": PALETTE.get("SFT", "#0077BB"),
+    "Full DPO": PALETTE.get("DPO", "#EE7733"),
+    "Step-DPO": PALETTE.get("Step-DPO", "#AA4499"),
+    "KTO": PALETTE.get("KTO", "#44AA99"),
+    "SFT→DPO": PALETTE.get("SFT-DPO", "#CC3311"),
 }
+
 
 
 def load_holdout_data(
@@ -98,11 +99,12 @@ def plot_01_overall_model_comparison(df_summary: pd.DataFrame, out_path: Path) -
     df_plot = df_summary.set_index("model").reindex(MODEL_ORDER).reset_index()
 
     metrics = [
-        ("exact_official", "Official Exact-Match (%)", "#4C78A8"),
-        ("token_extracted", "Robust Token Match (%)", "#72B7B2"),
-        ("structured_correct", "Structured + Correct (%)", "#54A24B"),
-        ("gt_in_response", "GT Mentioned in Text (%)", "#F58518"),
+        ("exact_official", "Official Exact-Match (%)", METRIC_PALETTE["Official Exact-Match (%)"]),
+        ("token_extracted", "Robust Token Match (%)", METRIC_PALETTE["Robust Token Match (%)"]),
+        ("structured_correct", "Structured + Correct (%)", METRIC_PALETTE["Structured + Correct (%)"]),
+        ("gt_in_response", "GT Mentioned in Text (%)", METRIC_PALETTE["GT Mentioned in Text (%)"]),
     ]
+
 
     fig, ax = plt.subplots(figsize=(10.5, 5))
     x = np.arange(len(MODEL_ORDER))
@@ -176,7 +178,7 @@ def plot_02_structure_instruction_following(df_summary: pd.DataFrame, out_path: 
     x = np.arange(len(MODEL_ORDER))
     width = 0.16
 
-    colors = ["#4C78A8", "#54A24B", "#72B7B2", "#B279A2", "#E45756"]
+    colors = ["#0077BB", "#44AA99", "#88CCEE", "#AA4499", "#CC6677"]
 
     for i, ((col, label), color) in enumerate(zip(categories, colors)):
         offset = (i - 2) * width
@@ -223,11 +225,12 @@ def plot_03_error_mode_hallucination_breakdown(df_summary: pd.DataFrame, out_pat
     df_plot = df_summary.set_index("model").reindex(MODEL_ORDER).reset_index()
 
     components = [
-        ("token_extracted", "Correct Extracted Answer", "#54A24B"),
-        ("correct_unextracted", "Correct in text, unextracted", "#72B7B2"),
-        ("mentions_gt_wrong_commit", "Mentions GT, commits wrong", "#F58518"),
-        ("wrong_committed", "Wrong committed (Hallucination proxy)", "#E45756"),
+        ("token_extracted", "Correct Extracted Answer", "#44AA99"),
+        ("correct_unextracted", "Correct in text, unextracted", "#88CCEE"),
+        ("mentions_gt_wrong_commit", "Mentions GT, commits wrong", "#EE7733"),
+        ("wrong_committed", "Wrong committed (Hallucination proxy)", "#CC6677"),
     ]
+
 
     fig, ax = plt.subplots(figsize=(9.5, 4.8))
     y_pos = np.arange(len(MODEL_ORDER))
@@ -620,8 +623,8 @@ def plot_08_accuracy_vs_structure_tradeoff(df_summary: pd.DataFrame, out_path: P
         )
 
     # Shaded optimal quadrant
-    ax.axvspan(90, 105, color="#54A24B", alpha=0.06, zorder=1)
-    ax.text(97.5, 31.8, "High Structure Zone (≥90%)", color="#2E7D32", fontsize=9, fontweight="bold", ha="center")
+    ax.axvspan(90, 105, color="#44AA99", alpha=0.08, zorder=1)
+    ax.text(97.5, 31.8, "High Structure Zone (≥90%)", color="#117733", fontsize=9, fontweight="bold", ha="center")
 
     ax.set_title("Accuracy vs. Structural Compliance Trade-Off Across Alignment Methods", fontsize=12.5, fontweight="bold", pad=12)
     ax.set_xlabel("Instruction Following / Structure Score (%)", fontsize=11, labelpad=8)

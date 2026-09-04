@@ -39,9 +39,9 @@ import seaborn as sns
 
 # Add repository root to path for visualization imports
 sys.path.insert(0, os.path.abspath('..'))
-from src.visualization.style import setup_plot_style, PALETTE
+from src.visualization.style import setup_plot_style, PALETTE, get_eval_color
 
-# Apply NeurIPS/ICML research plotting style
+# Apply SciencePlots research plotting style
 setup_plot_style()
 
 # Ensure charts directory exists
@@ -100,23 +100,23 @@ add_md(
 )
 
 add_code(
-    """fig, ax = plt.subplots(figsize=(6, 4))
+    """fig, ax = plt.subplots(figsize=(5.5, 3.8))
 score_counts = df_steps['score'].value_counts().sort_index()
-colors = [PALETTE["ours"], PALETTE["prm"]]
+colors = [get_eval_color(0), get_eval_color(1)]
 labels = ['0 (Incorrect)', '1 (Correct)']
 
 bars = ax.bar(labels, score_counts.values, color=colors, width=0.45, edgecolor='none')
-ax.set_title('Overall Step-Level Accuracy Distribution', loc='left', pad=10)
+ax.set_title('Overall Step-Level Accuracy Distribution', loc='center', pad=10)
 ax.set_xlabel('Step Score')
 ax.set_ylabel('Count of Steps')
-ax.set_ylim(0, max(score_counts.values) * 1.15)
+ax.set_ylim(0, max(score_counts.values) * 1.18)
 
 for bar in bars:
     height = bar.get_height()
     ax.annotate(f'{int(height):,}',
                 xy=(bar.get_x() + bar.get_width() / 2, height),
                 xytext=(0, 4), textcoords='offset points',
-                ha='center', va='bottom', fontsize=9, fontweight='bold')
+                ha='center', va='bottom', fontsize=8.5, fontweight='bold')
 
 plt.savefig('../charts/01_overall_accuracy.png', dpi=300, bbox_inches='tight')
 plt.show()"""
@@ -128,7 +128,7 @@ add_md(
 )
 
 add_code(
-    """fig, ax = plt.subplots(figsize=(7, 4.2))
+    """fig, ax = plt.subplots(figsize=(6.5, 3.8))
 step_counts = df_steps['step_index'].value_counts()
 valid_steps = step_counts[step_counts > 10].index
 df_filtered = df_steps[df_steps['step_index'].isin(valid_steps)]
@@ -137,15 +137,15 @@ sns.lineplot(
     data=df_filtered,
     x='step_index',
     y='score',
-    color=PALETTE["prm"],
+    color='#0077BB',
     marker='o',
-    markersize=6,
-    linewidth=2.0,
+    markersize=5,
+    linewidth=1.8,
     errorbar=('ci', 95),
     ax=ax
 )
 
-ax.set_title('Average Score Progression by Step Index', loc='left', pad=10)
+ax.set_title('Average Score Progression by Step Index', loc='center', pad=10)
 ax.set_xlabel('Step Index')
 ax.set_ylabel('Mean Accuracy')
 ax.set_ylim(0.0, 1.0)
@@ -164,22 +164,22 @@ add_code(
     """rollout_success = df_steps.groupby(['question_id', 'rollout_index'])['score'].min().reset_index()
 rollout_success['status'] = rollout_success['score'].map({1: 'Perfect (All 1s)', 0: 'Has Errors (Min 0)'})
 
-fig, ax = plt.subplots(figsize=(6, 4))
+fig, ax = plt.subplots(figsize=(5.5, 3.8))
 status_counts = rollout_success['status'].value_counts()[['Perfect (All 1s)', 'Has Errors (Min 0)']]
-colors = [PALETTE["prm"], PALETTE["ours"]]
+colors = [get_eval_color(1), get_eval_color(0)]
 
 bars = ax.bar(status_counts.index, status_counts.values, color=colors, width=0.45)
-ax.set_title('Rollout Success Rate (Sequence Correctness)', loc='left', pad=10)
+ax.set_title('Rollout Success Rate (Sequence Correctness)', loc='center', pad=10)
 ax.set_xlabel('Rollout Status')
 ax.set_ylabel('Count of Rollouts')
-ax.set_ylim(0, max(status_counts.values) * 1.15)
+ax.set_ylim(0, max(status_counts.values) * 1.18)
 
 for bar in bars:
     height = bar.get_height()
     ax.annotate(f'{int(height):,}',
                 xy=(bar.get_x() + bar.get_width() / 2, height),
                 xytext=(0, 4), textcoords='offset points',
-                ha='center', va='bottom', fontsize=9, fontweight='bold')
+                ha='center', va='bottom', fontsize=8.5, fontweight='bold')
 
 plt.savefig('../charts/03_rollout_success.png', dpi=300, bbox_inches='tight')
 plt.show()"""
@@ -195,19 +195,19 @@ add_code(
 first_errors = errors.groupby(['question_id', 'rollout_index'])['step_index'].min().reset_index()
 err_counts = first_errors['step_index'].value_counts().sort_index()
 
-fig, ax = plt.subplots(figsize=(7, 4.2))
-bars = ax.bar(err_counts.index.astype(str), err_counts.values, color=PALETTE["dpo"], width=0.55)
-ax.set_title('Position of First Error in Failed Rollouts', loc='left', pad=10)
+fig, ax = plt.subplots(figsize=(6.5, 3.8))
+bars = ax.bar(err_counts.index.astype(str), err_counts.values, color='#CC6677', width=0.55, edgecolor='none')
+ax.set_title('Position of First Error in Failed Rollouts', loc='center', pad=10)
 ax.set_xlabel('Step Index of First Error')
 ax.set_ylabel('Count of Rollouts')
-ax.set_ylim(0, max(err_counts.values) * 1.15)
+ax.set_ylim(0, max(err_counts.values) * 1.18)
 
 for bar in bars:
     height = bar.get_height()
     ax.annotate(f'{int(height):,}',
                 xy=(bar.get_x() + bar.get_width() / 2, height),
                 xytext=(0, 4), textcoords='offset points',
-                ha='center', va='bottom', fontsize=9)
+                ha='center', va='bottom', fontsize=8.5)
 
 plt.savefig('../charts/04_first_error_position.png', dpi=300, bbox_inches='tight')
 plt.show()"""
@@ -221,18 +221,18 @@ add_md(
 add_code(
     """q_acc = df_steps.groupby('question_id')['score'].mean().reset_index()
 
-fig, ax = plt.subplots(figsize=(7, 4.2))
+fig, ax = plt.subplots(figsize=(6.5, 3.8))
 sns.histplot(
     data=q_acc,
     x='score',
     bins=15,
     kde=True,
-    color=PALETTE["sft"],
+    color='#0077BB',
     edgecolor='white',
-    linewidth=0.8,
+    linewidth=0.6,
     ax=ax
 )
-ax.set_title('Question Difficulty Distribution', loc='left', pad=10)
+ax.set_title('Question Difficulty Distribution', loc='center', pad=10)
 ax.set_xlabel('Mean Accuracy per Question')
 ax.set_ylabel('Number of Questions')
 ax.set_xlim(0.0, 1.0)
@@ -252,18 +252,18 @@ add_code(
     'total_steps': 'first'
 }).reset_index()
 
-fig, ax = plt.subplots(figsize=(7, 4.2))
+fig, ax = plt.subplots(figsize=(6.5, 3.8))
 sns.boxplot(
     data=rollout_stats,
     x='total_steps',
     y='score',
-    color=PALETTE["sft"],
+    color='#88CCEE',
     width=0.45,
-    fliersize=3,
-    linewidth=1.2,
+    fliersize=2.5,
+    linewidth=1.0,
     ax=ax
 )
-ax.set_title('Rollout Length vs. Mean Step Score', loc='left', pad=10)
+ax.set_title('Rollout Length vs. Mean Step Score', loc='center', pad=10)
 ax.set_xlabel('Total Steps in Rollout')
 ax.set_ylabel('Mean Step Score')
 ax.set_ylim(-0.05, 1.05)
@@ -280,17 +280,17 @@ add_md(
 add_code(
     """q_var = df_steps.groupby('question_id')['score'].var().fillna(0).reset_index()
 
-fig, ax = plt.subplots(figsize=(7, 4.2))
+fig, ax = plt.subplots(figsize=(6.5, 3.8))
 sns.histplot(
     data=q_var,
     x='score',
     bins=15,
-    color=PALETTE["dpo"],
+    color='#EE7733',
     edgecolor='white',
-    linewidth=0.8,
+    linewidth=0.6,
     ax=ax
 )
-ax.set_title('Step Score Variance per Question', loc='left', pad=10)
+ax.set_title('Step Score Variance per Question', loc='center', pad=10)
 ax.set_xlabel('Score Variance')
 ax.set_ylabel('Number of Questions')
 
@@ -308,8 +308,8 @@ add_code(
 df_steps_sorted['prev_score'] = df_steps_sorted.groupby(['question_id', 'rollout_index'])['score'].shift(1)
 cascade_data = df_steps_sorted.dropna(subset=['prev_score']).copy()
 
-fig, ax = plt.subplots(figsize=(7, 4.2))
-palette_cascade = {0: PALETTE["ours"], 1: PALETTE["prm"]}
+fig, ax = plt.subplots(figsize=(6.5, 3.8))
+palette_cascade = {0: get_eval_color(0), 1: get_eval_color(1)}
 
 sns.countplot(
     data=cascade_data,
@@ -318,7 +318,7 @@ sns.countplot(
     palette=palette_cascade,
     ax=ax
 )
-ax.set_title('Error Cascade Analysis (Step N+1 Score | Step N Score)', loc='left', pad=10)
+ax.set_title('Error Cascade Analysis (Step N+1 Score | Step N Score)', loc='center', pad=10)
 ax.set_xlabel('Score at Step N')
 ax.set_ylabel('Count of Steps N+1')
 ax.set_xticks([0, 1])
@@ -338,8 +338,8 @@ add_md(
 )
 
 add_code(
-    """fig, ax = plt.subplots(figsize=(6, 4))
-palette_box = {0: PALETTE["ours"], 1: PALETTE["prm"]}
+    """fig, ax = plt.subplots(figsize=(5.5, 3.8))
+palette_box = {0: get_eval_color(0), 1: get_eval_color(1)}
 
 sns.boxplot(
     data=df_steps,
@@ -349,11 +349,11 @@ sns.boxplot(
     palette=palette_box,
     legend=False,
     width=0.45,
-    fliersize=3,
-    linewidth=1.2,
+    fliersize=2.5,
+    linewidth=1.0,
     ax=ax
 )
-ax.set_title('PRM Judge Explanation Length by Step Score', loc='left', pad=10)
+ax.set_title('PRM Judge Explanation Length by Step Score', loc='center', pad=10)
 ax.set_xlabel('Step Score')
 ax.set_ylabel('Analysis Length (characters)')
 ax.set_xticks([0, 1])
@@ -372,22 +372,22 @@ add_code(
     """terminal_steps = df_steps[df_steps['step_index'] == (df_steps['total_steps'] - 1)]
 term_counts = terminal_steps['score'].value_counts().sort_index()
 
-fig, ax = plt.subplots(figsize=(6, 4))
-colors = [PALETTE["ours"], PALETTE["prm"]]
+fig, ax = plt.subplots(figsize=(5.5, 3.8))
+colors = [get_eval_color(0), get_eval_color(1)]
 labels = ['0 (Incorrect)', '1 (Correct)']
 
-bars = ax.bar(labels, term_counts.values, color=colors, width=0.45)
-ax.set_title('Terminal State (Final Step) Accuracy', loc='left', pad=10)
+bars = ax.bar(labels, term_counts.values, color=colors, width=0.45, edgecolor='none')
+ax.set_title('Terminal State (Final Step) Accuracy', loc='center', pad=10)
 ax.set_xlabel('Final Step Score')
 ax.set_ylabel('Count of Final Steps')
-ax.set_ylim(0, max(term_counts.values) * 1.15)
+ax.set_ylim(0, max(term_counts.values) * 1.18)
 
 for bar in bars:
     height = bar.get_height()
     ax.annotate(f'{int(height):,}',
                 xy=(bar.get_x() + bar.get_width() / 2, height),
                 xytext=(0, 4), textcoords='offset points',
-                ha='center', va='bottom', fontsize=9, fontweight='bold')
+                ha='center', va='bottom', fontsize=8.5, fontweight='bold')
 
 plt.savefig('../charts/10_terminal_accuracy.png', dpi=300, bbox_inches='tight')
 plt.show()"""
@@ -401,13 +401,13 @@ add_md(
 add_code(
     """cat_acc = df_steps.groupby('category')['score'].mean().sort_values(ascending=False).reset_index()
 
-fig, ax = plt.subplots(figsize=(8, 4.5))
-bars = ax.bar(cat_acc['category'], cat_acc['score'], color=PALETTE["sft"], width=0.55)
-ax.set_title('Average Reasoning Accuracy by Academic Category', loc='left', pad=10)
+fig, ax = plt.subplots(figsize=(7.5, 4.0))
+bars = ax.bar(cat_acc['category'], cat_acc['score'], color='#0077BB', width=0.55, edgecolor='none')
+ax.set_title('Average Reasoning Accuracy by Academic Category', loc='center', pad=10)
 ax.set_xlabel('Academic Category')
 ax.set_ylabel('Mean Step Score')
 ax.set_ylim(0.0, 1.0)
-plt.xticks(rotation=35, ha='right')
+plt.xticks(rotation=30, ha='right')
 
 plt.savefig('../charts/11_domain_accuracy.png', dpi=300, bbox_inches='tight')
 plt.show()"""
@@ -423,13 +423,13 @@ add_code(
 df_top_charts = df_steps[df_steps['chart_type'].isin(top_chart_types)]
 chart_acc = df_top_charts.groupby('chart_type')['score'].mean().sort_values(ascending=False).reset_index()
 
-fig, ax = plt.subplots(figsize=(9, 4.5))
-bars = ax.bar(chart_acc['chart_type'], chart_acc['score'], color=PALETTE["sft"], width=0.6)
-ax.set_title('Average Reasoning Accuracy by Chart Type (Top 15)', loc='left', pad=10)
+fig, ax = plt.subplots(figsize=(8.5, 4.2))
+bars = ax.bar(chart_acc['chart_type'], chart_acc['score'], color='#0077BB', width=0.55, edgecolor='none')
+ax.set_title('Average Reasoning Accuracy by Chart Type (Top 15)', loc='center', pad=10)
 ax.set_xlabel('Chart Type')
 ax.set_ylabel('Mean Step Score')
 ax.set_ylim(0.0, 1.0)
-plt.xticks(rotation=40, ha='right')
+plt.xticks(rotation=35, ha='right')
 
 plt.savefig('../charts/12_chart_type_accuracy.png', dpi=300, bbox_inches='tight')
 plt.show()"""
@@ -444,20 +444,20 @@ add_code(
     """recovery_cases = cascade_data[(cascade_data['prev_score'] == 0) & (cascade_data['score'] == 1)]
 print(f"Total steps that recovered from 0 to 1: {len(recovery_cases)}")
 
-fig, ax = plt.subplots(figsize=(7, 4.2))
+fig, ax = plt.subplots(figsize=(6.5, 3.8))
 if len(recovery_cases) > 0:
     rec_counts = recovery_cases['step_index'].value_counts().sort_index()
-    bars = ax.bar(rec_counts.index.astype(str), rec_counts.values, color=PALETTE["dpo"], width=0.5)
-    ax.set_title('Error Recovery Step Index (0 -> 1 Transition)', loc='left', pad=10)
+    bars = ax.bar(rec_counts.index.astype(str), rec_counts.values, color='#44AA99', width=0.5, edgecolor='none')
+    ax.set_title('Error Recovery Step Index (0 -> 1 Transition)', loc='center', pad=10)
     ax.set_xlabel('Step Index where Score became 1')
     ax.set_ylabel('Count of Occurrences')
-    ax.set_ylim(0, max(rec_counts.values) * 1.15)
+    ax.set_ylim(0, max(rec_counts.values) * 1.18)
     for bar in bars:
         height = bar.get_height()
         ax.annotate(f'{int(height)}',
                     xy=(bar.get_x() + bar.get_width() / 2, height),
                     xytext=(0, 4), textcoords='offset points',
-                    ha='center', va='bottom', fontsize=9)
+                    ha='center', va='bottom', fontsize=8.5)
 else:
     ax.text(0.5, 0.5, "No recovery cases found", ha='center', va='center')
 

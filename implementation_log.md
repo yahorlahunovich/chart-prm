@@ -510,3 +510,23 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 - **What**: Added `src/chart_prm/pareto.py` (`build_criterion_to_parent`, `per_parent_vector`, `pareto_dominates`, `build_pareto_pairs`) and `scripts/data_prep/format_pareto_dpo.py`. Scores each rollout on a 9-dimensional vector (one score per reward-tree parent category) instead of one scalar, reusing experiment 011's already-computed dynamic judge scores — no new API calls. A preference pair is kept only when the correct rollout Pareto-dominates the incorrect one: at least as good on every category, strictly better on one — filtering out pairs where the two rollouts trade off against each other on different failure axes, which would otherwise be an ambiguous DPO training signal. Same trainer (`scripts/train/train_dpo.py`), same base model and hyperparameters as the existing Full DPO run, so pair-selection method is the one isolated variable. Kaggle training/eval notebooks at `scripts/kaggle/kaggle_train_pareto_dpo/` and `scripts/kaggle/kaggle_eval_pareto_dpo/`.
 - **Why**: Completes the 3-phase DG-PRM adaptation (reward tree -> dynamic scoring -> Pareto-filtered preference pairs). Phase 2 never showed the dynamic judge beats the old one at selection accuracy, so this is a genuine, undetermined test of whether the multi-dimensional signal produces better *training* pairs even without a proven best-of-N edge.
 - **Result**: 154 pairs from 73/309 questions, built entirely locally with zero new API/GPU cost. Training and holdout evaluation are running on Kaggle as of this entry; result to be logged once complete. Added `tests/test_pareto.py` (11 tests, pure and fully testable without an API key).
+
+## Publication-Grade Chart Modernization & SciencePlots Integration
+- **What**: Overhauled the entire repository visualization pipeline using `SciencePlots` (`scienceplots==2.2.2` added via `uv add scienceplots`) and Paul Tol color-blind safe palettes:
+  1. Centralized plotting style in `src/visualization/style.py`:
+     - Built `setup_plot_style()` with `['science', 'no-latex', 'grid']` enabling publication-ready typography without requiring a system LaTeX installation on Colab/Kaggle environments.
+     - Configured TrueType Type 42 fonts, 300 DPI rasterization, and subtle neutral grids (`#E0E0E0`, alpha 0.5).
+     - Defined unified Paul Tol color palettes: `PALETTE` / `MODEL_PALETTE` (Base `#777777`, SFT `#0077BB`, DPO `#EE7733`, Step-DPO `#AA4499`, KTO `#44AA99`, SFT→DPO `#CC3311`, SimPO `#332288`, Pareto-DPO `#009988`), `EVAL_PALETTE` (Rose `#CC6677` vs Teal `#44AA99`), `TAXONOMY_PALETTE` (9 qualitative muted tones), and `METRIC_PALETTE`.
+     - Provided helper accessors: `get_model_color()`, `get_eval_color()`, `get_taxonomy_color()`.
+     - Added comprehensive unit tests in `tests/test_visualization_style.py` (all passing; 137/137 tests passing in test suite).
+  2. Refactored rollout evaluation plotting:
+     - Created standalone CLI script `scripts/evaluation/generate_rollout_charts.py` to deterministically re-generate `charts/01_*` through `charts/13_*`.
+     - Updated `scripts/tools/create_notebook.py` and regenerated `notebooks/evaluate_rollouts.ipynb` to match the exact SciencePlots styling.
+  3. Refactored judge error taxonomy plotting:
+     - Updated `scripts/evaluation/generate_judge_text_charts.py` (`judge_01_*` through `judge_08_*`) to use `TAXONOMY_PALETTE`, subtle spines, and Paul Tol teal/rose binary contrasts.
+  4. Refactored model benchmarking and ablation plotting:
+     - Updated `scripts/evaluation/generate_finetuning_result_charts.py` (`results_01_*` through `results_08_*`) with `METRIC_PALETTE`, consistent model naming, and clean figure geometries.
+  5. Synchronized `charts/report_selected/`:
+     - Re-rendered all 29 charts in `charts/` and copied the 10 selected report figures into `charts/report_selected/`.
+- **Why**: The original charts suffered from inconsistent palettes, harsh saturated primaries, colliding text annotations, and ad-hoc styling across separate scripts. Adopting `SciencePlots` and Paul Tol scientific palettes guarantees conference-grade aesthetics, accessibility, and uniform branding across the paper and presentation artifacts.
+
