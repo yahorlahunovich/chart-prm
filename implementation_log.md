@@ -706,3 +706,31 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   5. Preserved all 11 citations (`ouyang2022instructgpt`, `lightman2023prm`, `wang2024charxiv`, `bai2025qwen25vl`, `dettmers2023qlora`, `hu2021lora`, `meta2026musespark`, `zheng2023judging`, `rafailov2023dpo`, `lai2024stepdpo`, `ethayarajh2024kto`) and all 4 explicit contributions.
   6. Recompiled `report/acl_latex.pdf` cleanly with `pdflatex`, tightening total document length from 12 pages down to 11 pages.
 - **Why**: Maximizes scholarly information density, eliminates rhetorical padding, and frees layout space for experimental analyses and tables.
+
+## Figure Layout Optimization: Expanding Error Mode Composition Across Step Depth & Migrating Table 4
+- **What**:
+  1. Identified that `judge_02_error_by_step_depth.png` contains dense, critical step-by-step diagnostic information (showing error category distributions across Steps 0, 1, 2, 3, 4+) that was previously compressed into a small `0.47\textwidth` subfigure.
+  2. Expanded `judge_02_error_by_step_depth.png` into a high-visibility, full-width figure (`\begin{figure*}[t]`, `width=0.98\textwidth`) in Section 3.2 (`\label{fig:error_by_step_depth}`), allowing all category percentages, legends, and step depths to be clearly legible.
+  3. Re-cast `judge_01_error_taxonomy.png` (overall 2,920 refuted step distribution) as an elegant single-column figure (`\begin{figure}[t]`, `width=\columnwidth`, `\label{fig:taxonomy_dist}`).
+  4. Migrated redundant Table 4 (PRM Judge Error Taxonomy listing counts, shares, keywords, and excerpts) out of the main text into Appendix A as `\label{tab:appendix_error_taxonomy}`.
+  5. Updated in-text citations and figure references in `\S\ref{subsec:perceptual_bottleneck}` accordingly.
+  6. Recompiled `report/acl_latex.pdf` cleanly with `pdflatex -> bibtex -> pdflatex`. Verified that the main paper content fits within the standard ACL 8-page limit (Pages 1–8), with References on Page 9 and Appendix on Pages 10–12.
+- **Why**: Resolves figure cramping, highlights our core empirical diagnostic finding in high visual clarity, removes repetitive tabular metrics from the main text while preserving qualitative quotes in the appendix, and perfectly enforces conference page limits.
+
+## README Overhaul: Hero Visual Plots & Human-Written Polish
+- **What**:
+  1. Inserted 3 primary project figures at the very top of `README.md`:
+     - `results_08_accuracy_vs_structure_tradeoff.png`: Accuracy vs. structure Pareto frontier.
+     - `judge_02_error_by_step_depth.png`: Error mode composition across reasoning step depth.
+     - `prm_best_of_n_accuracy.png`: Test-time PRM verifier search accuracy vs. majority voting.
+  2. Deleted generic shields.io badges (Python, tests, GPU, CharXiv) to eliminate boilerplate AI slop.
+  3. Rewrote the introductory framing, key takeaways, and research questions in an authentic, direct, researcher-driven voice.
+  4. Preserved all reproduction commands, pipeline diagrams, benchmark data, and environment instructions with 100% accuracy.
+- **Why**: Immediately engages visitors with high-impact visual discoveries and provides an authentic, accessible technical narrative of what succeeded, what failed, and why.
+
+## README Visual Polish: Single-Column Full-Width Plot Formatting
+- **What**:
+  1. Re-formatted the top 3 hero plots in `README.md` from a side-by-side row layout into a vertical single-column stack.
+  2. Expanded image widths to 82–98% with clear, italicized captions underneath each plot explaining the main takeaway.
+- **Why**: Eliminates horizontal cramping on desktop/mobile displays, ensuring all axis labels, legends, and percentages are clearly readable at high resolution.
+
