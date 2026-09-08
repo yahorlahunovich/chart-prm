@@ -1,0 +1,12 @@
+{
+  "n": 30,
+  "exact_match": {
+    "sft": {
+      "correct": 13,
+      "accuracy": 0.43333333333333335
+    }
+  },
+  "extracted_answer_rate": {
+    "sft": 1.0
+  }
+}
