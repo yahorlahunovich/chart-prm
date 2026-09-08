@@ -1,0 +1,12 @@
+{
+  "n": 30,
+  "exact_match": {
+    "pareto_dpo": {
+      "correct": 18,
+      "accuracy": 0.6
+    }
+  },
+  "extracted_answer_rate": {
+    "pareto_dpo": 1.0
+  }
+}
