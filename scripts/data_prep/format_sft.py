@@ -9,6 +9,7 @@ fine-tuning (not Step-DPO fragments).
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -52,11 +53,34 @@ def reconstruct_solution(parsed_steps: list, model_final_answer: str) -> str:
     return f"{body}\nFinal Answer: {answer}"
 
 
-def main() -> None:
+def parse_args() -> argparse.Namespace:
     base_dir = Path(__file__).resolve().parents[2]
-    cleaned_path = base_dir / "experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl"
-    evals_path = base_dir / "experiments/001_500_reasoning/data/evaluated_rollouts.jsonl"
-    output_path = base_dir / "experiments/001_500_reasoning/data/sft_samples.jsonl"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--cleaned-path", type=Path,
+        default=base_dir / "experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl",
+    )
+    parser.add_argument(
+        "--evals-path", type=Path,
+        default=base_dir / "experiments/001_500_reasoning/data/evaluated_rollouts.jsonl",
+    )
+    parser.add_argument(
+        "--output-path", type=Path,
+        default=base_dir / "experiments/001_500_reasoning/data/sft_samples.jsonl",
+    )
+    parser.add_argument(
+        "--image-dir", default="data/CharXiv/images",
+        help="Relative image directory written into each sample's image_path field.",
+    )
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    cleaned_path = args.cleaned_path
+    evals_path = args.evals_path
+    output_path = args.output_path
+    image_dir = args.image_dir
 
     if not cleaned_path.exists() or not evals_path.exists():
         raise FileNotFoundError(f"Missing inputs: {cleaned_path} or {evals_path}")
@@ -99,7 +123,7 @@ def main() -> None:
                 {
                     "question_id": key[0],
                     "rollout_index": key[1],
-                    "image_path": f"data/CharXiv/images/{key[0]}.jpg",
+                    "image_path": f"{image_dir}/{key[0]}.jpg",
                     "question": meta.get("question", ""),
                     "prefix": "",
                     "solution": solution,

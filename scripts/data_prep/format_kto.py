@@ -8,20 +8,45 @@ This script processes evaluated model rollouts (from muse-spark-1.1 PRM judge) a
 Output files are saved to `experiments/001_500_reasoning/data/`.
 """
 
+import argparse
 import json
 from pathlib import Path
 import random
 
+
+def parse_args():
+    base_dir = Path(__file__).resolve().parents[2]
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--cleaned-path', type=Path,
+        default=base_dir / 'experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl',
+    )
+    parser.add_argument(
+        '--evals-path', type=Path,
+        default=base_dir / 'experiments/001_500_reasoning/data/evaluated_rollouts.jsonl',
+    )
+    parser.add_argument(
+        '--rollout-output-path', type=Path,
+        default=base_dir / 'experiments/001_500_reasoning/data/kto_samples.jsonl',
+    )
+    parser.add_argument(
+        '--step-output-path', type=Path,
+        default=base_dir / 'experiments/001_500_reasoning/data/step_kto_samples.jsonl',
+    )
+    parser.add_argument('--image-dir', default='data/CharXiv/images')
+    return parser.parse_args()
+
+
 def main():
     random.seed(42)
-    
-    base_dir = Path(__file__).resolve().parents[2]
-    cleaned_path = base_dir / 'experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl'
-    evals_path = base_dir / 'experiments/001_500_reasoning/data/evaluated_rollouts.jsonl'
-    
-    rollout_kto_path = base_dir / 'experiments/001_500_reasoning/data/kto_samples.jsonl'
-    step_kto_path = base_dir / 'experiments/001_500_reasoning/data/step_kto_samples.jsonl'
-    
+    args = parse_args()
+
+    cleaned_path = args.cleaned_path
+    evals_path = args.evals_path
+    rollout_kto_path = args.rollout_output_path
+    step_kto_path = args.step_output_path
+    image_dir = args.image_dir
+
     if not cleaned_path.exists() or not evals_path.exists():
         raise FileNotFoundError(f"Required input files not found at {cleaned_path} or {evals_path}")
 
@@ -76,7 +101,7 @@ def main():
             rollout_kto_samples.append({
                 'question_id': qid,
                 'rollout_index': ridx,
-                'image_path': f'data/CharXiv/images/{qid}.jpg',
+                'image_path': f'{image_dir}/{qid}.jpg',
                 'question': meta['question'],
                 'prefix': '',
                 'completion': meta['model_output'],
@@ -99,7 +124,7 @@ def main():
                     'question_id': qid,
                     'rollout_index': ridx,
                     'step_index': i,
-                    'image_path': f'data/CharXiv/images/{qid}.jpg',
+                    'image_path': f'{image_dir}/{qid}.jpg',
                     'question': meta['question'],
                     'prefix': prefix,
                     'completion': steps[i],

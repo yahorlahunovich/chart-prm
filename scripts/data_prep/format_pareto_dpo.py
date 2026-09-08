@@ -101,6 +101,7 @@ def main() -> None:
         default=base_dir / "experiments/014_pareto_dpo/data",
     )
     parser.add_argument("--output-name", default="pareto_dpo_pairs.jsonl")
+    parser.add_argument("--image-dir", default="data/CharXiv/images")
     args = parser.parse_args()
 
     tree_path = base_dir / "experiments/009_reward_tree/data/reward_tree.json"
@@ -167,7 +168,7 @@ def main() -> None:
             pairs.append(
                 {
                     "question_id": qid,
-                    "image_path": f"data/CharXiv/images/{qid}.jpg",
+                    "image_path": f"{args.image_dir}/{qid}.jpg",
                     "question": chosen["question"],
                     "prefix": "",
                     "chosen": chosen["solution"],

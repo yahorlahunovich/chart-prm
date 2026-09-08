@@ -1,3 +1,4 @@
+import argparse
 import json
 from pathlib import Path
 import random
@@ -66,16 +67,35 @@ def completion_suffix(steps, final_answer, start_idx):
         text = f"{text}\nFinal Answer: {answer}" if text else f"Final Answer: {answer}"
     return text
 
-def main():
+def parse_args():
     base_dir = Path(__file__).resolve().parents[2]
-    cleaned_path = base_dir / 'experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl'
-    evals_path = base_dir / 'experiments/001_500_reasoning/data/evaluated_rollouts.jsonl'
-    output_path = base_dir / 'experiments/001_500_reasoning/data/step_dpo_pairs.jsonl'
-    images_dir = base_dir / 'data/CharXiv/images'
-    
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--cleaned-path', type=Path,
+        default=base_dir / 'experiments/001_500_reasoning/data/001_500_reasoning_cleaned.jsonl',
+    )
+    parser.add_argument(
+        '--evals-path', type=Path,
+        default=base_dir / 'experiments/001_500_reasoning/data/evaluated_rollouts.jsonl',
+    )
+    parser.add_argument(
+        '--output-path', type=Path,
+        default=base_dir / 'experiments/001_500_reasoning/data/step_dpo_pairs.jsonl',
+    )
+    parser.add_argument('--image-dir', default='data/CharXiv/images')
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    cleaned_path = args.cleaned_path
+    evals_path = args.evals_path
+    output_path = args.output_path
+    image_dir = args.image_dir
+
     # Load cleaned data for ground truth and question text
     rollout_meta = {}
-    with open(cleaned_path, 'r') as f:
+    with open(cleaned_path, 'r', encoding='utf-8') as f:
         for line in f:
             data = json.loads(line)
             qid = str(data['question_id'])
@@ -93,7 +113,7 @@ def main():
     chosen_per_chart = {}
     rejected_per_chart = {}
     
-    with open(evals_path, 'r') as f:
+    with open(evals_path, 'r', encoding='utf-8') as f:
         for line in f:
             data = json.loads(line)
             qid = str(data['question_id'])
@@ -174,7 +194,7 @@ def main():
 
             pairs.append({
                 'question_id': qid,
-                'image_path': f'data/CharXiv/images/{qid}.jpg',
+                'image_path': f'{image_dir}/{qid}.jpg',
                 'question': c_meta.get('question', ''),
                 'prefix': prefix,
                 'chosen': chosen_suffix,
@@ -197,7 +217,7 @@ def main():
             
     print(f"Generated {len(pairs)} Step-DPO pairs.")
     
-    with open(output_path, 'w') as f:
+    with open(output_path, 'w', encoding='utf-8') as f:
         for p in pairs:
             f.write(json.dumps(p) + '\n')
             
