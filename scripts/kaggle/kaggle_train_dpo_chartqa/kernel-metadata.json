@@ -1,0 +1,15 @@
+{
+  "id": "ertugrultaparci/qwen-vl-dpo-chartqa",
+  "title": "qwen-vl-dpo-chartqa",
+  "code_file": "train_dpo_chartqa.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "accelerator": "gpuT4x2",
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
