@@ -1,0 +1,12 @@
+{
+  "n": 30,
+  "exact_match": {
+    "step_dpo": {
+      "correct": 11,
+      "accuracy": 0.36666666666666664
+    }
+  },
+  "extracted_answer_rate": {
+    "step_dpo": 0.8666666666666667
+  }
+}
