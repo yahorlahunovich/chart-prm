@@ -272,11 +272,18 @@ if __name__ == "__main__":
         action="store_true",
         help="Ablation only: include the answer key in the prompt (default: blind, the normal Phase 2 design)",
     )
+    parser.add_argument(
+        "--image-dir",
+        type=Path,
+        default=BASE_DIR / "data/CharXiv/images",
+        help="Directory of {question_id}.jpg images (default: CharXiv). Override for a different source "
+        "dataset, e.g. data/ChartQA/images for the cross-dataset transfer test.",
+    )
     args = parser.parse_args()
 
     CLEANED_PATH = args.cleaned_path
     TREE_PATH = BASE_DIR / "experiments/009_reward_tree/data/reward_tree.json"
-    IMAGE_DIR = BASE_DIR / "data/CharXiv/images"
+    IMAGE_DIR = args.image_dir
 
     asyncio.run(
         main_async(
