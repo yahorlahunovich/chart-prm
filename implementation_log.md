@@ -727,3 +727,10 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   3. Rewrote the introductory framing, key takeaways, and research questions in an authentic, direct, researcher-driven voice.
   4. Preserved all reproduction commands, pipeline diagrams, benchmark data, and environment instructions with 100% accuracy.
 - **Why**: Immediately engages visitors with high-impact visual discoveries and provides an authentic, accessible technical narrative of what succeeded, what failed, and why.
+
+## README Visual Polish: Single-Column Full-Width Plot Formatting
+- **What**:
+  1. Re-formatted the top 3 hero plots in `README.md` from a side-by-side row layout into a vertical single-column stack.
+  2. Expanded image widths to 82–98% with clear, italicized captions underneath each plot explaining the main takeaway.
+- **Why**: Eliminates horizontal cramping on desktop/mobile displays, ensuring all axis labels, legends, and percentages are clearly readable at high resolution.
+

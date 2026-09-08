@@ -3,12 +3,20 @@
 **Can a compact vision-language model reason through complex scientific charts when aligned with only a handful of examples?**
 
 <p align="center">
-  <img src="charts/report_selected/results_08_accuracy_vs_structure_tradeoff.png" alt="Accuracy vs Structure Tradeoff" width="49%" />
-  <img src="charts/report_selected/judge_02_error_by_step_depth.png" alt="Error Modes by Step Depth" width="49%" />
+  <img src="charts/report_selected/results_08_accuracy_vs_structure_tradeoff.png" alt="Accuracy vs Structure Tradeoff" width="92%" /><br/>
+  <em><b>1. Accuracy vs. Structure Pareto Frontier:</b> Full DPO (29.0% EM) achieves the sweet spot. SFT enforces 100% format compliance but drops accuracy to 23.0%, while KTO captures the correct answer in text 66.0% of the time but collapses structurally.</em>
 </p>
+
 <p align="center">
-  <img src="charts/report_selected/prm_best_of_n_accuracy.png" alt="PRM Best-of-N Search" width="56%" />
+  <img src="charts/report_selected/judge_02_error_by_step_depth.png" alt="Error Modes by Step Depth" width="98%" /><br/>
+  <em><b>2. Error Mode Composition by Step Depth:</b> Failures are perceptual rather than logical. Step 0 is dominated by axis misreads (78.5%), acting as poisoned premises that cause cascading downstream errors in 82.7% of cases.</em>
 </p>
+
+<p align="center">
+  <img src="charts/report_selected/prm_best_of_n_accuracy.png" alt="PRM Best-of-N Search" width="82%" /><br/>
+  <em><b>3. Test-Time PRM Verifier Search:</b> Scoring candidate rollouts with the step PRM reaches 27.5% accuracy across 309 multi-candidate questions, outperforming majority voting (21.0%) and random rollout selection (18.4%).</em>
+</p>
+
 
 ---
 
