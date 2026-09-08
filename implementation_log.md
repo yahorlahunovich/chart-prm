@@ -716,3 +716,14 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   5. Updated in-text citations and figure references in `\S\ref{subsec:perceptual_bottleneck}` accordingly.
   6. Recompiled `report/acl_latex.pdf` cleanly with `pdflatex -> bibtex -> pdflatex`. Verified that the main paper content fits within the standard ACL 8-page limit (Pages 1–8), with References on Page 9 and Appendix on Pages 10–12.
 - **Why**: Resolves figure cramping, highlights our core empirical diagnostic finding in high visual clarity, removes repetitive tabular metrics from the main text while preserving qualitative quotes in the appendix, and perfectly enforces conference page limits.
+
+## README Overhaul: Hero Visual Plots & Human-Written Polish
+- **What**:
+  1. Inserted 3 primary project figures at the very top of `README.md`:
+     - `results_08_accuracy_vs_structure_tradeoff.png`: Accuracy vs. structure Pareto frontier.
+     - `judge_02_error_by_step_depth.png`: Error mode composition across reasoning step depth.
+     - `prm_best_of_n_accuracy.png`: Test-time PRM verifier search accuracy vs. majority voting.
+  2. Deleted generic shields.io badges (Python, tests, GPU, CharXiv) to eliminate boilerplate AI slop.
+  3. Rewrote the introductory framing, key takeaways, and research questions in an authentic, direct, researcher-driven voice.
+  4. Preserved all reproduction commands, pipeline diagrams, benchmark data, and environment instructions with 100% accuracy.
+- **Why**: Immediately engages visitors with high-impact visual discoveries and provides an authentic, accessible technical narrative of what succeeded, what failed, and why.

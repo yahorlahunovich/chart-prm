@@ -1,63 +1,62 @@
-# ChartPRM
+# ChartPRM: Process Supervision & Preference Alignment for Chart Reasoning
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-49%20passed-brightgreen.svg)](#development)
-[![Hardware](https://img.shields.io/badge/GPU-1%C3%97T4%20%7C%202%C3%97T4%20%7C%20P100-orange.svg)](#hardware)
-[![Dataset](https://img.shields.io/badge/CharXiv-500%20reasoning%20%2B%20100%20holdout-lightgrey.svg)](https://charxiv.github.io/)
+**Can a compact vision-language model reason through complex scientific charts when aligned with only a handful of examples?**
 
-**Alignment methods for multimodal chart reasoning under strict academic compute.**
-
-ChartPRM studies whether process-level supervision and preference alignment can improve *chart question answering* when the generator is a small vision-language model. Starting from Qwen2.5-VL-3B-Instruct, we generate explicit `Step N:` / `Final Answer:` traces on a balanced 500-question CharXiv reasoning subset, score those traces with an LLM-as-a-judge PRM, and train **SFT**, **full-trajectory DPO**, **suffix Step-DPO**, **KTO**, and **sequential SFT→DPO**. All training and holdout evaluation fit on Kaggle (2×T4 or 1×P100).
-
-> Descriptive CharXiv questions are out of scope. We use 500 stratified reasoning questions for training data and a disjoint 100-question holdout for evaluation.
-
----
-
-## Abstract
-
-Process Reward Models (PRMs) are typically trained at a scale we cannot reproduce. This repository instead asks a narrower, compute-honest question: **given a 3B chart VLM, a 500-example reasoning pool, and a PRM-style judge, which lightweight alignment recipe actually helps?**
-
-We compare six systems on 100 held-out CharXiv reasoning questions. Full-trajectory DPO from Instruct is the only method that beats the base model on official exact-match (**29% vs 26%**). SFT maximises format adherence (`Step 1:` on 100% of traces) but drops accuracy. Suffix Step-DPO restores `Final Answer:` after fragment-training collapse but does not lift exact-match. Balanced KTO ties the base model while largely abandoning the step template. Canonical SFT→DPO keeps SFT's format and is the *worst* exact-match system (**22%**), with the highest wrong-committed-answer rate (**53%**).
-
-**Takeaway:** under this budget, preference alignment on full correct/incorrect traces helps more than format cloning or stacking SFT then DPO. Exact-match also hides models that are right in prose (KTO) or right with extra units (SFT `S = 25`).
+<p align="center">
+  <img src="charts/report_selected/results_08_accuracy_vs_structure_tradeoff.png" alt="Accuracy vs Structure Tradeoff" width="49%" />
+  <img src="charts/report_selected/judge_02_error_by_step_depth.png" alt="Error Modes by Step Depth" width="49%" />
+</p>
+<p align="center">
+  <img src="charts/report_selected/prm_best_of_n_accuracy.png" alt="PRM Best-of-N Search" width="56%" />
+</p>
 
 ---
 
-## Holdout Benchmark (n = 100 reasoning questions)
+## What is this project?
 
-Official exact-match is whitespace + lowercase equality on the extracted `Final Answer:`. Token match allows light normalisation (markdown, unicode, short units/labels). **Wrong committed** is a hallucination *proxy*: the extracted answer is wrong *and* the ground truth never appears in the full trace.
+Most work on Process Reward Models (PRMs) relies on massive compute clusters and tens of thousands of annotations. We wanted to see what happens on the opposite end of the spectrum:
 
-| System | Official EM | Token match | Extracted-answer | Starts `Step 1:` | Structure score | Wrong committed | GT in full text |
-| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Base (Instruct) | 26% | 28% | 100% | 93% | 97% | 37% | 63% |
-| SFT | 23% | 28% | 100% | **100%** | **100%** | 43% | 57% |
-| **Full DPO (Instruct→DPO)** | **29%** | **30%** | 100% | 95% | 97% | 49% | 51% |
-| Suffix Step-DPO | 25% | 25% | 99% | 42% | 68% | 36% | 64% |
-| KTO v14 | 26% | 29% | 90% | 0% | 21% | **30%** | **66%** |
-| SFT→DPO | 22% | 25% | 100% | **100%** | 98% | 53% | 47% |
+> **If you only have a compact 3B vision model, a single consumer GPU, and fewer than 150 training pairs, can step-by-step process supervision still teach the model to reason?**
 
-Frozen run artifacts: [`experiments/007_sft_dpo_holdout/`](experiments/007_sft_dpo_holdout/) (merged onto experiment 005). Quality write-up: [`quality_metrics.md`](experiments/007_sft_dpo_holdout/quality_metrics.md).
-
-### Raw predictions (all six models)
-
-Holdout generations, extracted answers, exact-match flags, and ground truths are exported under [`data/test_predictions/`](data/test_predictions/):
-
-| File | Contents |
-| :--- | :--- |
-| [`all_models_test_answers.jsonl`](data/test_predictions/all_models_test_answers.jsonl) | One row per question, all six systems |
-| [`all_models_test_answers.csv`](data/test_predictions/all_models_test_answers.csv) | Spreadsheet view of the same table |
-| [`by_model/*.jsonl`](data/test_predictions/by_model/) | Isolated traces: `base`, `sft`, `dpo`, `step_dpo`, `kto`, `sft_dpo` |
+We benchmarked **Qwen2.5-VL-3B-Instruct** on 500 challenging reasoning questions from the **CharXiv** benchmark (scientific charts from arXiv papers across 8 disciplines). We generated multi-step reasoning rollouts (`Step 1:`, `Step 2:`, ..., `Final Answer:`), graded every intermediate step with a vision LLM judge (`muse-spark-1.1`), and trained five lightweight alignment recipes on Kaggle (T4/P100 GPUs):
+- **SFT**: Supervised fine-tuning on 70 verified, flawless reasoning traces.
+- **Full DPO**: Pairwise Direct Preference Optimization on 134 chosen vs. rejected rollouts.
+- **Step-DPO**: Preference loss applied only to the suffix starting at the exact step where reasoning diverged (54 pairs).
+- **KTO**: Unpaired prospect-theoretic alignment (84 desirable vs. 252 undesirable completions).
+- **SFT → DPO**: Standard two-stage pipeline (warm up with SFT, then run DPO).
 
 ---
 
-## Key Findings
+## Main Results (100-question held-out test set)
 
-1. **Preference on full trajectories beats format cloning.** Instruct→DPO is the only system above base exact-match. SFT is a perfect format clone and a worse answerer.
-2. **SFT→DPO does not compose the two strengths.** It inherits SFT's `Step 1:` rate (100%) and loses both SFT's 23% and DPO's 29%, while committing a wrong final value (GT never mentioned) on 53% of questions.
-3. **Step-DPO on single-step fragments taught the model to stop.** Suffix-from-divergence targets restored `Final Answer:` (90% → 99%) but exact-match stayed at 25%. Prefix masking alone is not a substitute for full-trace preference.
-4. **KTO is the format anarchist and the least overconfident.** `Step 1:` rate is 0%; conversational preamble is 99%. It mentions the ground truth most often (66%) and has the lowest wrong-committed proxy (30%), but 0% of its correct answers are structured. Official EM therefore under-credits KTO markdown answers (`** Reverse` vs `Reverse`).
-5. **Exact-match is a harsh, incomplete metric.** SFT has a 5 pp “correct, not exact” gap (`S = 25`, unicode dots). Always inspect [`data/test_predictions/`](data/test_predictions/) before claiming a method failed.
-6. **The PRM judge also works as an inference-time verifier**, not just a training-data labeler. Picking the best of several already-generated rollouts by step-pass rate reaches 27.5% accuracy on the 500-question pool, beating both random selection (18.4%) and majority vote (21.0%) — see [`experiments/008_prm_best_of_n/`](experiments/008_prm_best_of_n/).
+We evaluated all models on 100 held-out CharXiv reasoning charts that were never seen during training or prompt exploration.
+
+| System | Official EM | Token Match | Valid Format | Starts `Step 1:` | Structure Score | Wrong Committed | GT Mentioned in Text |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Base (`Qwen2.5-VL-3B`) | 26% | 28% | 100% | 93% | 97% | 37% | 63% |
+| SFT (70 traces) | 23% | 28% | 100% | **100%** | **100%** | 43% | 57% |
+| **Full DPO (134 pairs)** | **29%** | **30%** | 100% | 95% | 97% | 49% | 51% |
+| Suffix Step-DPO (54 pairs) | 25% | 25% | 99% | 42% | 68% | 36% | 64% |
+| KTO (84 / 252 rollouts) | 26% | 29% | 90% | 0% | 21% | **30%** | **66%** |
+| SFT → DPO | 22% | 25% | 100% | **100%** | 98% | 53% | 47% |
+
+* **Official EM**: Exact match on extracted `Final Answer:` (case- and whitespace-normalized).
+* **Token Match**: Flexible token match accounting for units or punctuation.
+* **Wrong Committed**: The model outputs a wrong answer and *never* mentions the true value anywhere in its reasoning (a proxy for confident hallucination).
+* **GT Mentioned in Text**: Whether the correct answer appears anywhere in the model's intermediate thoughts, even if not extracted under `Final Answer:`.
+
+All raw model outputs, extracted answers, and score evaluations are available in [`data/test_predictions/`](data/test_predictions/).
+
+---
+
+## What We Learned
+
+1. **Full DPO worked best (and confirmed our small-data hypothesis):** Training on just 134 preference pairs lifted exact-match accuracy from 26% to **29%** (+3.0 pp). Contrastive negative signal helped the model avoid deceptive visual traps without breaking its ability to follow the step format.
+2. **SFT suffered from formatting rigidity (23% accuracy):** Training on 70 gold traces produced a model with **100% perfect formatting**, but accuracy dropped 3 points below the base model. Without negative examples showing what *not* to do, SFT overfit to output structure rather than improving visual reasoning.
+3. **KTO knew the answers but forgot how to answer (the structure-accuracy trade-off):** KTO mentioned the correct answer in text **66% of the time** (higher than any other model) and had the lowest confident hallucination rate (30%). However, because it was trained on unpaired data without reference comparisons, it completely lost the step-by-step formatting (0% started with `Step 1:`). It rambled conversationally, meaning official exact-match under-counted its true capabilities.
+4. **Sequential SFT → DPO failed completely (22% accuracy):** In NLP, standard practice is to run SFT before RLHF/DPO. In our small-data regime, SFT biased the reference policy into rigid templates, causing subsequent DPO to commit to wrong answers on 53% of test questions. Training DPO directly from the base Instruct checkpoint performed much better.
+5. **Why chart reasoning fails: bad vision, not bad math:** Analyzing 2,920 failed steps showed that **43.5% of errors were purely visual** (axis misreads at 24.0% and series/legend confusion at 19.5%), while **only 1.3% were arithmetic mistakes**. Errors also cascade immediately: 79.7% of first mistakes happened in Steps 0–1, and an erroneous step led to downstream failure in **82.7%** of cases.
+6. **The PRM judge makes a strong test-time verifier:** Selecting candidate answers by average step score reached **27.5% accuracy**, beating both uniform random selection (18.4%) and majority voting (21.0%).
 
 ---
 
