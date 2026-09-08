@@ -696,3 +696,13 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   3. Created an architectural planning artifact in `introduction_plan.md`.
   4. Executed full `pdflatex -> bibtex -> pdflatex -> pdflatex` cycle, compiling `report/acl_latex.pdf` cleanly with all references properly linked.
 - **Why**: Sets the foundational motivation, core scientific hypothesis, and structural roadmap for the paper in full accordance with ACL formatting guidelines.
+
+## Introduction Section Compression (High Information Density)
+- **What**:
+  1. Compressed the Introduction section in `report/acl_latex.tex` by ~45% (from ~780 words down to ~430 words) while strictly retaining 100% of information.
+  2. Preserved all empirical numbers (500 reasoning questions, 62 chart types, 8 disciplines, single 16GB T4 GPU, 4-bit LoRA, 1,274 rollouts, 4,947 steps, 2,920 refuted steps, 43.5% perceptual vs. 1.3% arithmetic, 79.7% errors in Steps 0–1, 82.7% cascade rate).
+  3. Preserved all model and benchmark names (`CharXiv`, `Qwen2.5-VL-3B-Instruct`, `muse-spark-1.1`).
+  4. Preserved all 5 alignment comparisons (SFT 70 traces / 23%, Full DPO 134 pairs / 29%, Step-DPO 54 pairs, KTO 84/252 samples / 66% latent recall).
+  5. Preserved all 11 citations (`ouyang2022instructgpt`, `lightman2023prm`, `wang2024charxiv`, `bai2025qwen25vl`, `dettmers2023qlora`, `hu2021lora`, `meta2026musespark`, `zheng2023judging`, `rafailov2023dpo`, `lai2024stepdpo`, `ethayarajh2024kto`) and all 4 explicit contributions.
+  6. Recompiled `report/acl_latex.pdf` cleanly with `pdflatex`, tightening total document length from 12 pages down to 11 pages.
+- **Why**: Maximizes scholarly information density, eliminates rhetorical padding, and frees layout space for experimental analyses and tables.
