@@ -1,0 +1,90 @@
+{
+  "base": {
+    "n": 30,
+    "exact_official_pct": 43.333333333333336,
+    "token_match_pct": 60.0,
+    "structure_score_pct": 100.0,
+    "starts_step1_pct": 100.0,
+    "has_preamble_pct": 0.0,
+    "recall_gt_in_text_pct": 66.66666666666667,
+    "wrong_committed_pct": 33.333333333333336,
+    "no_answer_pct": 0.0
+  },
+  "sft": {
+    "n": 30,
+    "exact_official_pct": 43.333333333333336,
+    "token_match_pct": 56.666666666666664,
+    "structure_score_pct": 100.0,
+    "starts_step1_pct": 100.0,
+    "has_preamble_pct": 0.0,
+    "recall_gt_in_text_pct": 63.333333333333336,
+    "wrong_committed_pct": 36.666666666666664,
+    "no_answer_pct": 0.0
+  },
+  "dpo": {
+    "n": 30,
+    "exact_official_pct": 40.0,
+    "token_match_pct": 50.0,
+    "structure_score_pct": 73.33333333333333,
+    "starts_step1_pct": 40.0,
+    "has_preamble_pct": 46.666666666666664,
+    "recall_gt_in_text_pct": 63.333333333333336,
+    "wrong_committed_pct": 33.333333333333336,
+    "no_answer_pct": 3.3333333333333335
+  },
+  "step_dpo": {
+    "n": 30,
+    "exact_official_pct": 36.666666666666664,
+    "token_match_pct": 46.666666666666664,
+    "structure_score_pct": 59.333333333333336,
+    "starts_step1_pct": 33.333333333333336,
+    "has_preamble_pct": 56.666666666666664,
+    "recall_gt_in_text_pct": 63.333333333333336,
+    "wrong_committed_pct": 33.333333333333336,
+    "no_answer_pct": 6.666666666666667
+  },
+  "kto": {
+    "n": 30,
+    "exact_official_pct": 36.666666666666664,
+    "token_match_pct": 50.0,
+    "structure_score_pct": 32.66666666666667,
+    "starts_step1_pct": 0.0,
+    "has_preamble_pct": 86.66666666666667,
+    "recall_gt_in_text_pct": 66.66666666666667,
+    "wrong_committed_pct": 23.333333333333332,
+    "no_answer_pct": 10.0
+  },
+  "simpo": {
+    "n": 30,
+    "exact_official_pct": 43.333333333333336,
+    "token_match_pct": 60.0,
+    "structure_score_pct": 100.0,
+    "starts_step1_pct": 100.0,
+    "has_preamble_pct": 0.0,
+    "recall_gt_in_text_pct": 66.66666666666667,
+    "wrong_committed_pct": 33.333333333333336,
+    "no_answer_pct": 0.0
+  },
+  "pareto_dpo": {
+    "n": 30,
+    "exact_official_pct": 60.0,
+    "token_match_pct": 73.33333333333333,
+    "structure_score_pct": 100.0,
+    "starts_step1_pct": 100.0,
+    "has_preamble_pct": 0.0,
+    "recall_gt_in_text_pct": 73.33333333333333,
+    "wrong_committed_pct": 26.666666666666668,
+    "no_answer_pct": 0.0
+  },
+  "sft_dpo": {
+    "n": 30,
+    "exact_official_pct": 40.0,
+    "token_match_pct": 53.333333333333336,
+    "structure_score_pct": 98.66666666666667,
+    "starts_step1_pct": 100.0,
+    "has_preamble_pct": 0.0,
+    "recall_gt_in_text_pct": 60.0,
+    "wrong_committed_pct": 40.0,
+    "no_answer_pct": 0.0
+  }
+}
