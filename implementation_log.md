@@ -683,6 +683,16 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   4. Executed full `pdflatex -> bibtex -> pdflatex -> pdflatex` compilation cycle. Verified via PDF inspection that all 15 references are rendered completely and cleanly on Page 9.
 - **Why**: Preserves complete scholarly attribution for all 15 cited works across benchmarks, models, judges, and alignment algorithms.
 
-
-
-
+## Introduction Section Authoring & Small-Data Alignment Hypothesis Formulation
+- **What**:
+  1. Formulated and drafted an academic, ~1-page Introduction section in `report/acl_latex.tex` replacing the placeholder under `\section{Introduction}`.
+  2. Planned the structure comprehensively across 6 logical units:
+     - The credit-assignment bottleneck in multimodal chart reasoning under sparse outcome supervision (ORMs).
+     - The central research hypothesis: *Can a compact vision-language model reason effectively over complex scientific charts if aligned with only a small, process-supervised dataset?*
+     - The empirical grounding on the CharXiv benchmark (stratified 500 reasoning questions across 62 chart types) and base model `Qwen2.5-VL-3B-Instruct` operating under a single 16GB Nvidia T4 budget (4-bit LoRA).
+     - Empirical diagnostic insights from 2,920 refuted steps: the perceptual bottleneck (43.5% axis/legend errors vs. 1.3% arithmetic errors) and catastrophic error cascading (79.7% of initial failures in Steps 0–1; 82.7% downstream failure rate).
+     - Benchmarking five alignment methods (SFT, Full DPO, Step-DPO, KTO, SFT$\rightarrow$DPO) confirming the small-data hypothesis (Full DPO achieving 29% exact-match on 134 pairs vs. 23% for SFT) and characterizing the accuracy vs. structure Pareto trade-off.
+     - Four explicit, bulleted scholarly contributions.
+  3. Created an architectural planning artifact in `introduction_plan.md`.
+  4. Executed full `pdflatex -> bibtex -> pdflatex -> pdflatex` cycle, compiling `report/acl_latex.pdf` cleanly with all references properly linked.
+- **Why**: Sets the foundational motivation, core scientific hypothesis, and structural roadmap for the paper in full accordance with ACL formatting guidelines.
