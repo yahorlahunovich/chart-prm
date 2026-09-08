@@ -1,0 +1,12 @@
+{
+  "n": 30,
+  "exact_match": {
+    "kto": {
+      "correct": 11,
+      "accuracy": 0.36666666666666664
+    }
+  },
+  "extracted_answer_rate": {
+    "kto": 0.8333333333333334
+  }
+}
