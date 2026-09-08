@@ -1,0 +1,17 @@
+{
+  "id": "ertugrultaparci/qwen-vl-sft-dpo-chartqa-holdout",
+  "title": "qwen-vl-sft-dpo-chartqa-holdout",
+  "code_file": "evaluate_sft_dpo_chartqa_holdout.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "accelerator": "gpuT4x2",
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": [
+    "ertugrultaparci/chartqa-sft-dpo-adapter"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}
