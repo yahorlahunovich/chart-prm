@@ -1,0 +1,15 @@
+{
+  "id": "ertugrultaparci/qwen-vl-sft-dpo-chartqa",
+  "title": "qwen-vl-sft-dpo-chartqa",
+  "code_file": "train_sft_dpo_chartqa.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "accelerator": "gpuT4x2",
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": ["ertugrultaparci/chartqa-sft-adapter"],
+  "competition_sources": [],
+  "kernel_sources": []
+}
