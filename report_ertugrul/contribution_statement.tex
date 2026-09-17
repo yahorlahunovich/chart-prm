@@ -1,0 +1,96 @@
+\documentclass[11pt]{article}
+
+% ---------- Packages ----------
+\usepackage[margin=1.9cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+\usepackage{hyperref}
+
+% ---------- Palette ----------
+\definecolor{accent}{HTML}{1D4E89}   % deep academic blue
+\definecolor{accent2}{HTML}{2E9E83}  % teal for the AI box
+\definecolor{todored}{HTML}{C0392B}
+
+\newcommand{\todo}[1]{\textcolor{todored}{\textit{[#1]}}}
+\newcommand{\contribhead}[2]{%
+  {\bfseries\color{accent}\large #1\ #2}\\[1pt]
+  {\color{accent}\rule{\linewidth}{1.1pt}}\\[4pt]%
+}
+
+\setlist[itemize]{leftmargin=1.2em, itemsep=1pt, topsep=1pt, partopsep=0pt}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+\hypersetup{colorlinks=true, linkcolor=accent, urlcolor=accent, pdftitle={Contribution Statement -- ChartPRM}}
+
+\pagestyle{empty}
+
+\begin{document}
+
+% ---------- Header ----------
+\begin{center}
+  {\LARGE\bfseries\color{accent} Contribution Statement}\\[0.25em]
+  {\large ChartPRM: Process Reward Modeling and Step-Level Preference Optimization\\ for Complex Multimodal Chart Reasoning}\\[0.4em]
+  {\small\itshape Process Reward Modelling Seminar \textbullet\ University of Heidelberg \textbullet\ \today}
+\end{center}
+
+\vspace{0.3em}
+{\color{accent}\hrule height 1.4pt}
+\vspace{0.6em}
+
+% ---------- Team block ----------
+\noindent
+\begin{tabular}{@{}p{0.48\textwidth}p{0.48\textwidth}@{}}
+  {\bfseries\faUser\ Yahor Lahunovich} & {\bfseries\faUser\ Ertugrul Taparci} \\[2pt]
+  \small University of Heidelberg, Warsaw Univ.\ of Technology & \small University of Heidelberg \\
+  \small Matriculation No.\ \todo{FILL IN} & \small Matriculation No.\ 4756036 \\
+\end{tabular}
+
+\vspace{0.5em}
+\noindent\textbf{\faInfoCircle\ Both team members contributed meaningfully to this project.} Responsibilities and completed tasks are listed below.
+
+\vspace{0.6em}
+
+% ---------- Two-column contributions ----------
+\noindent
+\begin{minipage}[t]{0.485\textwidth}
+\contribhead{Yahor Lahunovich}{\faCogs}
+\small
+Built the core ChartPRM pipeline on \textbf{CharXiv} and authored the majority of the report.
+\begin{itemize}
+  \item Curated and stratified the 500-question CharXiv reasoning pool (8 domains, 62 chart types) and the 100-question holdout.
+  \item Built the structured chain-of-thought rollout generation protocol for \texttt{Qwen2.5-VL-3B-Instruct}.
+  \item Integrated the \texttt{muse-spark-1.1} multimodal LLM-as-judge with rollout-level batching.
+  \item Built the preference-dataset curation and training pipelines for SFT, Full DPO, Step-DPO, KTO, and SFT$\rightarrow$DPO.
+  \item Ran and evaluated all five systems on the CharXiv holdout.
+  \item Built the visualization and figure-generation system used throughout the report.
+  \item Co-authored and revised the project report throughout, including writing, structure, and the bibliography.
+\end{itemize}
+\vspace{2pt}
+\todo{Yahor -- please revise this to your own words and add your own AI-assistance disclosure, if any (\texttt{.cursorrules}/\texttt{.agents/AGENTS.md} list Cursor, Gemini, Claude, and Antigravity as intended tools from early on).}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.485\textwidth}
+\contribhead{Ertugrul Taparci}{\faFlask}
+\small
+Presented Yin et al.'s \textit{Dynamic and Generalizable Process Reward Modeling} (DG-PRM) for the seminar and directed its adaptation, plus a cross-dataset study.
+\begin{itemize}
+  \item Directed the reward-tree construction: 33 scored criteria under 9 categories, from clustered judge critiques.
+  \item Directed the dynamic multi-criteria judge (scored via \texttt{gemini-3.5-flash-lite}, distinct from the \texttt{muse-spark-1.1} binary judge) and Pareto-dominance-filtered pair selection for DPO (\textbf{Pareto-DPO}).
+  \item Directed the reference-free \textbf{SimPO} baseline implementation.
+  \item Directed the ChartGemma specialist-baseline and oracle-ceiling diagnostic experiments.
+  \item Designed and ran the cross-dataset generalization test on \textbf{ChartQA}: sampling, rollout generation, unmodified reward-tree transfer, and retraining/evaluating all seven methods on a 30-question holdout.
+  \item Authored the DynamicPRM, Test-Time Verification and Search, and Cross-Dataset Generalization (ChartQA) sections, and their tables/figures; also revised the Abstract, Introduction, and ChartPRM Framework as the project's scope grew to two benchmarks and seven methods.
+  \item \textbf{AI usage summary:} Used \textbf{Claude Code} (Anthropic) as an AI coding agent for essentially all of the code and analysis above (reward tree, dynamic judge, SimPO, ChartQA pipeline) and for drafting my report sections. I directed every experiment (what to try, when to pivot), set the evidentiary bar (e.g., requiring bootstrap significance tests before claiming a win), and personally verified and interpreted all results before they went into the report.
+\end{itemize}
+\end{minipage}
+
+\vspace{1.1em}
+\noindent{\small\itshape Both authors confirm this statement accurately reflects their respective contributions to the ChartPRM project.}
+
+\end{document}
