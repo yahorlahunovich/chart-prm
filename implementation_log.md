@@ -764,3 +764,22 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Update Contribution Statement Matriculation Number
 - **What**: Updated Yahor Lahunovich's matriculation number from placeholder `\todo{FILL IN}` to `4767836` in `report/contribution_statement.tex` and recompiled `report/contribution_statement.pdf`.
 - **Why**: Replaced placeholder with official university student ID for seminar submission.
+
+## Strict 8-Page Conference Limit Compression & Publication Polish
+- **What**:
+  1. Compressed the main body of `report/acl_latex.tex` from 11 pages down to **strictly 8 pages**, with References beginning at Page 9 and Appendices on Pages 10–14:
+     - Relocated auxiliary duplicate Figure 4 (`chartqa_01_overall_comparison.png`) from §3.5 into Appendix B, while retaining high-impact Figure 5 (`chartqa_03_accuracy_vs_structure_tradeoff.png`) with non-overlapping labels in the main text.
+     - Condensed Section 1: Inlined the two diagnostic findings and formatted the 7 contributions into a high-density, flowing list.
+     - Condensed Section 2: Inlined Section 2 overview; inlined prompt constraints and moved raw prompt template to Appendix B; streamlined judge input/output specifications; unified the 7 alignment objectives into two dense paragraphs; condensed DynamicPRM text and forward-referenced §3.5.
+     - Condensed Section 3: Tightened reasoning trajectory dynamics (§3.1), perceptual bottleneck analysis (§3.2), CharXiv alignment benchmark narrative (§3.3), and flattened the 4-item Pareto frontier list into flowing analytical prose (§3.4).
+     - Condensed Section 3.5: Streamlined ChartQA experimental setup, benchmark results, and transfer mechanism into 3 punchy, simple-English paragraphs.
+     - Added a crisp, impactful `\section{Conclusions}` and unnumbered `\section*{Limitations}` at the bottom of Page 8.
+     - Fixed duplicate LaTeX labels and removed redundant `\renewcommand{\thesection}` in the appendix to ensure clean "Appendix A/B" cross-references.
+  2. Preserved 100% of scientific context, experimental numbers, benchmark metrics (all 7 methods on CharXiv $N=100$ and ChartQA $N=30$), and mathematical formulations.
+  3. Maintained publication-grade visual balance across every page pair:
+     - Page 5: Figure 1 (Cliff & Cascade) + Figure 2 (Taxonomy Distribution).
+     - Page 6: Table 3 (CharXiv Benchmark) + Figure 3 (CharXiv Pareto Frontier).
+     - Page 7: Figure 4 (ChartQA Pareto Trade-off) + Table 4 (ChartQA Benchmark).
+     - Table 1 (Alignment Hyperparameters) and Table 2 (Test-Time Verifier Performance) embedded inline in Sections 2.4 and 2.6.
+  4. Verified full compilation: `pdflatex -> bibtex -> pdflatex -> pdflatex` completed with 0 errors, 0 undefined citations/references, and 71/71 regression tests passed.
+- **Why**: Strictly complies with conference page length constraints (8 pages maximum for the main body) while preserving scientific rigor, rich visual storytelling, and readable simple English.
