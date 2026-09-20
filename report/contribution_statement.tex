@@ -8,7 +8,7 @@
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{tcolorbox}
-\usepackage{fontawesome5}
+\IfFileExists{fontawesome5.sty}{\usepackage{fontawesome5}}{\newcommand{\faUser}{}\newcommand{\faInfoCircle}{}}
 \usepackage{hyperref}
 
 % ---------- Palette ----------

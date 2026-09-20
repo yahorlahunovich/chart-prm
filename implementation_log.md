@@ -734,3 +734,18 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   2. Expanded image widths to 82–98% with clear, italicized captions underneath each plot explaining the main takeaway.
 - **Why**: Eliminates horizontal cramping on desktop/mobile displays, ensuring all axis labels, legends, and percentages are clearly readable at high resolution.
 
+## Full Project Integration & Collaborative Pull Request Preparation
+- **What**:
+  1. Integrated Ertuğrul Taparcı's major research contributions into the primary codebase and unified report:
+     - Merged DG-PRM framework adaptation: 33-criteria hierarchical reward tree, dynamic multi-criteria LLM-as-a-judge (`gemini-3.5-flash-lite`), and Pareto-dominance filtered preference dataset curation.
+     - Merged full 7-method alignment benchmark (SFT, Full DPO, Step-DPO, KTO, SFT→DPO, SimPO, and Pareto-DPO) and test-time best-of-$N$ verification analysis.
+     - Merged ChartQA cross-dataset transfer study ($N=30$ holdout) demonstrating generalizability of the unmodified reward tree and Pareto-DPO achieving 60.0% exact-match (+16.7 pp over 43.3% base).
+  2. Implemented `scripts/evaluation/generate_chartqa_charts.py` adhering to `src/visualization/style.py` (SciencePlots & Paul Tol palettes) and generated publication-ready figures `charts/chartqa/chartqa_01_overall_comparison.png` and `charts/chartqa/chartqa_03_accuracy_vs_structure_tradeoff.png`.
+  3. Integrated `report_ertugrul/acl_latex.tex` and `report_ertugrul/custom.bib` into `report/`, eliminating isolated folder duplication (`report_ertugrul/`).
+  4. Added and compiled `report/contribution_statement.tex` with robust environment fallbacks, generating `report/contribution_statement.pdf`.
+  5. Compiled complete paper `report/acl_latex.pdf` via full `pdflatex -> bibtex -> pdflatex -> pdflatex` sequence with 0 errors and all figures/citations linked.
+  6. Verified all 137 unit and integration tests (`pytest`) and 71/71 bibliography regression tests pass.
+  7. Created and pushed collaborative feature branch `feature/integrate-ertugrul-contributions` to GitHub for line-by-line pull request review.
+- **Why**: Unifies the entire project into a cohesive, production-grade deliverable, eliminates directory divergence, enables formal GitHub PR peer review between both team members, and ensures immediate visual access to all experimental discoveries.
+
+
