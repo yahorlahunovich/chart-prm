@@ -761,5 +761,6 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   6. Recompiled `report/acl_latex.pdf` cleanly with 0 errors/warnings via `pdflatex -> bibtex -> pdflatex`, tightening the main body and pulling References forward to Page 12.
 - **Why**: Eliminates visual clutter and text overlap in publication figures, removes redundant tabular and graphical representations of identical data points, and steadily compresses the report toward the strict 8-page conference limit.
 
-
-
+## Update Contribution Statement Matriculation Number
+- **What**: Updated Yahor Lahunovich's matriculation number from placeholder `\todo{FILL IN}` to `4767836` in `report/contribution_statement.tex` and recompiled `report/contribution_statement.pdf`.
+- **Why**: Replaced placeholder with official university student ID for seminar submission.
