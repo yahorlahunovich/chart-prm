@@ -84,25 +84,34 @@ def plot_overall_comparison(data: dict, out_path: Path) -> None:
 
 def plot_accuracy_vs_structure(data: dict, out_path: Path) -> None:
     setup_plot_style()
-    fig, ax = plt.subplots(figsize=(8.5, 5.2))
+    fig, ax = plt.subplots(figsize=(9.5, 5.5))
 
     offsets = {
-        "Base": (-8.0, 0.0),
-        "SFT": (0.0, 2.5),
-        "Full DPO": (0.0, -3.0),
-        "Step-DPO": (-6.0, -2.5),
-        "KTO": (0.0, 2.5),
-        "SFT→DPO": (7.0, -2.0),
-        "SimPO": (0.0, -3.0),
-        "Pareto-DPO": (0.0, 2.5),
+        "Pareto-DPO": (0.0, 3.8),
+        "SFT": (-12.5, 5.5),
+        "Base": (-12.5, -4.5),
+        "SimPO": (12.0, 5.5),
+        "SFT→DPO": (12.0, -4.5),
+        "Full DPO": (0.0, -3.8),
+        "Step-DPO": (0.0, 3.5),
+        "KTO": (0.0, 3.5),
+    }
+
+    jitters = {
+        "Base": (-0.35, 0.0),
+        "SFT": (0.0, 0.0),
+        "SimPO": (0.35, 0.0),
     }
 
     models = [m for m in MODEL_ORDER if m in data]
     for m in models:
         disp = DISPLAY_NAMES[m]
         color = get_model_color(disp)
-        x_val = data[m]["structure_score_pct"]
-        y_val = data[m]["exact_official_pct"]
+        jx, jy = jitters.get(disp, (0.0, 0.0))
+        x_val = data[m]["structure_score_pct"] + jx
+        y_val = data[m]["exact_official_pct"] + jy
+        raw_x = data[m]["structure_score_pct"]
+        raw_y = data[m]["exact_official_pct"]
         recall = data[m]["recall_gt_in_text_pct"]
         size = recall * 5.0
 
@@ -110,23 +119,23 @@ def plot_accuracy_vs_structure(data: dict, out_path: Path) -> None:
 
         dx, dy = offsets.get(disp, (0, 2.0))
         ax.annotate(
-            f"{disp}\n({y_val:.0f}% Acc, {x_val:.0f}% Struct)",
+            f"{disp}\n({raw_y:.0f}% Acc, {raw_x:.0f}% Struct)",
             xy=(x_val, y_val),
-            xytext=(x_val + dx, y_val + dy),
-            fontsize=8,
+            xytext=(raw_x + dx, raw_y + dy),
+            fontsize=8.5,
             fontweight="bold",
             ha="center",
             va="center",
             bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor=color, alpha=0.92, linewidth=1.1),
-            arrowprops=dict(arrowstyle="->", color=color, lw=0.9, alpha=0.7) if (dx != 0 or dy != 0) else None,
+            arrowprops=dict(arrowstyle="->", color=color, lw=1.0, alpha=0.8) if (dx != 0 or dy != 0) else None,
             zorder=5,
         )
 
-    ax.set_title("ChartQA Holdout: Exact-Match Accuracy vs. Structural Compliance", fontsize=11.5, fontweight="bold", pad=12)
+    ax.set_title("ChartQA Holdout: Exact-Match Accuracy vs. Structural Compliance", fontsize=12, fontweight="bold", pad=12)
     ax.set_xlabel("Instruction-Following & Structural Compliance Score (%)", fontsize=10.5)
     ax.set_ylabel("Official Exact-Match Accuracy (%)", fontsize=10.5)
-    ax.set_xlim(25, 108)
-    ax.set_ylim(25, 75)
+    ax.set_xlim(22, 118)
+    ax.set_ylim(24, 74)
     ax.grid(True, linestyle="--", alpha=0.3)
 
     fig.tight_layout()

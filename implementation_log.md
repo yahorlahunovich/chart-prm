@@ -748,4 +748,18 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   7. Created and pushed collaborative feature branch `feature/integrate-ertugrul-contributions` to GitHub for line-by-line pull request review.
 - **Why**: Unifies the entire project into a cohesive, production-grade deliverable, eliminates directory divergence, enables formal GitHub PR peer review between both team members, and ensures immediate visual access to all experimental discoveries.
 
+## Report Layout Optimization: Figure 8 Collision Fix & Float Migrations
+- **What**:
+  1. Resolved label collisions in Figure 8 (`charts/chartqa/chartqa_03_accuracy_vs_structure_tradeoff.png`):
+     - Designed symmetrical 2x2 quadrant callouts for the cluster at 100% structure compliance (SFT top-left, Base bottom-left, SimPO top-right, SFT$\rightarrow$DPO bottom-right).
+     - Applied subtle horizontal bubble jitter ($\pm 0.35\%$) to make coincident points (Base, SFT, SimPO) visually distinct.
+     - Updated `scripts/evaluation/generate_chartqa_charts.py` and regenerated the high-DPI figure with clean, non-overlapping annotations.
+  2. De-duplicated Test-Time Verification (§2.6): dropped redundant Figure 1 bar chart from the main body, retaining the space-efficient Table 5 (`tab:best_of_n`) and relocating Figure 1 to Appendix C/D (`fig:prm_best_of_n`).
+  3. Migrated Table 2 (`tab:trajectory_stats`, Reasoning Trajectory Statistics) from §3.1 into Appendix C, preserving in-text quantitative narrative while freeing ~0.30 pages.
+  4. Migrated full-width Figure 3 (`fig:error_by_step_depth`, Error Mode Composition Across Step Depth) from §3.2 into Appendix C alongside Table 4, freeing ~0.45 pages.
+  5. Migrated Figure 6 (`fig:error_modes`, Holdout Error Mode Breakdown) from §3.4 into Appendix D, freeing ~0.35 pages.
+  6. Recompiled `report/acl_latex.pdf` cleanly with 0 errors/warnings via `pdflatex -> bibtex -> pdflatex`, tightening the main body and pulling References forward to Page 12.
+- **Why**: Eliminates visual clutter and text overlap in publication figures, removes redundant tabular and graphical representations of identical data points, and steadily compresses the report toward the strict 8-page conference limit.
+
+
 
