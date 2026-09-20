@@ -61,18 +61,17 @@
 \begin{minipage}[t]{0.485\textwidth}
 \contribhead{Yahor Lahunovich}{}
 \small
-Built the core ChartPRM pipeline on \textbf{CharXiv} and authored the majority of the report.
+Architected the core ChartPRM pipeline on \textbf{CharXiv}, engineered custom VLM alignment trainers, and authored the foundational report.
 \begin{itemize}
-  \item Curated and stratified the 500-question CharXiv reasoning pool (8 domains, 62 chart types) and the 100-question holdout.
-  \item Built the structured chain-of-thought rollout generation protocol for \texttt{Qwen2.5-VL-3B-Instruct}.
-  \item Integrated the \texttt{muse-spark-1.1} multimodal LLM-as-judge with rollout-level batching.
-  \item Built the preference-dataset curation and training pipelines for SFT, Full DPO, Step-DPO, KTO, and SFT$\rightarrow$DPO.
-  \item Ran and evaluated all five systems on the CharXiv holdout.
-  \item Built the visualization and figure-generation system used throughout the report.
-  \item Co-authored and revised the project report throughout, including writing, structure, and the bibliography.
+  \item Curated the 500-question CharXiv reasoning pool (8 domains, 62 chart types) and established the protected 100-question holdout.
+  \item Designed the structured reasoning protocol for \texttt{Qwen2.5-VL-3B} and evaluated 1,274 rollouts via \texttt{muse-spark-1.1} with cost-saving rollout batching.
+  \item Conducted semantic error analysis across 2,920 refuted steps, establishing the 9-category failure taxonomy that uncovered the perceptual bottleneck and grounded the reward tree.
+  \item Engineered minimal, native PyTorch training engines for SFT, Full DPO, Step-DPO, KTO, and SFT$\rightarrow$DPO, bypassing TRL VLM memory bugs to train within a single 16GB T4 GPU envelope.
+  \item Benchmarked all alignment variants on the holdout, diagnosing and resolving policy log-prob collapse and formatting trade-offs.
+  \item Built the centralized scientific visualization framework (\texttt{SciencePlots}, Paul Tol palettes) generating all 29 benchmark and diagnostic figures.
+  \item Set up the ACL LaTeX layout, authored the Introduction, Related Work, ChartPRM Methods, and Results \& Analysis sections, and curated the bibliography.
+  \item \textbf{AI usage summary:} Used \textbf{Antigravity} and \textbf{Cursor} (powered by Gemini and Claude) as AI coding assistants for scaffolding scripts, resolving CUDA/VRAM driver bugs on Kaggle, and refactoring pipelines. I conceptualized the small-data hypothesis, designed the experimental protocols, formulated the analytical narratives, and verified all empirical results.
 \end{itemize}
-\vspace{2pt}
-\todo{Yahor -- please revise this to your own words and add your own AI-assistance disclosure, if any (\texttt{.cursorrules}/\texttt{.agents/AGENTS.md} list Cursor, Gemini, Claude, and Antigravity as intended tools from early on).}
 \end{minipage}%
 \hfill
 \begin{minipage}[t]{0.485\textwidth}

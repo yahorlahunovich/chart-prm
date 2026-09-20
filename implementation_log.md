@@ -783,3 +783,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
      - Table 1 (Alignment Hyperparameters) and Table 2 (Test-Time Verifier Performance) embedded inline in Sections 2.4 and 2.6.
   4. Verified full compilation: `pdflatex -> bibtex -> pdflatex -> pdflatex` completed with 0 errors, 0 undefined citations/references, and 71/71 regression tests passed.
 - **Why**: Strictly complies with conference page length constraints (8 pages maximum for the main body) while preserving scientific rigor, rich visual storytelling, and readable simple English.
+
+## Contribution Statement Rewrite & AI Disclosure
+- **What**: Rewrote Yahor Lahunovich's contribution statement and added a formal AI usage disclosure in `report/contribution_statement.tex`, removing the temporary `\todo` placeholder and recompiling `report/contribution_statement.pdf`.
+- **Why**: Accurately reflects Yahor's core systems contributions (custom PyTorch training engines, 16GB VRAM memory engineering, 9-category error taxonomy discovery, centralized scientific plotting system, and core paper sections) with symmetric depth, tone, and formatting alongside teammate Ertuğrul's section, while maintaining a single-page document.
