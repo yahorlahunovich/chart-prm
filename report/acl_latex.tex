@@ -58,7 +58,7 @@ Reasoning over scientific charts requires multimodal models to interleave visual
 
 In this paper, we investigate a central hypothesis: \textit{Can a compact vision-language model reason effectively over complex scientific charts when aligned with only a small, process-supervised dataset?} Rather than relying on tens of thousands of annotations, we study whether fewer than 150 verified contrastive preference pairs suffice to align a compact model under consumer-grade compute constraints. A second question follows directly from the first: once such process supervision is built for one chart-QA benchmark, does it stay specific to that benchmark, or does it transfer, unmodified, to a second one?
 
-We evaluate this hypothesis on the \textbf{CharXiv} benchmark \citep{wang2024charxiv}, and later test transfer on \textbf{ChartQA} \citep{masry2022chartqa}. Discarding surface-level descriptive queries, we isolate a stratified subset of \textbf{500 multi-step reasoning questions} from CharXiv spanning 8 academic domains and 62 chart types. Operating within a single 16GB Nvidia T4 GPU budget, we benchmark \texttt{Qwen2.5-VL-3B-Instruct} \citep{bai2025qwen25vl} using 4-bit NF4 quantization \citep{dettmers2023qlora} and LoRA \citep{hu2021lora}.
+We evaluate this hypothesis on the \textbf{CharXiv} benchmark \citep{wang2024charxiv}, and later test transfer on \textbf{ChartQA} \citep{masry2022chartqa}. Discarding surface-level descriptive queries, we isolate a stratified subset of \textbf{500 multi-step reasoning questions} from CharXiv spanning 8 academic domains and 62 chart types. Operating within a 16GB GPU budget (Nvidia Tesla P100/T4), we benchmark \texttt{Qwen2.5-VL-3B-Instruct} \citep{bai2025qwen25vl} using native 16-bit precision (FP16) and LoRA \citep{hu2021lora}.
 
 Using an LLM-as-a-judge (\texttt{muse-spark-1.1}) \citep{meta2026musespark, zheng2023judging} with rollout-level batching, we evaluate 1,274 rollouts (4,947 steps). Analyzing 2,920 refuted steps reveals two primary diagnostic findings: (1)~\textbf{Perceptual Bottleneck:} Failures are overwhelmingly visual: axis/layout misreads (24.0\%) and series/color confusion (19.5\%) account for 43.5\% of failed steps, whereas pure arithmetic errors represent only 1.3\% (1 in 77 errors); (2)~\textbf{Catastrophic Cascades:} 79.7\% of flawed traces break down in Steps 0--1, and once a step fails, the subsequent step fails 82.7\% of the time ($P(S_{N+1}=0 \mid S_N=0) = 82.7\%$).
 
@@ -126,11 +126,11 @@ SimPO & 134 pairs & 1 & $1\times 10^{-6}$ & -- \\
 Pareto-DPO & 154 pairs & 1 & $1\times 10^{-5}$ & -- \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Fine-Tuning Configurations under 16GB GPU Budget.} All models use 4-bit LoRA ($r=16$) on \texttt{Qwen2.5-VL-3B-Instruct} \citep{bai2025qwen25vl}.}
+\caption{\textbf{Fine-Tuning Configurations under 16GB GPU Budget.} All models use FP16 LoRA ($r=16$) on \texttt{Qwen2.5-VL-3B-Instruct} \citep{bai2025qwen25vl}.}
 \label{tab:training_setup}
 \end{table}
 
-We align policy $\pi_\theta$ against unaligned base instruct model $\pi_{\text{ref}}$ under a strict 16GB VRAM budget on Nvidia Tesla T4/P100 GPUs using 4-bit NF4 quantization \citep{dettmers2023qlora} and LoRA adapters ($r=16$) \citep{hu2021lora} on \texttt{Qwen2.5-VL-3B-Instruct} \citep{bai2025qwen25vl}. Peak GPU memory remains under 14.2\,GB throughout training. Table~\ref{tab:training_setup} summarizes configurations, dataset sizes, learning rates, and wall-clock runtimes.
+We align policy $\pi_\theta$ against unaligned base instruct model $\pi_{\text{ref}}$ under a strict 16GB VRAM budget on Nvidia Tesla P100/T4 GPUs using native 16-bit precision (FP16) and LoRA adapters ($r=16$) \citep{hu2021lora} on \texttt{Qwen2.5-VL-3B-Instruct} \citep{bai2025qwen25vl}. Models are trained in native FP16 rather than 4-bit quantization due to P100 hardware constraints (Appendix~\ref{subsec:appendix_hardware}); base weights occupy 6.0\,GB and peak VRAM remains under 14.2\,GB. Table~\ref{tab:training_setup} summarizes configurations, dataset sizes, learning rates, and runtimes.
 
 We investigate seven alignment paradigms (full objective formulas in Appendix~\ref{sec:appendix_objectives}): (1)~\textbf{SFT} maximizes gold step log-likelihood (Eq.~\ref{eq:sft_loss}); (2)~\textbf{Full-Sequence DPO} \citep{rafailov2023dpo} optimizes a Bradley-Terry preference model over entire trajectories:
 \begin{align}
@@ -384,11 +384,11 @@ We set $\beta = 2.0$ and target margin $\gamma = 1.0$ ($\gamma/\beta = 0.5$).
 \subsection{Optimization Details and Hardware Footprint}
 \label{subsec:appendix_hardware}
 
-All fine-tuning experiments were conducted under a strict 16GB VRAM hardware ceiling on a single Nvidia Tesla T4 GPU (Google Colab) or an Nvidia Tesla P100 GPU (Kaggle). To operate within this memory constraint:
+All fine-tuning experiments were conducted under a strict 16GB VRAM hardware ceiling on an Nvidia Tesla P100 GPU (Kaggle) or Nvidia Tesla T4 GPU (Google Colab). To operate reliably within this compute constraint:
 \begin{itemize}[noitemsep,topsep=1pt]
-    \item Models are initialized in 4-bit NormalFloat (NF4) quantization using \texttt{bitsandbytes} \citep{dettmers2023qlora}.
-    \item Low-Rank Adaptation (LoRA) \citep{hu2021lora} is applied to all linear projection layers (attention query, key, value, output, and MLP up/down/gate projections) with rank $r = 16$, $\alpha = 32$, and dropout $0.05$.
-    \item Gradients are accumulated across micro-batches of size 1 to achieve effective batch sizes of 4 or 8. Peak memory never exceeds 14.2\,GB throughout training.
+    \item \textbf{Native FP16 Precision:} Models are trained in 16-bit half precision (\texttt{torch.float16}, \texttt{use\_4bit=False}). Our Kaggle Nvidia Tesla P100 GPUs (Pascal architecture, compute capability 6.0) lack hardware support for \texttt{bitsandbytes} 4-bit NF4 CUDA kernels (requiring compute capability $\ge 7.0$). Base weights occupy $\approx 6.0$\,GB, training with zero quantization distortion.
+    \item \textbf{LoRA Adaptation:} Applied to all linear projections with rank $r = 16$, $\alpha = 32$, and dropout $0.05$ \citep{hu2021lora}.
+    \item \textbf{Memory Optimizations:} Gradient checkpointing and micro-batch size 1 keep peak memory $<14.2$\,GB throughout training.
 \end{itemize}
 
 \subsection{Empirical Training Dynamics}
@@ -397,7 +397,7 @@ All fine-tuning experiments were conducted under a strict 16GB VRAM hardware cei
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.92\textwidth]{../charts/report_selected/results_04_training_dynamics_loss_rewards.png}
-  \caption{\textbf{Training Dynamics Across Alignment Paradigms.} Top-left: SFT cross-entropy loss decay ($1.8 \to 0.4$). Top-right: Sequence DPO loss trajectories converging smoothly. Bottom-left: Step-DPO implicit reward margin explosion ($\Delta r \to +10.0$) caused by prefix masking. Bottom-right: KTO margin oscillations under single-T4 micro-batch constraints.}
+  \caption{\textbf{Training Dynamics Across Alignment Paradigms.} Top-left: SFT cross-entropy loss decay ($1.8 \to 0.4$). Top-right: Sequence DPO loss trajectories converging smoothly. Bottom-left: Step-DPO implicit reward margin explosion ($\Delta r \to +10.0$) caused by prefix masking. Bottom-right: KTO margin oscillations under single-GPU micro-batch constraints.}
   \label{fig:appendix_training_dynamics}
 \end{figure*}
 

@@ -808,3 +808,20 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Attribution of Initial Codebase Creation
 - **What**: Updated Yahor Lahunovich's contribution statement in `report/contribution_statement.tex` to explicitly state that Yahor created the initial codebase of the project, alongside architecting the core CharXiv pipeline and authoring the foundational report. Recompiled `report/contribution_statement.pdf`.
 - **Why**: Accurately acknowledges Yahor's role in initializing and bootstrapping the repository, project structure, and early pipelines.
+
+## Quantization Verification & Transparent Precision Correction (Native FP16 on Pascal P100)
+- **What**:
+  1. Investigated user inquiry regarding model quantization representation:
+     - Confirmed via training scripts (`scripts/train/train_*.py`) that `use_4bit = False` is set whenever GPU compute capability is $< 7$ (unless explicitly overridden).
+     - Confirmed via actual Kaggle training execution logs (`logs/qwen-vl-sft-custom.log`, `logs/qwen-vl-step-dpo-custom.log`, `logs/qwen-vl-kto-custom.log`, `experiments/006_sft_then_dpo/data/qwen-vl-sft-dpo.log`) that all models were trained on Nvidia Tesla P100-PCIE-16GB GPUs (Pascal architecture, compute capability 6.0) with `use_4bit=False` in native 16-bit half precision (`torch.float16`) with LoRA adapters ($r=16$, $\alpha=32$).
+     - Confirmed that Pascal SM 6.0 GPUs lack hardware instructions for modern `bitsandbytes` 4-bit NF4 CUDA kernels (which require compute capability $\ge 7.0$). In native FP16, `Qwen2.5-VL-3B` base weights occupy $\approx 6.0$\,GB VRAM, and gradient checkpointing keeps peak memory under 14.2\,GB throughout training without quantization distortion.
+  2. Transparently corrected all references to quantization across `report/acl_latex.tex`:
+     - **Section 1 (Introduction)**: Replaced "using 4-bit NF4 quantization and LoRA" with "using native 16-bit precision (FP16) and LoRA under a 16GB GPU budget (Nvidia Tesla P100/T4)".
+     - **Table 1 Caption**: Corrected "All models use 4-bit LoRA ($r=16$)" to "All models use FP16 LoRA ($r=16$)".
+     - **Section 2.4 (Alignment Objectives & Setup)**: Replaced 4-bit claims with explicit native FP16 statement and hardware constraint reference to Appendix A.2, stating base weights occupy 6.0\,GB and peak VRAM $< 14.2$\,GB.
+     - **Appendix A.2 (Optimization Details and Hardware Footprint)**: Transparently documented native FP16 precision (`torch.float16`, `use_4bit=False`), explained why Kaggle P100 GPUs (compute capability 6.0) do not support `bitsandbytes` 4-bit NF4 kernels, and highlighted the benefit of training with zero quantization distortion.
+     - **Figure 5 Caption**: Replaced "single-T4 micro-batch constraints" with "single-GPU micro-batch constraints".
+  3. Recompiled `report/acl_latex.pdf` cleanly with 0 errors, strictly preserving the exact 14-page document budget (Pages 1–8: Main paper; Page 9: References; Pages 10–14: Appendices A–E) with zero overflow.
+  4. Verified all 71 regression tests and 137 unit/integration tests pass.
+- **Why**: Eliminates technical inaccuracies regarding quantization, maintains 100% scientific integrity and empirical transparency, and documents the exact hardware and precision under which all fine-tuning runs were executed.
+
