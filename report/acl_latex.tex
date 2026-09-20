@@ -556,14 +556,14 @@ Figure~\ref{fig:error_modes} partitions test rollouts into four mutually exclusi
 
 \begin{figure*}[t]
   \centering
-  \begin{subfigure}[b]{0.51\textwidth}
+  \begin{subfigure}[b]{0.49\textwidth}
     \centering
     \includegraphics[width=\textwidth]{../charts/report_selected/results_02_structure_instruction_following.png}
     \caption{Instruction Following Compliance by Tag}
     \label{fig:appendix_structure_breakdown}
   \end{subfigure}
   \hfill
-  \begin{subfigure}[b]{0.46\textwidth}
+  \begin{subfigure}[b]{0.47\textwidth}
     \centering
     \includegraphics[width=\textwidth]{../charts/report_selected/results_03_error_mode_hallucination_breakdown.png}
     \caption{Holdout Error Modes \& Hallucination Proxy}
@@ -580,7 +580,7 @@ Figure~\ref{fig:prm_best_of_n} illustrates the accuracy of inference-time candid
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\columnwidth]{../charts/report_selected/prm_best_of_n_accuracy.png}
+  \includegraphics[width=0.88\columnwidth]{../charts/report_selected/prm_best_of_n_accuracy.png}
   \caption{\textbf{Inference-Time PRM Verifier Accuracy.} Average step process reward selection (27.5\%) outperforms self-consistency majority voting (21.0\%) and random rollouts (18.4\%) across 309 multi-candidate questions.}
   \label{fig:prm_best_of_n}
 \end{figure}
@@ -589,23 +589,23 @@ Figure~\ref{fig:prm_best_of_n} illustrates the accuracy of inference-time candid
 \section{Cross-Dataset Generalization to ChartQA}
 \label{sec:appendix_chartqa}
 
+\begin{figure}[!b]
+  \centering
+  \includegraphics[width=0.92\columnwidth]{../charts/chartqa/chartqa_01_overall_comparison.png}
+  \caption{\textbf{ChartQA Holdout Benchmark ($N=30$).} Pareto-DPO leads on exact-match, token match, and structure score simultaneously, matching the pattern reported numerically in Table~\ref{tab:chartqa_benchmark}.}
+  \label{fig:chartqa_overall}
+\end{figure}
+
 \subsection{Transfer Methodology and Dataset Selection}
 \label{subsec:appendix_chartqa_methodology}
 
-To evaluate whether the 33-criterion dynamic reward tree generalises beyond CharXiv, we evaluate zero-retuning transfer on ChartQA \citep{masry2022chartqa}. We isolate 150 human-authored reasoning questions from ChartQA's test split for fine-tuning and hold out 30 questions for evaluation. Human-authored questions specifically evaluate complex multi-step reasoning over varied real-world plots, whereas machine-generated questions rely on synthetic templates.
+To test whether the 33-criterion dynamic reward tree generalises beyond CharXiv, we evaluate zero-retuning transfer on ChartQA \citep{masry2022chartqa}. We isolate 150 human-authored reasoning questions from ChartQA's test split for fine-tuning and hold out 30 questions for evaluation. Human-authored questions test complex multi-step reasoning over real-world charts, unlike machine-generated questions that use synthetic templates.
 
 \subsection{Tree Activation and Generalization Results}
 \label{subsec:appendix_chartqa_results}
 
-The 33-criterion tree transfers unmodified to ChartQA without altering rubric statements or parent categories. Across 612 generated rollouts on ChartQA, the dynamic judge (\texttt{gemini-3.5-flash-lite}) selects an average of 4.21 criteria per step with 0\% empty selections, validating the generalizability of the failure criteria.
+The 33-criterion tree transfers unmodified to ChartQA without altering rubrics or parent categories. Across 612 rollouts on ChartQA, the dynamic judge (\texttt{gemini-3.5-flash-lite}) selects an average of 4.21 criteria per step with 0\% empty selections, confirming rubric generalizability.
 
-Figure~\ref{fig:chartqa_overall} presents the holdout benchmark comparison. Pareto-DPO achieves 60.0\% exact match, 73.3\% token match, and 100.0\% structural compliance, outperforming the unaligned base model (43.3\% EM) by +16.7 pp. In contrast, Full DPO reaches only 40.0\% EM (73.3\% structure) and Step-DPO reaches 36.7\% EM (59.3\% structure). Pareto filtering discards rollouts that trade off across failure dimensions, providing a clean contrastive signal that transfers robustly across visual chart distributions.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{../charts/chartqa/chartqa_01_overall_comparison.png}
-  \caption{\textbf{ChartQA Holdout Benchmark ($N=30$).} Pareto-DPO leads on exact-match, token match, and structure score simultaneously, matching the pattern reported numerically in Table~\ref{tab:chartqa_benchmark}.}
-  \label{fig:chartqa_overall}
-\end{figure}
+Figure~\ref{fig:chartqa_overall} presents the holdout comparison. Pareto-DPO achieves 60.0\% exact match, 73.3\% token match, and 100.0\% structural compliance, outperforming the base model (43.3\% EM) by +16.7 pp. In contrast, Full DPO reaches 40.0\% EM (73.3\% structure) and Step-DPO reaches 36.7\% EM (59.3\% structure). Pareto filtering eliminates rollouts with cross-criterion trade-offs, yielding a clean contrastive signal that transfers robustly.
 
 \end{document}

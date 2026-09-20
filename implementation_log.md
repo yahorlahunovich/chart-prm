@@ -791,3 +791,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Refinement of Yahor AI Usage Disclosure
 - **What**: Updated Yahor Lahunovich's AI usage disclosure in `report/contribution_statement.tex` to explicitly state that Antigravity and Cursor were used for writing and validating all code across the pipeline and for drafting the report (with manual modifications), while all research ideas, hypotheses, experimental formulations, and empirical analyses were conceived and directed entirely by Yahor. Recompiled `report/contribution_statement.pdf`.
 - **Why**: Accurately reflects author attribution and tool usage per the author's instructions and university academic integrity guidelines.
+
+## Attribution of Initial Codebase Creation
+- **What**: Updated Yahor Lahunovich's contribution statement in `report/contribution_statement.tex` to explicitly state that Yahor created the initial codebase of the project, alongside architecting the core CharXiv pipeline and authoring the foundational report. Recompiled `report/contribution_statement.pdf`.
+- **Why**: Accurately acknowledges Yahor's role in initializing and bootstrapping the repository, project structure, and early pipelines.
