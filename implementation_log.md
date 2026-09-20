@@ -825,3 +825,21 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
   4. Verified all 71 regression tests and 137 unit/integration tests pass.
 - **Why**: Eliminates technical inaccuracies regarding quantization, maintains 100% scientific integrity and empirical transparency, and documents the exact hardware and precision under which all fine-tuning runs were executed.
 
+## Repository Cleanup: Purge AI Prompts, Agent Instructions, and Scratch Drafts
+- **What**:
+  1. Deleted obsolete AI agent prompt and instructions files:
+     - `REFACTOR_AGENT_PROMPT.md`: Standalone agent prompt file used during early refactoring.
+     - `agents/instructions.md` and empty `agents/` directory: Multi-agent prompt file.
+     - `.cursorrules`: Agent prompt rules file.
+  2. Deleted leftover scratch planning and drafting files:
+     - `plan.md` and `report_plan.md`: Early milestone scratch outlines.
+     - `report/introduction_variants.md`: Intermediate introduction candidates.
+     - `report/formatting.md`: Redundant conference formatting notes.
+  3. Cleaned untracked root `__pycache__` artifacts.
+  4. Updated `README.md` (Development section):
+     - Removed AI agent bullet point and references to `agents/instructions.md` and `.cursorrules`.
+     - Updated unit test count from 49 to 137 tests across all newly merged modules.
+  5. Verified all 71 regression tests, 137 unit/integration tests, and 14-page LaTeX compilation pass cleanly.
+- **Why**: Produces a clean, professional, publication-grade open-source research repository without AI scratch prompts or draft clutter.
+
+

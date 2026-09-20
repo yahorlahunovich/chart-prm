@@ -276,7 +276,6 @@ Collapse guards abort (or warn) if policy log-prob falls ~40–70 nats below the
 
 ## Development
 
-- **Tests:** `uv run pytest` — 49 unit tests covering DPO/SFT/KTO losses, prefix masking, data guards, adapter resolve, holdout merge/metrics, and the step-DPO formatter.
+- **Tests:** `uv run pytest` — 137 unit tests covering alignment objectives, process reward verification, dynamic criteria distillation, data guards, adapter resolution, holdout evaluation, and Pareto filtering.
 - **Logging:** every implementation step is recorded in [`implementation_log.md`](implementation_log.md).
-- **Agents:** see `agents/instructions.md` and `.cursorrules`. Compute and dataset constraints in those files are binding.
 - **Git:** adapters and logs are gitignored; experiment metrics and `data/test_predictions/` are tracked.
