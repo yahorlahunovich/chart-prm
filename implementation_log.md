@@ -787,3 +787,7 @@ This file tracks the step-by-step implementation of the ChartPRM project. Every 
 ## Contribution Statement Rewrite & AI Disclosure
 - **What**: Rewrote Yahor Lahunovich's contribution statement and added a formal AI usage disclosure in `report/contribution_statement.tex`, removing the temporary `\todo` placeholder and recompiling `report/contribution_statement.pdf`.
 - **Why**: Accurately reflects Yahor's core systems contributions (custom PyTorch training engines, 16GB VRAM memory engineering, 9-category error taxonomy discovery, centralized scientific plotting system, and core paper sections) with symmetric depth, tone, and formatting alongside teammate Ertuğrul's section, while maintaining a single-page document.
+
+## Refinement of Yahor AI Usage Disclosure
+- **What**: Updated Yahor Lahunovich's AI usage disclosure in `report/contribution_statement.tex` to explicitly state that Antigravity and Cursor were used for writing and validating all code across the pipeline and for drafting the report (with manual modifications), while all research ideas, hypotheses, experimental formulations, and empirical analyses were conceived and directed entirely by Yahor. Recompiled `report/contribution_statement.pdf`.
+- **Why**: Accurately reflects author attribution and tool usage per the author's instructions and university academic integrity guidelines.

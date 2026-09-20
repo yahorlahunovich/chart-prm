@@ -27,6 +27,10 @@
 \renewcommand{\floatpagefraction}{0.85}
 \renewcommand{\dbltopfraction}{0.95}
 \renewcommand{\dblfloatpagefraction}{0.85}
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{4}
+\setcounter{totalnumber}{6}
+\setcounter{dbltopnumber}{3}
 
 \title{ChartPRM: Process Reward Modeling and Step-Level Preference Optimization for Complex Multimodal Chart Reasoning}
 
@@ -412,12 +416,12 @@ Finally, KTO (bottom-right) displays margin oscillations due to single-sample re
 
 To facilitate reliable process reward scoring, we design a structured Chain-of-Thought template that enforces explicit step boundaries and separates visual inspection from numerical deduction:
 \begin{quote}
-\small
-\texttt{Solve the chart reasoning question step by step. Structure your answer strictly as follows:\\
+\small\ttfamily\raggedright
+Solve the chart reasoning question step by step. Structure your answer strictly as follows:\\[2pt]
 Step 1: <visual observation>\\
 Step 2: <intermediate reading or deduction>\\
 ...\\
-Final Answer: <concise answer>}
+Final Answer: <concise answer>
 \end{quote}
 
 We enforce three practical formatting requirements during rollout evaluation:
@@ -432,14 +436,6 @@ We enforce three practical formatting requirements during rollout evaluation:
 
 Evaluation rollouts are parsed by searching for the regex pattern \texttt{r"Final Answer:\textbackslash s*(.+)"} from the end of the text. Extracted answer strings undergo standard lowercase whitespace normalization (removing trailing punctuation, dollar signs, percent signs, and converting multi-space sequences to single spaces). Exact-match accuracy evaluates whether the normalized prediction matches the ground-truth string.
 
-
-\section{Diagnostic PRM Judge, Error Taxonomy, and Cascades}
-\label{sec:appendix_diagnostics}
-
-\subsection{Multimodal Rollout-Batched Judge}
-\label{subsec:appendix_judge_details}
-
-Evaluating 4,947 reasoning steps individually via multimodal API endpoints presents severe latency and cost bottlenecks. We implement \textit{rollout-level batching}: chart images are resized to a maximum dimension of 512 pixels (preserving axis tick marks and data markers) and bundled with the complete sequence of generated steps into a single API invocation to \texttt{muse-spark-1.1} \citep{meta2026musespark, zheng2023judging}. The judge outputs a structured JSON list containing step-level binary scores $s_t \in \{0, 1\}$ and qualitative critique sentences for all refuted steps.
 
 \begin{table*}[t]
 \centering
@@ -468,6 +464,20 @@ Other / Unspecified & $N=215$ & 7.4\% & \textit{unspecified, error, incorrect} &
 \label{tab:appendix_error_taxonomy}
 \end{table*}
 
+
+\section{Diagnostic PRM Judge, Error Taxonomy, and Cascades}
+\label{sec:appendix_diagnostics}
+
+\subsection{Multimodal Rollout-Batched Judge}
+\label{subsec:appendix_judge_details}
+
+Evaluating 4,947 reasoning steps individually via multimodal API endpoints presents severe latency and cost bottlenecks. We implement \textit{rollout-level batching}: chart images are resized to a maximum dimension of 512 pixels (preserving axis tick marks and data markers) and bundled with the complete sequence of generated steps into a single API invocation to \texttt{muse-spark-1.1} \citep{meta2026musespark, zheng2023judging}. The judge outputs a structured JSON list containing step-level binary scores $s_t \in \{0, 1\}$ and qualitative critique sentences for all refuted steps.
+
+\subsection{Error Taxonomy Analysis}
+\label{subsec:appendix_taxonomy_analysis}
+
+Table~\ref{tab:appendix_error_taxonomy} catalogues the 9-class empirical error taxonomy extracted from 2,920 failed steps. Figure~\ref{fig:error_by_step_depth} visualizes how error composition shifts over reasoning depth. In Step 0, axis and layout misreads dominate at 78.5\%, reflecting the initial perceptual difficulty of parsing logarithmic axes, dual scales, and multi-panel arrangements. As reasoning chains progress into Steps 2--4, errors transition into entity hallucinations (15.2\%) and logical contradictions (8.2\%), which stem directly from the model attempting to build deductions upon corrupted initial observations.
+
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.98\textwidth]{../charts/report_selected/judge_02_error_by_step_depth.png}
@@ -475,10 +485,12 @@ Other / Unspecified & $N=215$ & 7.4\% & \textit{unspecified, error, incorrect} &
   \label{fig:error_by_step_depth}
 \end{figure*}
 
-\subsection{Error Taxonomy Analysis}
-\label{subsec:appendix_taxonomy_analysis}
+\subsection{Trajectory Cascades and Domain Distributions}
+\label{subsec:appendix_cascades_domains}
 
-Table~\ref{tab:appendix_error_taxonomy} catalogues the 9-class empirical error taxonomy extracted from 2,920 failed steps. Figure~\ref{fig:error_by_step_depth} visualizes how error composition shifts over reasoning depth. In Step 0, axis and layout misreads dominate at 78.5\%, reflecting the initial perceptual difficulty of parsing logarithmic axes, dual scales, and multi-panel arrangements. As reasoning chains progress into Steps 2--4, errors transition into entity hallucinations (15.2\%) and logical contradictions (8.2\%), which stem directly from the model attempting to build deductions upon corrupted initial observations.
+Table~\ref{tab:trajectory_stats} summarizes global trajectory statistics across the 500 CharXiv reasoning pool. Over 79.7\% of flawed rollouts make their first mistake in Steps 0 or 1. Once a step fails, the subsequent step fails with 82.7\% probability ($P(S_{N+1}=0 \mid S_N=0) = 82.7\%$). Figure~\ref{fig:appendix_cooccurrence} maps the co-occurrence of error categories: series identity confusion frequently co-occurs with downstream logical inconsistency (460 instances). 
+
+Figure~\ref{fig:appendix_domain_taxonomy} breaks down error rates across academic disciplines: Physics and Economics exhibit the highest rate of axis misreads (>34\%), reflecting complex scientific tick scales, while Computer Science and Mathematics exhibit elevated entity hallucinations (>22\%).
 
 \begin{table}[t]
 \centering
@@ -528,37 +540,9 @@ Mean Steps per Rollout & 3.88 & -- \\
   \label{fig:appendix_domain_taxonomy}
 \end{figure}
 
-\subsection{Trajectory Cascades and Domain Distributions}
-\label{subsec:appendix_cascades_domains}
-
-Table~\ref{tab:trajectory_stats} summarizes global trajectory statistics across the 500 CharXiv reasoning pool. Over 79.7\% of flawed rollouts make their first mistake in Steps 0 or 1. Once a step fails, the subsequent step fails with 82.7\% probability ($P(S_{N+1}=0 \mid S_N=0) = 82.7\%$). Figure~\ref{fig:appendix_cooccurrence} maps the co-occurrence of error categories: series identity confusion frequently co-occurs with downstream logical inconsistency (460 instances). 
-
-Figure~\ref{fig:appendix_domain_taxonomy} breaks down error rates across academic disciplines: Physics and Economics exhibit the highest rate of axis misreads (>34\%), reflecting complex scientific tick scales, while Computer Science and Mathematics exhibit elevated entity hallucinations (>22\%).
-
 
 \section{Structural Instruction Compliance, Error Modes, and Test-Time Search}
 \label{sec:appendix_compliance}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{../charts/report_selected/results_02_structure_instruction_following.png}
-  \caption{\textbf{Structural Instruction Compliance Breakdown.} Evaluates individual prompt constraints. SFT achieves 100\% across all tags, while KTO fails primarily due to conversational preambles and missing answer tags.}
-  \label{fig:appendix_structure_breakdown}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{../charts/report_selected/results_03_error_mode_hallucination_breakdown.png}
-  \caption{\textbf{Holdout Error Mode Breakdown.} Partitioning of test responses into extracted correct, unextracted correct in prose, partial ground-truth mentions, and committed wrong answers (hallucination proxy).}
-  \label{fig:error_modes}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{../charts/report_selected/prm_best_of_n_accuracy.png}
-  \caption{\textbf{Inference-Time PRM Verifier Accuracy.} Average step process reward selection (27.5\%) outperforms self-consistency majority voting (21.0\%) and random rollouts (18.4\%) across 309 multi-candidate questions.}
-  \label{fig:prm_best_of_n}
-\end{figure}
 
 \subsection{Instruction Following across Tags}
 \label{subsec:appendix_tag_compliance}
@@ -570,21 +554,40 @@ Figure~\ref{fig:appendix_structure_breakdown} breaks down structural compliance 
 
 Figure~\ref{fig:error_modes} partitions test rollouts into four mutually exclusive categories: extracted correct, unextracted correct (the true value appears in reasoning but is omitted from the final answer tag), partial mention (overlapping substrings), and committed wrong answers (the model commits to an incorrect number without mentioning the ground truth). Models with high structural discipline exhibit higher committed hallucination rates (SFT 43.0\%, Full DPO 49.0\%, SFT$\rightarrow$DPO 53.0\%), while KTO exhibits the lowest committed rate (30.0\%) by hedging in prose.
 
+\begin{figure*}[t]
+  \centering
+  \begin{subfigure}[b]{0.51\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../charts/report_selected/results_02_structure_instruction_following.png}
+    \caption{Instruction Following Compliance by Tag}
+    \label{fig:appendix_structure_breakdown}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.46\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{../charts/report_selected/results_03_error_mode_hallucination_breakdown.png}
+    \caption{Holdout Error Modes \& Hallucination Proxy}
+    \label{fig:error_modes}
+  \end{subfigure}
+  \caption{\textbf{Instruction Following and Error Mode Breakdown.} (a) Structural compliance across individual prompt constraints (\texttt{Step 1:}, intermediate steps, \texttt{Final Answer:}, and preamble suppression). SFT achieves 100\% across all tags, while KTO collapses to 21.2\% compliance primarily due to conversational preambles (99.0\%) and missing answer delimiters (78.8\%). (b) Partitioning test responses into extracted correct, unextracted correct in prose, partial ground-truth mentions, and committed wrong answers (hallucination proxy).}
+  \label{fig:appendix_structure_and_error_modes}
+\end{figure*}
+
 \subsection{Inference-Time Candidate Search}
 \label{subsec:appendix_inference_search}
 
 Figure~\ref{fig:prm_best_of_n} illustrates the accuracy of inference-time candidate selection across 309 questions with multiple candidate rollouts. Selecting the candidate with highest mean step process reward $R(\tau)$ achieves 27.5\% exact match, outperforming majority-vote self-consistency (21.0\%, +6.5 pp) and uniform random selection (18.4\%, +9.1 pp), confirming that offline process reward models serve as effective zero-shot inference rerankers.
 
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{../charts/report_selected/prm_best_of_n_accuracy.png}
+  \caption{\textbf{Inference-Time PRM Verifier Accuracy.} Average step process reward selection (27.5\%) outperforms self-consistency majority voting (21.0\%) and random rollouts (18.4\%) across 309 multi-candidate questions.}
+  \label{fig:prm_best_of_n}
+\end{figure}
+
 
 \section{Cross-Dataset Generalization to ChartQA}
 \label{sec:appendix_chartqa}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{../charts/chartqa/chartqa_01_overall_comparison.png}
-  \caption{\textbf{ChartQA Holdout Benchmark ($N=30$).} Pareto-DPO leads on exact-match, token match, and structure score simultaneously, matching the pattern reported numerically in Table~\ref{tab:chartqa_benchmark}.}
-  \label{fig:chartqa_overall}
-\end{figure}
 
 \subsection{Transfer Methodology and Dataset Selection}
 \label{subsec:appendix_chartqa_methodology}
@@ -597,5 +600,12 @@ To evaluate whether the 33-criterion dynamic reward tree generalises beyond Char
 The 33-criterion tree transfers unmodified to ChartQA without altering rubric statements or parent categories. Across 612 generated rollouts on ChartQA, the dynamic judge (\texttt{gemini-3.5-flash-lite}) selects an average of 4.21 criteria per step with 0\% empty selections, validating the generalizability of the failure criteria.
 
 Figure~\ref{fig:chartqa_overall} presents the holdout benchmark comparison. Pareto-DPO achieves 60.0\% exact match, 73.3\% token match, and 100.0\% structural compliance, outperforming the unaligned base model (43.3\% EM) by +16.7 pp. In contrast, Full DPO reaches only 40.0\% EM (73.3\% structure) and Step-DPO reaches 36.7\% EM (59.3\% structure). Pareto filtering discards rollouts that trade off across failure dimensions, providing a clean contrastive signal that transfers robustly across visual chart distributions.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{../charts/chartqa/chartqa_01_overall_comparison.png}
+  \caption{\textbf{ChartQA Holdout Benchmark ($N=30$).} Pareto-DPO leads on exact-match, token match, and structure score simultaneously, matching the pattern reported numerically in Table~\ref{tab:chartqa_benchmark}.}
+  \label{fig:chartqa_overall}
+\end{figure}
 
 \end{document}
